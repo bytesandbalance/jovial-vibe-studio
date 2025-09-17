@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight } from 'lucide-react';
+import { Play, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -78,6 +78,16 @@ export default function PortfolioPage() {
       <Navigation />
       
       <div className="max-w-7xl mx-auto px-6 py-12">
+        {/* Back Button */}
+        <div className="mb-8">
+          <Button asChild variant="outline" className="group">
+            <Link to="/">
+              <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
+              Back to Home
+            </Link>
+          </Button>
+        </div>
+
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
             Our <span className="gradient-text">Portfolio</span>
