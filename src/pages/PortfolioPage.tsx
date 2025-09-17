@@ -384,35 +384,31 @@ export default function PortfolioPage() {
                           src={video.file_url}
                           poster={video.thumbnail_url}
                           className="w-full h-full object-cover"
-                          controls={false}
+                          controls
                           muted
                           playsInline
                           preload="metadata"
-                          onPlay={(e) => {
-                            // Ensure video is muted for mobile autoplay
-                            e.currentTarget.muted = true;
-                          }}
                         />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
                       )}
                       
                       {/* Play Button */}
-                      <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                         <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                           <Play className="w-8 h-8 text-primary ml-1" />
                         </div>
                       </div>
 
                       {/* Duration */}
-                      <div className="absolute bottom-4 right-4">
+                      <div className="pointer-events-none absolute bottom-4 right-4">
                         <Badge variant="secondary" className="bg-background/80">
                           {formatDuration(video.duration || 0)}
                         </Badge>
                       </div>
 
                       {/* Category Badge */}
-                      <div className="absolute top-4 left-4">
+                      <div className="pointer-events-none absolute top-4 left-4">
                         <Badge className="bg-primary text-primary-foreground">
                           {CATEGORIES.find(c => c.value === video.category)?.label || video.category}
                         </Badge>
