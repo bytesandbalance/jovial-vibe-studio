@@ -59,6 +59,24 @@ export type Database = {
         }
         Relationships: []
       }
+      owner_emails: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           business_name: string | null
@@ -91,6 +109,47 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      purchases: {
+        Row: {
+          created_at: string
+          customer_id: string
+          download_url: string | null
+          id: string
+          purchase_date: string
+          purchase_price: number | null
+          updated_at: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          download_url?: string | null
+          id?: string
+          purchase_date?: string
+          purchase_price?: number | null
+          updated_at?: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          download_url?: string | null
+          id?: string
+          purchase_date?: string
+          purchase_price?: number | null
+          updated_at?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       videos: {
         Row: {

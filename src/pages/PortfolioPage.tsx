@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Play, ArrowRight, ArrowLeft, Edit, Trash2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
 
 interface Video {
@@ -28,9 +35,23 @@ const CATEGORIES = [
 ];
 
 export default function PortfolioPage() {
+  const { user, userRole } = useAuth();
+  const { toast } = useToast();
   const [videos, setVideos] = useState<Video[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [editingVideo, setEditingVideo] = useState<Video | null>(null);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  
+  // Form state
+  const [uploadForm, setUploadForm] = useState({
+    title: '',
+    description: '',
+    category: '',
+    file: null as File | null,
+    is_featured: false
+  });
 
   useEffect(() => {
     fetchVideos();
@@ -60,6 +81,97 @@ export default function PortfolioPage() {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!uploadForm.file || !uploadForm.title || !uploadForm.category) return;
+    
+    setUploading(true);
+    try {
+      const fileExt = uploadForm.file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('videos')
+        .upload(fileName, uploadForm.file);
+      
+      if (uploadError) throw uploadError;
+      
+      const { data: { publicUrl } } = supabase.storage
+        .from('videos')
+        .getPublicUrl(fileName);
+      
+      const { error: insertError } = await supabase
+        .from('videos')
+        .insert({
+          title: uploadForm.title,
+          description: uploadForm.description,
+          category: uploadForm.category as any,
+          file_url: publicUrl,
+          uploaded_by: user?.id,
+          is_featured: uploadForm.is_featured,
+          file_size: uploadForm.file.size
+        });
+      
+      if (insertError) throw insertError;
+      
+      toast({ title: "Video uploaded successfully!" });
+      setShowUploadDialog(false);
+      setUploadForm({ title: '', description: '', category: '', file: null, is_featured: false });
+      fetchVideos();
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleEdit = async (video: Video, updatedData: any) => {
+    try {
+      const { error } = await supabase
+        .from('videos')
+        .update(updatedData)
+        .eq('id', video.id);
+      
+      if (error) throw error;
+      
+      toast({ title: "Video updated successfully!" });
+      setEditingVideo(null);
+      fetchVideos();
+    } catch (error: any) {
+      toast({
+        title: "Update failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDelete = async (videoId: string) => {
+    if (!confirm('Are you sure you want to delete this video?')) return;
+    
+    try {
+      const { error } = await supabase
+        .from('videos')
+        .delete()
+        .eq('id', videoId);
+      
+      if (error) throw error;
+      
+      toast({ title: "Video deleted successfully!" });
+      fetchVideos();
+    } catch (error: any) {
+      toast({
+        title: "Delete failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
   };
 
   if (loading) {
@@ -97,11 +209,83 @@ export default function PortfolioPage() {
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Button asChild className="btn-hero">
-              <Link to="/auth?mode=signup">
-                Start Your Project <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
+            {userRole === 'owner' ? (
+              <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+                <DialogTrigger asChild>
+                  <Button className="btn-hero">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Upload New Video
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Upload New Video</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleUpload} className="space-y-4">
+                    <div>
+                      <Label htmlFor="title">Title</Label>
+                      <Input
+                        id="title"
+                        value={uploadForm.title}
+                        onChange={(e) => setUploadForm(prev => ({ ...prev, title: e.target.value }))}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="description">Description</Label>
+                      <Textarea
+                        id="description"
+                        value={uploadForm.description}
+                        onChange={(e) => setUploadForm(prev => ({ ...prev, description: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="category">Category</Label>
+                      <Select value={uploadForm.category} onValueChange={(value) => setUploadForm(prev => ({ ...prev, category: value }))}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
+                            <SelectItem key={category.value} value={category.value}>
+                              {category.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="video">Video File (MP4)</Label>
+                      <Input
+                        id="video"
+                        type="file"
+                        accept=".mp4,video/mp4"
+                        onChange={(e) => setUploadForm(prev => ({ ...prev, file: e.target.files?.[0] || null }))}
+                        required
+                      />
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="featured"
+                        checked={uploadForm.is_featured}
+                        onChange={(e) => setUploadForm(prev => ({ ...prev, is_featured: e.target.checked }))}
+                      />
+                      <Label htmlFor="featured">Featured (show in homepage gallery)</Label>
+                    </div>
+                    <Button type="submit" className="w-full" disabled={uploading}>
+                      {uploading ? 'Uploading...' : 'Upload Video'}
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            ) : (
+              <Button asChild className="btn-hero">
+                <Link to="/auth?mode=signup">
+                  Start Your Project <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -127,7 +311,7 @@ export default function PortfolioPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredVideos.map((video) => (
-                  <div key={video.id} className="group cursor-pointer">
+                  <div key={video.id} className="group cursor-pointer relative">
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted to-accent h-64 mb-4">
                       {video.file_url ? (
                         <video
@@ -160,6 +344,71 @@ export default function PortfolioPage() {
                           {CATEGORIES.find(c => c.value === video.category)?.label || video.category}
                         </Badge>
                       </div>
+                      
+                      {/* Owner Controls */}
+                      {userRole === 'owner' && (
+                        <div className="absolute top-4 right-4 flex gap-2">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-md">
+                              <DialogHeader>
+                                <DialogTitle>Edit Video</DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4">
+                                <div>
+                                  <Label htmlFor="edit-title">Title</Label>
+                                  <Input
+                                    id="edit-title"
+                                    defaultValue={video.title}
+                                    onChange={(e) => setEditingVideo(prev => prev ? { ...prev, title: e.target.value } : null)}
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="edit-description">Description</Label>
+                                  <Textarea
+                                    id="edit-description"
+                                    defaultValue={video.description}
+                                    onChange={(e) => setEditingVideo(prev => prev ? { ...prev, description: e.target.value } : null)}
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="edit-category">Category</Label>
+                                  <Select defaultValue={video.category} onValueChange={(value) => setEditingVideo(prev => prev ? { ...prev, category: value } : null)}>
+                                    <SelectTrigger>
+                                      <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
+                                        <SelectItem key={category.value} value={category.value}>
+                                          {category.label}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                                <Button 
+                                  onClick={() => handleEdit(video, editingVideo || {})}
+                                  className="w-full"
+                                >
+                                  Update Video
+                                </Button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                          <Button 
+                            size="sm" 
+                            variant="destructive" 
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleDelete(video.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">

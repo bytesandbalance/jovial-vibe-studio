@@ -50,6 +50,12 @@ export default function Navigation() {
                 {userRole === 'customer' && (
                   <>
                     <DropdownMenuItem asChild>
+                      <Link to="/customer-dashboard" className="flex items-center gap-2">
+                        <Settings className="w-4 h-4" />
+                        My Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link to="/orders" className="flex items-center gap-2">
                         <Settings className="w-4 h-4" />
                         My Orders
