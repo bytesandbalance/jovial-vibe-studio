@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Play, ArrowRight, ArrowLeft, Edit, Trash2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CategorySelector from '@/components/CategorySelector';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -354,18 +354,15 @@ export default function PortfolioPage() {
            </DialogContent>
          </Dialog>
 
-        <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
-          <div className="mb-8 overflow-x-auto">
-            <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-full lg:grid lg:grid-cols-7">
-              {CATEGORIES.map((category) => (
-                <TabsTrigger key={category.value} value={category.value} className="whitespace-nowrap px-3 py-1.5 text-sm font-medium">
-                  {category.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
+        {/* Category Selector */}
+        <CategorySelector
+          categories={CATEGORIES}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+        />
 
-          <TabsContent value={selectedCategory}>
+        {/* Videos Grid */}
+        <div>
             {filteredVideos.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground text-lg mb-4">
@@ -452,8 +449,7 @@ export default function PortfolioPage() {
                 ))}
               </div>
             )}
-          </TabsContent>
-        </Tabs>
+        </div>
 
         {/* Call to Action */}
         <div className="mt-16 text-center bg-gradient-to-r from-primary/10 to-coral/10 rounded-3xl p-12">
