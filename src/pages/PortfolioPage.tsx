@@ -457,13 +457,10 @@ export default function PortfolioPage() {
           <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
             Let&apos;s bring your brand to life with professional video content that engages and inspires.
           </p>
-          <Button 
-            className="btn-hero"
-            onClick={() => {
-              window.location.href = '/#contact';
-            }}
-          >
-            Start Your Project Today <ArrowRight className="w-5 h-5 ml-2" />
+          <Button className="btn-hero" asChild>
+            <Link to="/#contact">
+              Start Your Project Today <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
           </Button>
         </div>
       </div>
