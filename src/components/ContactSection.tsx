@@ -3,8 +3,71 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Mail, Phone, MapPin, Instagram, Youtube, Music } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 const ContactSection = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    businessName: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    industry: '',
+    message: ''
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.businessName || !formData.contactName || !formData.email || !formData.industry || !formData.message) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Create mailto link with form data
+    const subject = `New Project Inquiry from ${formData.businessName}`;
+    const body = `Business Name: ${formData.businessName}
+Contact Name: ${formData.contactName}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Industry: ${formData.industry}
+
+Brand Goals / Key Message:
+${formData.message}`;
+    
+    const mailtoLink = `mailto:pegah@jovial.co.nz?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+
+    toast({
+      title: "Email Client Opening",
+      description: "Your default email client should open with the project details filled in."
+    });
+  };
+
   const industries = [
     "Food & Restaurants",
     "Fitness & Gyms", 
@@ -18,7 +81,7 @@ const ContactSection = () => {
   ];
 
   return (
-    <section className="py-20 px-6 bg-accent/20">
+    <section id="contact" className="py-20 px-6 bg-accent/20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
@@ -34,7 +97,7 @@ const ContactSection = () => {
           <div className="bg-card rounded-3xl p-8 border border-border shadow-soft">
             <h3 className="text-2xl font-semibold text-foreground mb-8">Start Your Project</h3>
             
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
@@ -43,6 +106,9 @@ const ContactSection = () => {
                   <Input 
                     placeholder="Your Business Name"
                     className="h-12"
+                    value={formData.businessName}
+                    onChange={(e) => handleInputChange('businessName', e.target.value)}
+                    required
                   />
                 </div>
                 <div>
@@ -52,6 +118,9 @@ const ContactSection = () => {
                   <Input 
                     placeholder="Your Name"
                     className="h-12"
+                    value={formData.contactName}
+                    onChange={(e) => handleInputChange('contactName', e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -65,6 +134,9 @@ const ContactSection = () => {
                     type="email"
                     placeholder="your@email.com"
                     className="h-12"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    required
                   />
                 </div>
                 <div>
@@ -75,6 +147,8 @@ const ContactSection = () => {
                     type="tel"
                     placeholder="(555) 123-4567"
                     className="h-12"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
                   />
                 </div>
               </div>
@@ -83,7 +157,7 @@ const ContactSection = () => {
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Industry *
                 </label>
-                <Select>
+                <Select value={formData.industry} onValueChange={(value) => handleInputChange('industry', value)} required>
                   <SelectTrigger className="h-12">
                     <SelectValue placeholder="Select your industry" />
                   </SelectTrigger>
@@ -104,10 +178,13 @@ const ContactSection = () => {
                 <Textarea 
                   placeholder="Tell us about your brand goals, the energy you want to create, and what makes your business special..."
                   className="min-h-[120px] resize-none"
+                  value={formData.message}
+                  onChange={(e) => handleInputChange('message', e.target.value)}
+                  required
                 />
               </div>
 
-              <Button className="btn-hero w-full h-12">
+              <Button type="submit" className="btn-hero w-full h-12">
                 Get Started Today
               </Button>
             </form>

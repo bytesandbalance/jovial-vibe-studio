@@ -35,7 +35,7 @@ const SamplesGallery = () => {
   ];
 
   return (
-    <section className="py-20 px-6 bg-background">
+    <section id="samples" className="py-20 px-6 bg-background">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
@@ -91,7 +91,15 @@ const SamplesGallery = () => {
         </div>
 
         <div className="text-center mt-12">
-          <button className="btn-hero">
+          <button 
+            onClick={() => {
+              const element = document.getElementById('contact');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="btn-hero"
+          >
             View Full Portfolio
           </button>
         </div>

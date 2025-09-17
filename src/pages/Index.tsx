@@ -7,6 +7,7 @@ import WhyChooseSection from "@/components/WhyChooseSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import { Toaster } from "@/components/ui/toaster";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <TestimonialsSection />
       <ContactSection />
       <FloatingWhatsApp />
+      <Toaster />
     </main>
   );
 };

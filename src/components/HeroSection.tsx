@@ -2,6 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import heroBackground from "@/assets/hero-background.jpg";
 
+const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -31,10 +38,16 @@ const HeroSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up">
-          <Button className="btn-hero text-lg px-10 py-6">
+          <Button 
+            onClick={() => scrollToSection('samples')}
+            className="btn-hero text-lg px-10 py-6"
+          >
             See Samples
           </Button>
-          <Button className="btn-hero-outline text-lg px-10 py-6">
+          <Button 
+            onClick={() => scrollToSection('contact')}
+            className="btn-hero-outline text-lg px-10 py-6"
+          >
             Get Started
           </Button>
         </div>
