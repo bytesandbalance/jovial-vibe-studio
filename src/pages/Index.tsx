@@ -7,7 +7,6 @@ import SamplesGallery from "@/components/SamplesGallery";
 import WhyChooseSection from "@/components/WhyChooseSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -38,7 +37,6 @@ const Index = () => {
       <WhyChooseSection />
       <TestimonialsSection />
       <ContactSection />
-      <FloatingWhatsApp />
     </main>
   );
 };

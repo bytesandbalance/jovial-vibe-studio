@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Jovial Creative Studio Design System - Modern, energetic, professional
+/* Jovial Creative Studio Design System - Fresh, vibrant, modern
 All colors MUST be HSL.
 */
 
@@ -17,16 +17,16 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
 
-    /* Brand Colors - Electric Blue Primary */
-    --primary: 200 100% 50%;
+    /* Brand Colors - Electric Lime Primary */
+    --primary: 85 100% 45%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 200 100% 40%;
-    --primary-light: 200 100% 70%;
+    --primary-dark: 85 100% 35%;
+    --primary-light: 85 100% 65%;
 
-    /* Coral Accent */
-    --coral: 16 100% 66%;
+    /* Vibrant Orange Accent */
+    --coral: 25 100% 55%;
     --coral-foreground: 0 0% 100%;
-    --coral-light: 16 100% 80%;
+    --coral-light: 25 100% 70%;
 
     --secondary: 220 15% 96%;
     --secondary-foreground: 220 15% 15%;
@@ -34,15 +34,15 @@ All colors MUST be HSL.
     --muted: 220 15% 96%;
     --muted-foreground: 220 10% 46%;
 
-    --accent: 200 100% 97%;
-    --accent-foreground: 200 100% 20%;
+    --accent: 85 100% 97%;
+    --accent-foreground: 85 100% 25%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 220 15% 91%;
     --input: 220 15% 96%;
-    --ring: 200 100% 50%;
+    --ring: 85 100% 45%;
 
     --radius: 0.75rem;
 
