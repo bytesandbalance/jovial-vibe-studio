@@ -24,7 +24,7 @@ interface Video {
   duration: number;
 }
 
-const CATEGORIES = [
+const INITIAL_CATEGORIES = [
   { value: 'all', label: 'All Videos', color: 'bg-primary' },
   { value: 'food', label: 'Food & Beverage', color: 'bg-coral' },
   { value: 'fitness', label: 'Fitness', color: 'bg-primary-dark' },
@@ -38,6 +38,7 @@ export default function PortfolioPage() {
   const { user, userRole } = useAuth();
   const { toast } = useToast();
   const [videos, setVideos] = useState<Video[]>([]);
+  const [categories, setCategories] = useState(INITIAL_CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -182,11 +183,42 @@ export default function PortfolioPage() {
   const handleAddCategory = async () => {
     if (!newCategory.trim()) return;
     
-    // For now, just show a message since we'd need to alter the enum
+    // Create a new category value from the label
+    const categoryValue = newCategory.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    
+    // Check if category already exists
+    const existingCategory = categories.find(c => c.value === categoryValue || c.label.toLowerCase() === newCategory.toLowerCase());
+    if (existingCategory) {
+      toast({
+        title: "Category already exists",
+        description: `"${newCategory}" is already available.`,
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Add to local categories immediately
+    const newCategoryObj = {
+      value: categoryValue,
+      label: newCategory.trim(),
+      color: 'bg-primary' // Default color for new categories
+    };
+    
+    setCategories(prev => [...prev, newCategoryObj]);
+    
+    // If currently in upload or edit mode, select the new category
+    if (showUploadDialog) {
+      setUploadForm(prev => ({ ...prev, category: categoryValue }));
+    }
+    if (showEditDialog) {
+      setEditForm(prev => ({ ...prev, category: categoryValue }));
+    }
+    
     toast({
-      title: "Category suggestion noted",
-      description: `"${newCategory}" will be added by the system administrator.`,
+      title: "Category added!",
+      description: `"${newCategory}" is now available for selection.`,
     });
+    
     setNewCategory('');
     setShowAddCategoryDialog(false);
   };
@@ -285,7 +317,7 @@ export default function PortfolioPage() {
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                          <SelectContent>
-                           {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
+                           {categories.filter(c => c.value !== 'all').map((category) => (
                              <SelectItem key={category.value} value={category.value}>
                                {category.label}
                              </SelectItem>
@@ -392,7 +424,7 @@ export default function PortfolioPage() {
                      <SelectValue />
                    </SelectTrigger>
                    <SelectContent>
-                     {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
+                     {categories.filter(c => c.value !== 'all').map((category) => (
                        <SelectItem key={category.value} value={category.value}>
                          {category.label}
                        </SelectItem>
@@ -420,7 +452,7 @@ export default function PortfolioPage() {
 
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
           <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
-            {CATEGORIES.map((category) => (
+            {categories.map((category) => (
               <TabsTrigger key={category.value} value={category.value}>
                 {category.label}
               </TabsTrigger>
@@ -470,7 +502,7 @@ export default function PortfolioPage() {
                       {/* Category Badge */}
                       <div className="absolute top-4 left-4">
                         <Badge className="bg-primary text-primary-foreground">
-                          {CATEGORIES.find(c => c.value === video.category)?.label || video.category}
+                          {categories.find(c => c.value === video.category)?.label || video.category}
                         </Badge>
                       </div>
                       
