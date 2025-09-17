@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Play, Volume2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 
@@ -38,6 +39,7 @@ const getCategoryLabel = (category: string): string => {
 const SamplesGallery = () => {
   const [featuredVideos, setFeaturedVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchFeaturedVideos();
@@ -187,9 +189,7 @@ const SamplesGallery = () => {
 
         <div className="text-center mt-12">
           <button 
-            onClick={() => {
-              window.location.href = '/portfolio';
-            }}
+            onClick={() => navigate('/portfolio')}
             className="btn-hero"
           >
             View Full Portfolio
