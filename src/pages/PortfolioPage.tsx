@@ -375,7 +375,7 @@ export default function PortfolioPage() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredVideos.map((video) => (
-                  <div key={video.id} className="group cursor-pointer relative">
+                  <div key={video.id} className="group cursor-pointer relative text-center">
                     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted to-accent aspect-[9/16] h-80 mb-4">
                       {video.file_url ? (
                         <video

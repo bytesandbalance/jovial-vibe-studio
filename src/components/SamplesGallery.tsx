@@ -132,7 +132,7 @@ const SamplesGallery = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayItems.map((item, index) => (
-            <div key={item.id || index} className="group cursor-pointer">
+            <div key={item.id || index} className="group cursor-pointer text-center">
               <div className="video-placeholder aspect-[9/16] h-80 rounded-2xl mb-4 relative overflow-hidden">
                 {item.file_url ? (
                   <video
