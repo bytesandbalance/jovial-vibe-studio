@@ -17,11 +17,11 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 220 15% 15%;
 
-    /* Brand Colors - Electric Blue Primary */
-    --primary: 220 100% 55%;
+    /* Brand Colors - Deep Black Primary */
+    --primary: 0 0% 8%;
     --primary-foreground: 0 0% 100%;
-    --primary-dark: 220 100% 45%;
-    --primary-light: 220 100% 70%;
+    --primary-dark: 0 0% 5%;
+    --primary-light: 0 0% 15%;
 
     /* Vibrant Orange Accent */
     --coral: 25 100% 58%;
