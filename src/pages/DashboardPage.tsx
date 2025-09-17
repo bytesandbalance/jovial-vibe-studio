@@ -32,6 +32,7 @@ const CATEGORIES = [
   { value: 'automotive', label: 'Automotive' },
   { value: 'real_estate', label: 'Real Estate' },
   { value: 'beauty', label: 'Beauty' },
+  { value: 'clothing', label: 'Clothing' },
 ];
 
 export default function DashboardPage() {

@@ -32,6 +32,7 @@ const CATEGORIES = [
   { value: 'automotive', label: 'Automotive', color: 'bg-muted-foreground' },
   { value: 'real_estate', label: 'Real Estate', color: 'bg-coral-light' },
   { value: 'beauty', label: 'Beauty', color: 'bg-primary-light' },
+  { value: 'clothing', label: 'Clothing', color: 'bg-secondary' },
 ];
 
 export default function PortfolioPage() {

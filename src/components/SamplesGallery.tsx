@@ -19,7 +19,8 @@ const CATEGORY_MAP = {
   'retail': 'Retail',
   'automotive': 'Automotive',
   'real_estate': 'Real Estate',
-  'beauty': 'Beauty'
+  'beauty': 'Beauty',
+  'clothing': 'Clothing',
 } as const;
 
 // Helper function to convert category value to display label
