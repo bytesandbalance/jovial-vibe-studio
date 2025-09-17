@@ -14,7 +14,129 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      customer_orders: {
+        Row: {
+          budget_range: string | null
+          business_description: string | null
+          business_name: string
+          category: Database["public"]["Enums"]["video_category"]
+          created_at: string
+          customer_id: string
+          id: string
+          notes: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          style_preferences: string | null
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          budget_range?: string | null
+          business_description?: string | null
+          business_name: string
+          category: Database["public"]["Enums"]["video_category"]
+          created_at?: string
+          customer_id: string
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          style_preferences?: string | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          budget_range?: string | null
+          business_description?: string | null
+          business_name?: string
+          category?: Database["public"]["Enums"]["video_category"]
+          created_at?: string
+          customer_id?: string
+          id?: string
+          notes?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          style_preferences?: string | null
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          business_name: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+        }
+        Insert: {
+          business_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Update: {
+          business_name?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      videos: {
+        Row: {
+          category: Database["public"]["Enums"]["video_category"]
+          created_at: string
+          description: string | null
+          duration: number | null
+          file_size: number | null
+          file_url: string
+          id: string
+          is_featured: boolean | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["video_category"]
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          file_size?: number | null
+          file_url: string
+          id?: string
+          is_featured?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["video_category"]
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          is_featured?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +145,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      order_status: "pending" | "in_progress" | "completed" | "cancelled"
+      user_role: "owner" | "customer"
+      video_category:
+        | "food"
+        | "fitness"
+        | "retail"
+        | "automotive"
+        | "real_estate"
+        | "beauty"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +280,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      order_status: ["pending", "in_progress", "completed", "cancelled"],
+      user_role: ["owner", "customer"],
+      video_category: [
+        "food",
+        "fitness",
+        "retail",
+        "automotive",
+        "real_estate",
+        "beauty",
+      ],
+    },
   },
 } as const
