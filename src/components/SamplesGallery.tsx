@@ -1,38 +1,105 @@
+import { useState, useEffect } from "react";
 import { Play, Volume2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
+
+interface Video {
+  id?: string;
+  title: string;
+  description: string;
+  category: string;
+  file_url?: string;
+  thumbnail_url?: string;
+  duration?: number;
+}
+
+const CATEGORY_MAP = {
+  'food': 'Food & Beverage',
+  'fitness': 'Fitness', 
+  'retail': 'Retail',
+  'automotive': 'Automotive',
+  'real_estate': 'Real Estate',
+  'beauty': 'Beauty'
+} as const;
+
+type VideoCategory = keyof typeof CATEGORY_MAP;
 
 const SamplesGallery = () => {
-  const samples = [
+  const [featuredVideos, setFeaturedVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchFeaturedVideos();
+  }, []);
+
+  const fetchFeaturedVideos = async () => {
+    try {
+      // Get one featured video per category
+      const categories: VideoCategory[] = Object.keys(CATEGORY_MAP) as VideoCategory[];
+      const videoPromises = categories.map(category =>
+        supabase
+          .from('videos')
+          .select('*')
+          .eq('category', category)
+          .eq('is_featured', true)
+          .limit(1)
+          .maybeSingle()
+      );
+
+      const results = await Promise.allSettled(videoPromises);
+      const videos = results
+        .filter(result => result.status === 'fulfilled' && result.value.data)
+        .map(result => (result as PromiseFulfilledResult<any>).value.data);
+
+      setFeaturedVideos(videos);
+    } catch (error) {
+      console.error('Error fetching featured videos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fallback samples for empty categories
+  const fallbackSamples: Video[] = [
     {
+      id: 'fallback-1',
       title: "Restaurant Ambiance",
       description: "Creating the perfect dining atmosphere",
-      category: "Food & Beverage"
+      category: "food"
     },
     {
-      title: "Fitness Motivation",
+      id: 'fallback-2',
+      title: "Fitness Motivation", 
       description: "High-energy workout inspiration",
-      category: "Fitness"
+      category: "fitness"
     },
     {
+      id: 'fallback-3',
       title: "Retail Experience",
-      description: "Product showcase and store culture",
-      category: "Retail"
+      description: "Product showcase and store culture", 
+      category: "retail"
     },
     {
+      id: 'fallback-4',
       title: "Automotive Excellence",
       description: "Vehicle presentation and service quality",
-      category: "Automotive"
+      category: "automotive"
     },
     {
+      id: 'fallback-5',
       title: "Property Showcase",
       description: "Immersive real estate tours",
-      category: "Real Estate"
+      category: "real_estate"
     },
     {
+      id: 'fallback-6',
       title: "Beauty Transformation",
       description: "Capturing style and elegance",
-      category: "Beauty"
+      category: "beauty"
     }
   ];
+
+  const displayItems = featuredVideos.length > 0 ? featuredVideos : fallbackSamples;
 
   return (
     <section id="samples" className="py-20 px-6 bg-background">
@@ -47,14 +114,23 @@ const SamplesGallery = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {samples.map((sample, index) => (
-            <div key={index} className="group cursor-pointer">
+          {displayItems.map((item, index) => (
+            <div key={item.id || index} className="group cursor-pointer">
               <div className="video-placeholder h-64 rounded-2xl mb-4 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                {item.file_url ? (
+                  <video
+                    src={item.file_url}
+                    poster={item.thumbnail_url}
+                    className="w-full h-full object-cover"
+                    controls={false}
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                )}
                 
                 {/* Play Button */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                     <Play className="w-8 h-8 text-primary ml-1" />
                   </div>
                 </div>
@@ -62,28 +138,30 @@ const SamplesGallery = () => {
                 {/* Video Controls */}
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="flex items-center space-x-2">
-                    <Volume2 className="w-4 h-4 text-white" />
-                    <div className="w-16 h-1 bg-white/30 rounded-full">
-                      <div className="w-8 h-1 bg-white rounded-full" />
+                    <Volume2 className="w-4 h-4 text-background" />
+                    <div className="w-16 h-1 bg-background/30 rounded-full">
+                      <div className="w-8 h-1 bg-background rounded-full" />
                     </div>
                   </div>
-                  <span className="text-white text-sm font-medium">2:34</span>
+                  <span className="text-background text-sm font-medium">
+                    {item.duration ? `${Math.floor(item.duration / 60)}:${(item.duration % 60).toString().padStart(2, '0')}` : '2:34'}
+                  </span>
                 </div>
 
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4">
-                  <span className="bg-white/90 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                    {sample.category}
-                  </span>
+                  <Badge className="bg-primary text-primary-foreground">
+                    {CATEGORY_MAP[item.category as VideoCategory] || item.category}
+                  </Badge>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                  {sample.title}
+                  {item.title}
                 </h3>
                 <p className="text-muted-foreground">
-                  {sample.description}
+                  {item.description}
                 </p>
               </div>
             </div>
@@ -93,10 +171,7 @@ const SamplesGallery = () => {
         <div className="text-center mt-12">
           <button 
             onClick={() => {
-              const element = document.getElementById('contact');
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-              }
+              window.location.href = '/portfolio';
             }}
             className="btn-hero"
           >

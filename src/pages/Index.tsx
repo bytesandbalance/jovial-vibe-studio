@@ -1,3 +1,4 @@
+import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import ApproachSection from "@/components/ApproachSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -7,11 +8,11 @@ import WhyChooseSection from "@/components/WhyChooseSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import { Toaster } from "@/components/ui/toaster";
 
 const Index = () => {
   return (
     <main className="min-h-screen">
+      <Navigation />
       <HeroSection />
       <ApproachSection />
       <HowItWorksSection />
@@ -21,7 +22,6 @@ const Index = () => {
       <TestimonialsSection />
       <ContactSection />
       <FloatingWhatsApp />
-      <Toaster />
     </main>
   );
 };
