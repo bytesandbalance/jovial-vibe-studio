@@ -304,13 +304,19 @@ export default function PortfolioPage() {
                   </form>
                 </DialogContent>
                </Dialog>
-             ) : (
-               <Button asChild className="btn-hero">
-                 <Link to="/auth?mode=signup">
-                   Start Your Project <ArrowRight className="w-4 h-4 ml-2" />
-                 </Link>
-               </Button>
-             )}
+              ) : (
+                <Button 
+                  asChild 
+                  className="btn-hero"
+                  onClick={() => {
+                    window.location.href = '/#contact';
+                  }}
+                >
+                  <span>
+                    Start Your Project Today <ArrowRight className="w-4 h-4 ml-2" />
+                  </span>
+                </Button>
+              )}
            </div>
           </div>
 
@@ -463,10 +469,13 @@ export default function PortfolioPage() {
           <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
             Let&apos;s bring your brand to life with professional video content that engages and inspires.
           </p>
-          <Button asChild className="btn-hero">
-            <Link to="/auth?mode=signup">
-              Start Your Project Today <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
+          <Button 
+            className="btn-hero"
+            onClick={() => {
+              window.location.href = '/#contact';
+            }}
+          >
+            Start Your Project Today <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
       </div>
