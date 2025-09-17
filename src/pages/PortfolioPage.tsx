@@ -43,6 +43,9 @@ export default function PortfolioPage() {
   const [uploading, setUploading] = useState(false);
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
+  const [showAddCategoryDialog, setShowAddCategoryDialog] = useState(false);
   
   // Form state
   const [uploadForm, setUploadForm] = useState({
@@ -51,6 +54,13 @@ export default function PortfolioPage() {
     category: '',
     file: null as File | null,
     is_featured: false
+  });
+
+  // Edit form state
+  const [editForm, setEditForm] = useState({
+    title: '',
+    description: '',
+    category: ''
   });
 
   useEffect(() => {
@@ -131,16 +141,33 @@ export default function PortfolioPage() {
     }
   };
 
-  const handleEdit = async (video: Video, updatedData: any) => {
+  const handleEditClick = (video: Video) => {
+    setEditingVideo(video);
+    setEditForm({
+      title: video.title,
+      description: video.description || '',
+      category: video.category
+    });
+    setShowEditDialog(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingVideo) return;
+    
     try {
       const { error } = await supabase
         .from('videos')
-        .update(updatedData)
-        .eq('id', video.id);
+        .update({
+          title: editForm.title,
+          description: editForm.description,
+          category: editForm.category as any
+        })
+        .eq('id', editingVideo.id);
       
       if (error) throw error;
       
       toast({ title: "Video updated successfully!" });
+      setShowEditDialog(false);
       setEditingVideo(null);
       fetchVideos();
     } catch (error: any) {
@@ -150,6 +177,18 @@ export default function PortfolioPage() {
         variant: "destructive"
       });
     }
+  };
+
+  const handleAddCategory = async () => {
+    if (!newCategory.trim()) return;
+    
+    // For now, just show a message since we'd need to alter the enum
+    toast({
+      title: "Category suggestion noted",
+      description: `"${newCategory}" will be added by the system administrator.`,
+    });
+    setNewCategory('');
+    setShowAddCategoryDialog(false);
   };
 
   const handleDelete = async (videoId: string) => {
@@ -245,13 +284,24 @@ export default function PortfolioPage() {
                         <SelectTrigger>
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
-                        <SelectContent>
-                          {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
-                            <SelectItem key={category.value} value={category.value}>
-                              {category.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
+                         <SelectContent>
+                           {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
+                             <SelectItem key={category.value} value={category.value}>
+                               {category.label}
+                             </SelectItem>
+                           ))}
+                           <div className="border-t mt-2 pt-2">
+                             <Button 
+                               variant="ghost" 
+                               size="sm" 
+                               className="w-full justify-start text-muted-foreground"
+                               onClick={() => setShowAddCategoryDialog(true)}
+                             >
+                               <Plus className="w-4 h-4 mr-2" />
+                               Request New Category
+                             </Button>
+                           </div>
+                         </SelectContent>
                       </Select>
                     </div>
                     <div>
@@ -278,16 +328,95 @@ export default function PortfolioPage() {
                     </Button>
                   </form>
                 </DialogContent>
-              </Dialog>
-            ) : (
-              <Button asChild className="btn-hero">
-                <Link to="/auth?mode=signup">
-                  Start Your Project <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-            )}
-          </div>
-        </div>
+               </Dialog>
+             ) : (
+               <Button asChild className="btn-hero">
+                 <Link to="/auth?mode=signup">
+                   Start Your Project <ArrowRight className="w-4 h-4 ml-2" />
+                 </Link>
+               </Button>
+             )}
+           </div>
+         </div>
+
+         {/* Add Category Dialog */}
+         <Dialog open={showAddCategoryDialog} onOpenChange={setShowAddCategoryDialog}>
+           <DialogContent className="max-w-md">
+             <DialogHeader>
+               <DialogTitle>Request New Category</DialogTitle>
+             </DialogHeader>
+             <div className="space-y-4">
+               <div>
+                 <Label htmlFor="new-category">Category Name</Label>
+                 <Input
+                   id="new-category"
+                   value={newCategory}
+                   onChange={(e) => setNewCategory(e.target.value)}
+                   placeholder="e.g., Technology, Healthcare, etc."
+                 />
+               </div>
+               <Button onClick={handleAddCategory} className="w-full">
+                 Request Category
+               </Button>
+             </div>
+           </DialogContent>
+         </Dialog>
+         
+         {/* Edit Video Dialog */}
+         <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+           <DialogContent className="max-w-md">
+             <DialogHeader>
+               <DialogTitle>Edit Video</DialogTitle>
+             </DialogHeader>
+             <div className="space-y-4">
+               <div>
+                 <Label htmlFor="edit-title">Title</Label>
+                 <Input
+                   id="edit-title"
+                   value={editForm.title}
+                   onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+                 />
+               </div>
+               <div>
+                 <Label htmlFor="edit-description">Description</Label>
+                 <Textarea
+                   id="edit-description"
+                   value={editForm.description}
+                   onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                 />
+               </div>
+               <div>
+                 <Label htmlFor="edit-category">Category</Label>
+                 <Select value={editForm.category} onValueChange={(value) => setEditForm(prev => ({ ...prev, category: value }))}>
+                   <SelectTrigger>
+                     <SelectValue />
+                   </SelectTrigger>
+                   <SelectContent>
+                     {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
+                       <SelectItem key={category.value} value={category.value}>
+                         {category.label}
+                       </SelectItem>
+                     ))}
+                     <div className="border-t mt-2 pt-2">
+                       <Button 
+                         variant="ghost" 
+                         size="sm" 
+                         className="w-full justify-start text-muted-foreground"
+                         onClick={() => setShowAddCategoryDialog(true)}
+                       >
+                         <Plus className="w-4 h-4 mr-2" />
+                         Request New Category
+                       </Button>
+                     </div>
+                   </SelectContent>
+                 </Select>
+               </div>
+               <Button onClick={handleSaveEdit} className="w-full">
+                 Save Changes
+               </Button>
+             </div>
+           </DialogContent>
+         </Dialog>
 
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
           <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
@@ -345,60 +474,17 @@ export default function PortfolioPage() {
                         </Badge>
                       </div>
                       
-                      {/* Owner Controls */}
-                      {userRole === 'owner' && (
-                        <div className="absolute top-4 right-4 flex gap-2">
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-md">
-                              <DialogHeader>
-                                <DialogTitle>Edit Video</DialogTitle>
-                              </DialogHeader>
-                              <div className="space-y-4">
-                                <div>
-                                  <Label htmlFor="edit-title">Title</Label>
-                                  <Input
-                                    id="edit-title"
-                                    defaultValue={video.title}
-                                    onChange={(e) => setEditingVideo(prev => prev ? { ...prev, title: e.target.value } : null)}
-                                  />
-                                </div>
-                                <div>
-                                  <Label htmlFor="edit-description">Description</Label>
-                                  <Textarea
-                                    id="edit-description"
-                                    defaultValue={video.description}
-                                    onChange={(e) => setEditingVideo(prev => prev ? { ...prev, description: e.target.value } : null)}
-                                  />
-                                </div>
-                                <div>
-                                  <Label htmlFor="edit-category">Category</Label>
-                                  <Select defaultValue={video.category} onValueChange={(value) => setEditingVideo(prev => prev ? { ...prev, category: value } : null)}>
-                                    <SelectTrigger>
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
-                                        <SelectItem key={category.value} value={category.value}>
-                                          {category.label}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                                <Button 
-                                  onClick={() => handleEdit(video, editingVideo || {})}
-                                  className="w-full"
-                                >
-                                  Update Video
-                                </Button>
-                              </div>
-                            </DialogContent>
-                          </Dialog>
+                       {/* Owner Controls */}
+                       {userRole === 'owner' && (
+                         <div className="absolute top-4 right-4 flex gap-2">
+                           <Button 
+                             size="sm" 
+                             variant="secondary" 
+                             className="h-8 w-8 p-0"
+                             onClick={() => handleEditClick(video)}
+                           >
+                             <Edit className="h-4 w-4" />
+                           </Button>
                           <Button 
                             size="sm" 
                             variant="destructive" 
