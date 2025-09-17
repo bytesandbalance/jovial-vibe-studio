@@ -304,20 +304,8 @@ export default function PortfolioPage() {
                   </form>
                 </DialogContent>
                </Dialog>
-              ) : (
-                <Button 
-                  asChild 
-                  className="btn-hero"
-                  onClick={() => {
-                    window.location.href = '/#contact';
-                  }}
-                >
-                  <span>
-                    Start Your Project Today <ArrowRight className="w-4 h-4 ml-2" />
-                  </span>
-                </Button>
-              )}
-           </div>
+               ) : null}
+            </div>
           </div>
 
          {/* Edit Video Dialog */}
@@ -472,7 +460,13 @@ export default function PortfolioPage() {
           <Button 
             className="btn-hero"
             onClick={() => {
-              window.location.href = '/#contact';
+              window.location.assign('/#contact');
+              setTimeout(() => {
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                  contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }, 100);
             }}
           >
             Start Your Project Today <ArrowRight className="w-5 h-5 ml-2" />
