@@ -354,13 +354,15 @@ export default function PortfolioPage() {
          </Dialog>
 
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
-            {CATEGORIES.map((category) => (
-              <TabsTrigger key={category.value} value={category.value}>
-                {category.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <div className="mb-8 overflow-x-auto">
+            <TabsList className="inline-flex h-10 items-center justify-start rounded-md bg-muted p-1 text-muted-foreground min-w-full lg:grid lg:grid-cols-7">
+              {CATEGORIES.map((category) => (
+                <TabsTrigger key={category.value} value={category.value} className="whitespace-nowrap px-3 py-1.5 text-sm font-medium">
+                  {category.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
           <TabsContent value={selectedCategory}>
             {filteredVideos.length === 0 ? (
