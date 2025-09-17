@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Youtube, Music } from "lucide-react";
 
 const ContactSection = () => {
   const industries = [
@@ -130,7 +130,9 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Email</h4>
-                  <p className="text-muted-foreground">hello@jovialstudio.com</p>
+                  <a href="mailto:pegah@jovial.co.nz" className="text-muted-foreground hover:text-primary transition-colors">
+                    pegah@jovial.co.nz
+                  </a>
                 </div>
               </div>
 
@@ -140,7 +142,9 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Phone</h4>
-                  <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                  <a href="tel:+64221942319" className="text-muted-foreground hover:text-primary transition-colors">
+                    +64 22 194 2319
+                  </a>
                 </div>
               </div>
 
@@ -150,8 +154,51 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Location</h4>
-                  <p className="text-muted-foreground">Los Angeles, CA</p>
+                  <p className="text-muted-foreground">Wellington, New Zealand</p>
                 </div>
+              </div>
+
+              {/* Social Media Links */}
+              <div className="grid grid-cols-2 gap-4 pt-4">
+                <a 
+                  href="https://www.instagram.com/jovial.co.nz/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 p-3 rounded-2xl bg-accent/50 hover:bg-accent transition-colors"
+                >
+                  <Instagram className="w-5 h-5 text-primary" />
+                  <span className="text-sm font-medium text-foreground">Instagram</span>
+                </a>
+                
+                <a 
+                  href="https://www.youtube.com/@jovial.modulet" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 p-3 rounded-2xl bg-accent/50 hover:bg-accent transition-colors"
+                >
+                  <Youtube className="w-5 h-5 text-coral" />
+                  <span className="text-sm font-medium text-foreground">YouTube</span>
+                </a>
+                
+                <a 
+                  href="https://www.tiktok.com/@dancingai.5" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 p-3 rounded-2xl bg-accent/50 hover:bg-accent transition-colors"
+                >
+                  <Music className="w-5 h-5 text-foreground" />
+                  <span className="text-sm font-medium text-foreground">TikTok</span>
+                </a>
+                
+                <a 
+                  href="https://chat.whatsapp.com/KLr3nx5Q4G25NVzo5xdWtd" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-3 p-3 rounded-2xl bg-accent/50 hover:bg-accent transition-colors"
+                >
+                  <Phone className="w-5 h-5 text-green-600" />
+                  <span className="text-sm font-medium text-foreground">WhatsApp</span>
+                </a>
               </div>
             </div>
 
