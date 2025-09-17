@@ -48,7 +48,7 @@ const ContactSection = () => {
       return;
     }
 
-    // Create mailto link with form data
+    // Create email content
     const subject = `New Project Inquiry from ${formData.businessName}`;
     const body = `Business Name: ${formData.businessName}
 Contact Name: ${formData.contactName}
@@ -59,13 +59,34 @@ Industry: ${formData.industry}
 Brand Goals / Key Message:
 ${formData.message}`;
     
+    // Try to open mailto link
     const mailtoLink = `mailto:pegah@jovial.co.nz?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
+    
+    try {
+      window.open(mailtoLink, '_blank');
+      toast({
+        title: "Email Client Opening",
+        description: "Your default email client should open with the project details filled in."
+      });
+    } catch (error) {
+      // Fallback: copy to clipboard
+      const emailText = `To: pegah@jovial.co.nz
+Subject: ${subject}
 
-    toast({
-      title: "Email Client Opening",
-      description: "Your default email client should open with the project details filled in."
-    });
+${body}`;
+      
+      navigator.clipboard.writeText(emailText).then(() => {
+        toast({
+          title: "Email Details Copied",
+          description: "Email details copied to clipboard. Please paste into your email client."
+        });
+      }).catch(() => {
+        toast({
+          title: "Please Email Manually",
+          description: `Please send an email to pegah@jovial.co.nz with subject: "${subject}"`
+        });
+      });
+    }
   };
 
   const industries = [
