@@ -24,7 +24,7 @@ interface Video {
   duration: number;
 }
 
-const INITIAL_CATEGORIES = [
+const CATEGORIES = [
   { value: 'all', label: 'All Videos', color: 'bg-primary' },
   { value: 'food', label: 'Food & Beverage', color: 'bg-coral' },
   { value: 'fitness', label: 'Fitness', color: 'bg-primary-dark' },
@@ -38,15 +38,12 @@ export default function PortfolioPage() {
   const { user, userRole } = useAuth();
   const { toast } = useToast();
   const [videos, setVideos] = useState<Video[]>([]);
-  const [categories, setCategories] = useState(INITIAL_CATEGORIES);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const [newCategory, setNewCategory] = useState('');
-  const [showAddCategoryDialog, setShowAddCategoryDialog] = useState(false);
   
   // Form state
   const [uploadForm, setUploadForm] = useState({
@@ -180,49 +177,6 @@ export default function PortfolioPage() {
     }
   };
 
-  const handleAddCategory = async () => {
-    if (!newCategory.trim()) return;
-    
-    // Create a new category value from the label
-    const categoryValue = newCategory.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
-    
-    // Check if category already exists
-    const existingCategory = categories.find(c => c.value === categoryValue || c.label.toLowerCase() === newCategory.toLowerCase());
-    if (existingCategory) {
-      toast({
-        title: "Category already exists",
-        description: `"${newCategory}" is already available.`,
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    // Add to local categories immediately
-    const newCategoryObj = {
-      value: categoryValue,
-      label: newCategory.trim(),
-      color: 'bg-primary' // Default color for new categories
-    };
-    
-    setCategories(prev => [...prev, newCategoryObj]);
-    
-    // If currently in upload or edit mode, select the new category
-    if (showUploadDialog) {
-      setUploadForm(prev => ({ ...prev, category: categoryValue }));
-    }
-    if (showEditDialog) {
-      setEditForm(prev => ({ ...prev, category: categoryValue }));
-    }
-    
-    toast({
-      title: "Category added!",
-      description: `"${newCategory}" is now available for selection.`,
-    });
-    
-    setNewCategory('');
-    setShowAddCategoryDialog(false);
-  };
-
   const handleDelete = async (videoId: string) => {
     if (!confirm('Are you sure you want to delete this video?')) return;
     
@@ -317,22 +271,11 @@ export default function PortfolioPage() {
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                          <SelectContent>
-                           {categories.filter(c => c.value !== 'all').map((category) => (
+                           {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
                              <SelectItem key={category.value} value={category.value}>
                                {category.label}
                              </SelectItem>
                            ))}
-                           <div className="border-t mt-2 pt-2">
-                             <Button 
-                               variant="ghost" 
-                               size="sm" 
-                               className="w-full justify-start text-muted-foreground"
-                               onClick={() => setShowAddCategoryDialog(true)}
-                             >
-                               <Plus className="w-4 h-4 mr-2" />
-                               Request New Category
-                             </Button>
-                           </div>
                          </SelectContent>
                       </Select>
                     </div>
@@ -369,31 +312,8 @@ export default function PortfolioPage() {
                </Button>
              )}
            </div>
-         </div>
+          </div>
 
-         {/* Add Category Dialog */}
-         <Dialog open={showAddCategoryDialog} onOpenChange={setShowAddCategoryDialog}>
-           <DialogContent className="max-w-md">
-             <DialogHeader>
-               <DialogTitle>Request New Category</DialogTitle>
-             </DialogHeader>
-             <div className="space-y-4">
-               <div>
-                 <Label htmlFor="new-category">Category Name</Label>
-                 <Input
-                   id="new-category"
-                   value={newCategory}
-                   onChange={(e) => setNewCategory(e.target.value)}
-                   placeholder="e.g., Technology, Healthcare, etc."
-                 />
-               </div>
-               <Button onClick={handleAddCategory} className="w-full">
-                 Request Category
-               </Button>
-             </div>
-           </DialogContent>
-         </Dialog>
-         
          {/* Edit Video Dialog */}
          <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
            <DialogContent className="max-w-md">
@@ -424,22 +344,11 @@ export default function PortfolioPage() {
                      <SelectValue />
                    </SelectTrigger>
                    <SelectContent>
-                     {categories.filter(c => c.value !== 'all').map((category) => (
+                     {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
                        <SelectItem key={category.value} value={category.value}>
                          {category.label}
                        </SelectItem>
                      ))}
-                     <div className="border-t mt-2 pt-2">
-                       <Button 
-                         variant="ghost" 
-                         size="sm" 
-                         className="w-full justify-start text-muted-foreground"
-                         onClick={() => setShowAddCategoryDialog(true)}
-                       >
-                         <Plus className="w-4 h-4 mr-2" />
-                         Request New Category
-                       </Button>
-                     </div>
                    </SelectContent>
                  </Select>
                </div>
@@ -452,7 +361,7 @@ export default function PortfolioPage() {
 
         <Tabs value={selectedCategory} onValueChange={setSelectedCategory} className="w-full">
           <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-8">
-            {categories.map((category) => (
+            {CATEGORIES.map((category) => (
               <TabsTrigger key={category.value} value={category.value}>
                 {category.label}
               </TabsTrigger>
@@ -502,7 +411,7 @@ export default function PortfolioPage() {
                       {/* Category Badge */}
                       <div className="absolute top-4 left-4">
                         <Badge className="bg-primary text-primary-foreground">
-                          {categories.find(c => c.value === video.category)?.label || video.category}
+                          {CATEGORIES.find(c => c.value === video.category)?.label || video.category}
                         </Badge>
                       </div>
                       
