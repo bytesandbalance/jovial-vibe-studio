@@ -385,6 +385,13 @@ export default function PortfolioPage() {
                           poster={video.thumbnail_url}
                           className="w-full h-full object-cover"
                           controls={false}
+                          muted
+                          playsInline
+                          preload="metadata"
+                          onPlay={(e) => {
+                            // Ensure video is muted for mobile autoplay
+                            e.currentTarget.muted = true;
+                          }}
                         />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
