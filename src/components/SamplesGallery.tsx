@@ -22,7 +22,17 @@ const CATEGORY_MAP = {
   'beauty': 'Beauty'
 } as const;
 
-type VideoCategory = keyof typeof CATEGORY_MAP;
+// Helper function to convert category value to display label
+const getCategoryLabel = (category: string): string => {
+  if (category in CATEGORY_MAP) {
+    return CATEGORY_MAP[category as keyof typeof CATEGORY_MAP];
+  }
+  // For dynamic categories, convert snake_case to Title Case
+  return category
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
 
 const SamplesGallery = () => {
   const [featuredVideos, setFeaturedVideos] = useState<Video[]>([]);
@@ -34,26 +44,32 @@ const SamplesGallery = () => {
 
   const fetchFeaturedVideos = async () => {
     try {
-      // Get one featured video per category
-      const categories: VideoCategory[] = Object.keys(CATEGORY_MAP) as VideoCategory[];
-      const videoPromises = categories.map(category =>
-        supabase
-          .from('videos')
-          .select('*')
-          .eq('category', category)
-          .eq('is_featured', true)
-          .limit(1)
-          .maybeSingle()
-      );
+      // Get all featured videos, then group by category to show one per category
+      const { data: allFeaturedVideos, error } = await supabase
+        .from('videos')
+        .select('*')
+        .eq('is_featured', true)
+        .order('created_at', { ascending: false });
 
-      const results = await Promise.allSettled(videoPromises);
-      const videos = results
-        .filter(result => result.status === 'fulfilled' && result.value.data)
-        .map(result => (result as PromiseFulfilledResult<any>).value.data);
+      if (error) throw error;
 
-      setFeaturedVideos(videos);
+      if (allFeaturedVideos && allFeaturedVideos.length > 0) {
+        // Group videos by category and take the first (most recent) from each category
+        const videosByCategory = new Map<string, Video>();
+        
+        allFeaturedVideos.forEach(video => {
+          if (!videosByCategory.has(video.category)) {
+            videosByCategory.set(video.category, video);
+          }
+        });
+
+        setFeaturedVideos(Array.from(videosByCategory.values()));
+      } else {
+        setFeaturedVideos([]);
+      }
     } catch (error) {
       console.error('Error fetching featured videos:', error);
+      setFeaturedVideos([]);
     } finally {
       setLoading(false);
     }
@@ -151,7 +167,7 @@ const SamplesGallery = () => {
                 {/* Category Badge */}
                 <div className="absolute top-4 left-4">
                   <Badge className="bg-primary text-primary-foreground">
-                    {CATEGORY_MAP[item.category as VideoCategory] || item.category}
+                    {getCategoryLabel(item.category)}
                   </Badge>
                 </div>
               </div>
