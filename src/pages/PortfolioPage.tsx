@@ -460,13 +460,7 @@ export default function PortfolioPage() {
           <Button 
             className="btn-hero"
             onClick={() => {
-              window.location.assign('/#contact');
-              setTimeout(() => {
-                const contactSection = document.getElementById('contact');
-                if (contactSection) {
-                  contactSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }, 100);
+              window.location.href = '/#contact';
             }}
           >
             Start Your Project Today <ArrowRight className="w-5 h-5 ml-2" />
