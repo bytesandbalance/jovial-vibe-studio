@@ -79,12 +79,9 @@ const TestimonialsSection = () => {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-muted-foreground mb-6">
-            Join over 200+ satisfied businesses
+          <p className="text-muted-foreground">
+            Join over 200+ satisfied businesses creating authentic brand experiences
           </p>
-          <button className="btn-hero-outline">
-            Read More Reviews
-          </button>
         </div>
       </div>
     </section>

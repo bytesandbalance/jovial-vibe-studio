@@ -66,7 +66,15 @@ const WhyChooseSection = () => {
               <p className="text-lg text-muted-foreground mb-8">
                 Join hundreds of businesses that have amplified their presence with Jovial's energy-driven video content.
               </p>
-              <button className="btn-hero">
+              <button 
+                onClick={() => {
+                  const element = document.getElementById('contact');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="btn-hero"
+              >
                 Start Your Journey
               </button>
             </div>
