@@ -721,7 +721,7 @@ export default function PortfolioPage() {
             Let's discuss how our creative tech solutions can help you achieve your goals and stand out in the digital landscape.
           </p>
           <Button asChild size="lg" className="btn-hero">
-            <Link to="/order">
+            <Link to="/#contact">
               Get Started Today
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
