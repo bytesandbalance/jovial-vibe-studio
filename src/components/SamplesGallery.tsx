@@ -5,10 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-// Import mock images
-import dashboardMockup from '@/assets/dashboard-mockup.jpg';
-import webappMockup from '@/assets/webapp-mockup.jpg';
-import aiAgentMockup from '@/assets/ai-agent-mockup.jpg';
+// Import dashboard components
+import MarketingDashboard from './dashboards/MarketingDashboard';
+import SalesDashboard from './dashboards/SalesDashboard';
 
 interface Video {
   id?: string;
@@ -25,12 +24,13 @@ interface SampleItem {
   title: string;
   description: string;
   category: string;
-  type: 'video' | 'mockup';
+  type: 'video' | 'mockup' | 'dashboard' | 'webapp';
   file_url?: string;
   thumbnail_url?: string;
   mockup_url?: string;
   duration?: number;
   demo_url?: string;
+  component?: React.ComponentType;
 }
 
 const CATEGORY_MAP = {
@@ -44,28 +44,27 @@ const CATEGORY_MAP = {
 const SAMPLE_SHOWCASE_ITEMS: SampleItem[] = [
   {
     id: 'sample-web-1',
-    title: 'Modern Business Platform',
-    description: 'Responsive web application with cutting-edge design',
+    title: 'Jovial Studio Platform',
+    description: 'Live responsive business platform with full functionality',
     category: 'web_apps',
-    type: 'mockup',
-    mockup_url: webappMockup,
+    type: 'webapp',
     demo_url: 'https://jovial.modulet.de'
   },
   {
     id: 'sample-dash-1',
-    title: 'Performance Analytics',
-    description: 'Real-time marketing and sales dashboard',
+    title: 'Marketing Analytics',
+    description: 'Interactive dashboard with campaign performance metrics',
     category: 'dashboards',
-    type: 'mockup',
-    mockup_url: dashboardMockup
+    type: 'dashboard',
+    component: MarketingDashboard
   },
   {
-    id: 'sample-ai-1',
-    title: 'AI Customer Assistant',
-    description: 'Intelligent automation for customer engagement',
-    category: 'ai_agents',
-    type: 'mockup',
-    mockup_url: aiAgentMockup
+    id: 'sample-dash-2',
+    title: 'Sales Performance',
+    description: 'Real-time sales tracking and revenue analytics',
+    category: 'dashboards',
+    type: 'dashboard',
+    component: SalesDashboard
   }
 ];
 
@@ -147,7 +146,9 @@ const SamplesGallery = () => {
           {displayItems.map((item, index) => (
             <div key={item.id || index} className="group cursor-pointer text-center">
               <div className={`relative overflow-hidden rounded-2xl mb-4 mx-auto ${
-                item.type === 'video' ? 'aspect-[9/16] h-80 max-w-xs' : 'aspect-[16/9] h-64'
+                item.type === 'video' ? 'aspect-[9/16] h-80 max-w-xs' : 
+                item.type === 'dashboard' ? 'aspect-[16/9] h-72' :
+                'aspect-[16/9] h-64'
               }`}>
                 {item.type === 'video' ? (
                   <>
@@ -181,6 +182,55 @@ const SamplesGallery = () => {
                         {item.duration ? `${Math.floor(item.duration / 60)}:${(item.duration % 60).toString().padStart(2, '0')}` : '2:34'}
                       </span>
                     </div>
+                  </>
+                ) : item.type === 'dashboard' && item.component ? (
+                  <>
+                    {/* Dashboard Component */}
+                    <div className="w-full h-full overflow-hidden">
+                      <div className="scale-[0.35] origin-top-left transform -translate-x-[12%] -translate-y-[8%]">
+                        <div style={{ width: '285%', height: '285%' }}>
+                          <item.component />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Overlay with Dashboard Icon */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                        <BarChart3 className="w-8 h-8 text-primary" />
+                      </div>
+                    </div>
+                  </>
+                ) : item.type === 'webapp' ? (
+                  <>
+                    {/* Web App Preview */}
+                    <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                      <div className="text-center space-y-4">
+                        <Code className="w-16 h-16 text-primary mx-auto" />
+                        <div className="space-y-2">
+                          <h3 className="font-semibold text-foreground">Live Demo Available</h3>
+                          <p className="text-sm text-muted-foreground">Click to explore the platform</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Demo Link */}
+                    {item.demo_url && (
+                      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <Button 
+                          size="sm" 
+                          variant="secondary" 
+                          className="h-8 px-3 bg-background/90 hover:bg-background"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(item.demo_url, '_blank');
+                          }}
+                        >
+                          <ExternalLink className="h-4 w-4 mr-1" />
+                          Live Demo
+                        </Button>
+                      </div>
+                    )}
                   </>
                 ) : (
                   <>

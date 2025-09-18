@@ -14,11 +14,9 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
 
-// Import mock images
-import dashboardMockup from '@/assets/dashboard-mockup.jpg';
-import webappMockup from '@/assets/webapp-mockup.jpg';
-import aiAgentMockup from '@/assets/ai-agent-mockup.jpg';
-import mobileAppMockup from '@/assets/mobile-app-mockup.jpg';
+// Import dashboard components
+import MarketingDashboard from '@/components/dashboards/MarketingDashboard';
+import SalesDashboard from '@/components/dashboards/SalesDashboard';
 
 interface Video {
   id: string;
@@ -35,12 +33,13 @@ interface PortfolioItem {
   title: string;
   description: string;
   category: string;
-  type: 'video' | 'mockup';
+  type: 'video' | 'mockup' | 'dashboard' | 'webapp';
   file_url?: string;
   thumbnail_url?: string;
   mockup_url?: string;
   duration?: number;
   demo_url?: string;
+  component?: React.ComponentType;
 }
 
 const CATEGORIES = [
@@ -56,38 +55,28 @@ const MOCK_PORTFOLIO_ITEMS: PortfolioItem[] = [
   // Web & App Development
   {
     id: 'web-1',
-    title: 'Modern Business Landing Page',
-    description: 'Responsive landing page with conversion-optimized design and modern UI components.',
+    title: 'Jovial Studio Platform',
+    description: 'Live responsive business platform with modern design and full functionality.',
     category: 'web_apps',
-    type: 'mockup',
-    mockup_url: webappMockup,
+    type: 'webapp',
     demo_url: 'https://jovial.modulet.de'
-  },
-  {
-    id: 'web-2',
-    title: 'Mobile Business App',
-    description: 'Cross-platform mobile application for business management and customer engagement.',
-    category: 'web_apps',
-    type: 'mockup',
-    mockup_url: mobileAppMockup
   },
   // Marketing & Sales Dashboards
   {
     id: 'dash-1',
     title: 'Marketing Performance Dashboard',
-    description: 'Real-time analytics showing campaign performance, conversion rates, and ROI metrics.',
+    description: 'Interactive dashboard showing campaign performance, conversion rates, and ROI metrics with real-time data.',
     category: 'dashboards',
-    type: 'mockup',
-    mockup_url: dashboardMockup
+    type: 'dashboard',
+    component: MarketingDashboard
   },
-  // AI Agents & Automation
   {
-    id: 'ai-1',
-    title: 'AI Customer Service Agent',
-    description: 'Intelligent chatbot for automated customer support and lead qualification.',
-    category: 'ai_agents',
-    type: 'mockup',
-    mockup_url: aiAgentMockup
+    id: 'dash-2',
+    title: 'Sales Analytics Dashboard',
+    description: 'Comprehensive sales tracking with revenue trends, customer acquisition, and product performance analytics.',
+    category: 'dashboards',
+    type: 'dashboard',
+    component: SalesDashboard
   }
 ];
 
@@ -446,106 +435,157 @@ export default function PortfolioPage() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredPortfolioItems.map((item) => (
-                  <div key={item.id} className="group cursor-pointer relative text-center">
-                    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted to-accent mb-4 mx-auto ${
-                      item.type === 'video' ? 'aspect-[9/16] h-80 max-w-xs' : 'aspect-[16/9] h-64'
-                    }`}>
-                      {item.type === 'video' ? (
-                        <>
-                          {item.file_url ? (
-                            <video
-                              src={item.file_url}
-                              poster={item.thumbnail_url}
-                              className="w-full h-full object-cover"
-                              controls
-                              muted
-                              playsInline
-                              preload="metadata"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
-                          )}
-                          
-                          {/* Play Button for Videos */}
-                          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                            <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                              <Play className="w-8 h-8 text-primary ml-1" />
-                            </div>
-                          </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                 {filteredPortfolioItems.map((item) => (
+                   <div key={item.id} className="group cursor-pointer relative text-center">
+                     <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted to-accent mb-4 mx-auto ${
+                       item.type === 'video' ? 'aspect-[9/16] h-80 max-w-xs' : 
+                       item.type === 'dashboard' ? 'aspect-[16/9] h-80' :
+                       'aspect-[16/9] h-64'
+                     }`}>
+                       {item.type === 'video' ? (
+                         <>
+                           {item.file_url ? (
+                             <video
+                               src={item.file_url}
+                               poster={item.thumbnail_url}
+                               className="w-full h-full object-cover"
+                               controls
+                               muted
+                               playsInline
+                               preload="metadata"
+                             />
+                           ) : (
+                             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                           )}
+                           
+                           {/* Play Button for Videos */}
+                           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                             <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                               <Play className="w-8 h-8 text-primary ml-1" />
+                             </div>
+                           </div>
 
-                          {/* Duration */}
-                          <div className="pointer-events-none absolute bottom-4 right-4">
-                            <Badge variant="secondary" className="bg-background/80">
-                              {formatDuration(item.duration || 0)}
-                            </Badge>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {/* Mockup Image */}
-                          <img
-                            src={item.mockup_url}
-                            alt={item.title}
-                            className="w-full h-full object-cover"
-                          />
-                          
-                          {/* Overlay with Service Icon */}
-                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                              {item.category === 'web_apps' && <Code className="w-8 h-8 text-primary" />}
-                              {item.category === 'dashboards' && <BarChart3 className="w-8 h-8 text-primary" />}
-                              {item.category === 'ai_agents' && <Bot className="w-8 h-8 text-primary" />}
-                            </div>
-                          </div>
+                           {/* Duration */}
+                           <div className="pointer-events-none absolute bottom-4 right-4">
+                             <Badge variant="secondary" className="bg-background/80">
+                               {formatDuration(item.duration || 0)}
+                             </Badge>
+                           </div>
+                         </>
+                       ) : item.type === 'dashboard' && item.component ? (
+                         <>
+                           {/* Dashboard Component */}
+                           <div className="w-full h-full overflow-hidden">
+                             <div className="scale-[0.4] origin-top-left transform -translate-x-[10%] -translate-y-[5%]">
+                               <div style={{ width: '250%', height: '250%' }}>
+                                 <item.component />
+                               </div>
+                             </div>
+                           </div>
+                           
+                           {/* Overlay with Dashboard Icon */}
+                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                             <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                               <BarChart3 className="w-8 h-8 text-primary" />
+                             </div>
+                           </div>
+                         </>
+                       ) : item.type === 'webapp' ? (
+                         <>
+                           {/* Web App Preview */}
+                           <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
+                             <div className="text-center space-y-4">
+                               <Code className="w-16 h-16 text-primary mx-auto" />
+                               <div className="space-y-2">
+                                 <h3 className="font-semibold text-foreground">Live Demo Available</h3>
+                                 <p className="text-sm text-muted-foreground">Click to explore the full platform</p>
+                               </div>
+                             </div>
+                           </div>
+                           
+                           {/* Demo Link */}
+                           {item.demo_url && (
+                             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                               <Button 
+                                 size="sm" 
+                                 variant="secondary" 
+                                 className="h-8 px-3 bg-background/90 hover:bg-background"
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   window.open(item.demo_url, '_blank');
+                                 }}
+                               >
+                                 <ExternalLink className="h-4 w-4 mr-1" />
+                                 Live Demo
+                               </Button>
+                             </div>
+                           )}
+                         </>
+                       ) : (
+                         <>
+                           {/* Mockup Image */}
+                           <img
+                             src={item.mockup_url}
+                             alt={item.title}
+                             className="w-full h-full object-cover"
+                           />
+                           
+                           {/* Overlay with Service Icon */}
+                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                             <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                               {item.category === 'web_apps' && <Code className="w-8 h-8 text-primary" />}
+                               {item.category === 'dashboards' && <BarChart3 className="w-8 h-8 text-primary" />}
+                               {item.category === 'ai_agents' && <Bot className="w-8 h-8 text-primary" />}
+                             </div>
+                           </div>
 
-                          {/* Demo Link */}
-                          {item.demo_url && (
-                            <div className="absolute top-4 right-4">
-                              <Button 
-                                size="sm" 
-                                variant="secondary" 
-                                className="h-8 px-3 bg-background/90 hover:bg-background"
-                                onClick={() => window.open(item.demo_url, '_blank')}
-                              >
-                                <ExternalLink className="h-4 w-4 mr-1" />
-                                Demo
-                              </Button>
-                            </div>
-                          )}
-                        </>
-                      )}
+                           {/* Demo Link */}
+                           {item.demo_url && (
+                             <div className="absolute top-4 right-4">
+                               <Button 
+                                 size="sm" 
+                                 variant="secondary" 
+                                 className="h-8 px-3 bg-background/90 hover:bg-background"
+                                 onClick={() => window.open(item.demo_url, '_blank')}
+                               >
+                                 <ExternalLink className="h-4 w-4 mr-1" />
+                                 Demo
+                               </Button>
+                             </div>
+                           )}
+                         </>
+                       )}
 
-                      {/* Category Badge */}
-                      <div className="pointer-events-none absolute top-4 left-4">
-                        <Badge className="bg-primary text-primary-foreground">
-                          {CATEGORIES.find(c => c.value === item.category)?.label || item.category}
-                        </Badge>
-                      </div>
-                      
-                       {/* Owner Controls - Only for real videos */}
-                       {userRole === 'owner' && item.type === 'video' && (
-                         <div className="absolute top-4 right-4 flex gap-2">
+                       {/* Category Badge */}
+                       <div className="pointer-events-none absolute top-4 left-4">
+                         <Badge className="bg-primary text-primary-foreground">
+                           {CATEGORIES.find(c => c.value === item.category)?.label || item.category}
+                         </Badge>
+                       </div>
+                       
+                        {/* Owner Controls - Only for real videos */}
+                        {userRole === 'owner' && item.type === 'video' && (
+                          <div className="absolute top-4 right-4 flex gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="secondary" 
+                              className="h-8 w-8 p-0"
+                              onClick={() => handleEditClick(item as Video)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
                            <Button 
                              size="sm" 
-                             variant="secondary" 
+                             variant="destructive" 
                              className="h-8 w-8 p-0"
-                             onClick={() => handleEditClick(item as Video)}
+                             onClick={() => handleDelete(item.id)}
                            >
-                             <Edit className="h-4 w-4" />
+                             <Trash2 className="h-4 w-4" />
                            </Button>
-                          <Button 
-                            size="sm" 
-                            variant="destructive" 
-                            className="h-8 w-8 p-0"
-                            onClick={() => handleDelete(item.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
+                         </div>
+                       )}
+                     </div>
 
                     <div className="space-y-2">
                       <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
