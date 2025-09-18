@@ -531,16 +531,16 @@ export default function PortfolioPage() {
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Interactive analytics and performance tracking tools for data-driven insights</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
               {allPortfolioItems
                 .filter(item => item.category === 'dashboards')
                 .map((item) => (
                   <div key={item.id} className="group cursor-pointer">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-80 bg-card border border-border shadow-lg">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-64 sm:h-72 lg:h-80 bg-card border border-border shadow-lg">
                       {item.component && (
                         <div className="w-full h-full overflow-hidden">
-                          <div className="scale-[0.4] origin-top-left transform -translate-x-[12.5%] -translate-y-[12.5%]">
-                            <div style={{ width: '250%', height: '250%' }}>
+                          <div className="scale-[0.3] sm:scale-[0.35] lg:scale-[0.4] origin-top-left transform -translate-x-[16.5%] sm:-translate-x-[14.3%] lg:-translate-x-[12.5%] -translate-y-[16.5%] sm:-translate-y-[14.3%] lg:-translate-y-[12.5%]">
+                            <div style={{ width: '333%', height: '333%' }} className="sm:w-[285%] sm:h-[285%] lg:w-[250%] lg:h-[250%]">
                               <item.component />
                             </div>
                           </div>
@@ -548,8 +548,8 @@ export default function PortfolioPage() {
                       )}
                       
                       <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <BarChart3 className="w-8 h-8 text-primary" />
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                         </div>
                       </div>
                     </div>
@@ -580,11 +580,11 @@ export default function PortfolioPage() {
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
             </div>
             
-            {/* Centered single row */}
+            {/* Responsive centered layout */}
             <div className="flex justify-center">
-              <div className="w-full max-w-4xl mx-auto">
+              <div className="w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
                 <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
-                  <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
+                  <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 sm:h-64 md:h-80 lg:h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
                     {/* Live Preview Using Iframe */}
                     <iframe
                       src="https://jovial.modulet.de"
@@ -593,17 +593,18 @@ export default function PortfolioPage() {
                       loading="lazy"
                     />
                     
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Button size="lg" variant="secondary" className="bg-background/90 hover:bg-background shadow-lg">
-                        <ExternalLink className="w-5 h-5 mr-2" />
-                        Visit Live Site
+                    <div className="absolute top-2 right-2 sm:top-4 sm:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Button size="sm" variant="secondary" className="bg-background/90 hover:bg-background shadow-lg sm:text-base text-xs">
+                        <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+                        <span className="hidden sm:inline">Visit Live Site</span>
+                        <span className="sm:hidden">Visit</span>
                       </Button>
                     </div>
                     
-                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="bg-background/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-                        <h3 className="font-semibold text-foreground text-lg mb-2">Jovial Studio Platform</h3>
-                        <p className="text-muted-foreground text-sm">Full-stack business platform with responsive design, modern UI, and complete functionality</p>
+                    <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-background/90 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg max-w-[calc(100%-6rem)] sm:max-w-none">
+                        <h3 className="font-semibold text-foreground text-sm sm:text-lg mb-1 sm:mb-2">Jovial Studio Platform</h3>
+                        <p className="text-muted-foreground text-xs sm:text-sm hidden sm:block">Full-stack business platform with responsive design, modern UI, and complete functionality</p>
                       </div>
                     </div>
                   </div>
