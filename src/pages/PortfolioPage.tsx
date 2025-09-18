@@ -554,7 +554,7 @@ export default function PortfolioPage() {
                       </div>
                     </div>
                     
-                    <div className="mt-4 space-y-2">
+                    <div className="mt-4 space-y-2 text-center">
                       <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {item.title}
                       </h3>
