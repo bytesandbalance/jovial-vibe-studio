@@ -4,23 +4,23 @@ const WhyChooseSection = () => {
   const reasons = [
     {
       icon: Lightbulb,
-      title: "Holistic Approach",
-      description: "We don't just create ads - we build your brand's entire energy ecosystem that naturally attracts customers."
+      title: "Complete Tech Partner",
+      description: "From web development to AI marketing agents, we build integrated systems that work together seamlessly."
     },
     {
       icon: Zap,
-      title: "Energy-Driven Content",
-      description: "Our videos create excitement and culture around your brand, making customers want to be part of your story."
+      title: "AI-Powered Growth",
+      description: "Our automated marketing agents and engagement videos work 24/7 to attract and convert customers."
     },
     {
       icon: Clock,
-      title: "Fast Turnaround",
-      description: "From concept to launch in 24-48 hours. Get your content when you need it, without compromising quality."
+      title: "Rapid Development",
+      description: "Modern development practices and agile workflows mean faster time-to-market for your digital solutions."
     },
     {
       icon: Share2,
-      title: "Social-Media Ready",
-      description: "Every video is optimized for all platforms - Instagram, TikTok, Facebook, YouTube, and more."
+      title: "Scalable Solutions",
+      description: "Built for growth - our platforms and systems scale automatically as your business expands."
     }
   ];
 
@@ -32,7 +32,7 @@ const WhyChooseSection = () => {
             Why Choose <span className="gradient-text">Jovial</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We're not just another video production company - we're culture creators
+            We're not just another development agency - we're your complete creative tech partner
           </p>
         </div>
 
@@ -61,10 +61,10 @@ const WhyChooseSection = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="text-3xl font-bold text-foreground mb-6">
-                Ready to Transform Your Brand?
+                Ready to Build Your Digital Empire?
               </h3>
               <p className="text-lg text-muted-foreground mb-8">
-                Join hundreds of businesses that have amplified their presence with Jovial's energy-driven video content.
+                Join hundreds of businesses that have transformed their operations with Jovial's integrated tech solutions.
               </p>
               <button 
                 onClick={() => {
@@ -81,16 +81,16 @@ const WhyChooseSection = () => {
             
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
-                <div className="text-4xl font-bold gradient-text mb-2">500+</div>
-                <p className="text-muted-foreground">Videos Created</p>
+                <div className="text-4xl font-bold gradient-text mb-2">200+</div>
+                <p className="text-muted-foreground">Projects Delivered</p>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold gradient-text mb-2">98%</div>
                 <p className="text-muted-foreground">Client Satisfaction</p>
               </div>
               <div className="text-center">
-                <div className="text-4xl font-bold gradient-text mb-2">24h</div>
-                <p className="text-muted-foreground">Average Turnaround</p>
+                <div className="text-4xl font-bold gradient-text mb-2">48h</div>
+                <p className="text-muted-foreground">Average Response</p>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold gradient-text mb-2">50+</div>

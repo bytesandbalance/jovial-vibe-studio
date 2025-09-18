@@ -1,23 +1,23 @@
-import { MessageSquare, Video, Zap } from "lucide-react";
+import { MessageSquare, Code, Zap } from "lucide-react";
 
 const HowItWorksSection = () => {
   const steps = [
     {
       icon: MessageSquare,
-      title: "Share Your Vision",
-      description: "Tell us about your business, goals, and the energy you want to create",
+      title: "Discover & Strategy",
+      description: "We analyze your business needs and design a complete digital strategy tailored to your goals",
       color: "bg-primary"
     },
     {
-      icon: Video,
-      title: "We Craft Your Video",
-      description: "Our creative team develops engaging content that captures your brand's essence",
+      icon: Code,
+      title: "Build & Integrate",
+      description: "Our team develops your web platform, AI agents, videos, and dashboards as one cohesive system",
       color: "bg-coral"
     },
     {
       icon: Zap,
-      title: "Amplify Your Presence",
-      description: "Launch your video content and watch your brand culture come alive in 24-48h",
+      title: "Launch & Scale",
+      description: "Deploy your complete digital ecosystem and watch your business grow with automated marketing",
       color: "bg-primary-dark"
     }
   ];
@@ -30,7 +30,7 @@ const HowItWorksSection = () => {
             How It <span className="gradient-text">Works</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Three simple steps to transform your brand presence
+            Three simple steps to build your complete digital ecosystem
           </p>
         </div>
 

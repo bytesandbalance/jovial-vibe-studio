@@ -12,32 +12,32 @@ const IndustriesSection = () => {
     {
       icon: UtensilsCrossed,
       title: "Food & Restaurants",
-      description: "Showcase your culinary artistry and dining atmosphere"
+      description: "Complete ordering systems, AI chatbots, and engagement videos that showcase your culinary artistry"
     },
     {
       icon: Dumbbell,
       title: "Fitness & Gyms",
-      description: "Motivate and inspire with high-energy fitness content"
+      description: "Member portals, automated marketing, and motivational content that drives membership growth"
     },
     {
       icon: ShoppingBag,
       title: "Retail",
-      description: "Highlight products and create shopping experiences"
+      description: "E-commerce platforms, inventory dashboards, and product videos that boost sales"
     },
     {
       icon: Car,
       title: "Automotive",
-      description: "Display vehicles and services with dynamic visuals"
+      description: "Customer management systems, AI lead qualification, and showcase videos that sell vehicles"
     },
     {
       icon: Home,
       title: "Real Estate",
-      description: "Bring properties to life with immersive tours"
+      description: "Property management platforms, automated follow-ups, and immersive virtual tours"
     },
     {
       icon: Scissors,
       title: "Beauty & Salons",
-      description: "Capture transformations and beauty experiences"
+      description: "Booking systems, client engagement tools, and transformation videos that attract customers"
     }
   ];
 
@@ -49,7 +49,7 @@ const IndustriesSection = () => {
             Industries We <span className="gradient-text">Serve</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            From restaurants to retail, we understand what makes each industry unique
+            From restaurants to retail, we build complete digital solutions tailored to each industry's unique needs
           </p>
         </div>
 

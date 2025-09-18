@@ -106,10 +106,10 @@ ${body}`;
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Let's Create <span className="gradient-text">Together</span>
+            Let's Build <span className="gradient-text">Together</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Ready to transform your brand with video content that builds culture and drives engagement?
+            Ready to transform your business with a complete digital ecosystem that grows with you?
           </p>
         </div>
 
@@ -194,10 +194,10 @@ ${body}`;
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Brand Goals / Key Message *
+                  Project Goals & Requirements *
                 </label>
                 <Textarea 
-                  placeholder="Tell us about your brand goals, the energy you want to create, and what makes your business special..."
+                  placeholder="Tell us about your project needs - web development, AI agents, marketing videos, dashboards, or a complete digital transformation..."
                   className="min-h-[120px] resize-none"
                   value={formData.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
@@ -216,8 +216,8 @@ ${body}`;
             <div>
               <h3 className="text-2xl font-semibold text-foreground mb-6">Get in Touch</h3>
               <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Ready to bring your brand to life? Let's discuss how we can create 
-                video content that builds your culture and attracts customers naturally.
+                Ready to transform your business? Let's discuss how we can build your 
+                complete digital ecosystem with web development, AI agents, and engaging content.
               </p>
             </div>
 

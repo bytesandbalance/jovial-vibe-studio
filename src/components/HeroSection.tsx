@@ -29,12 +29,12 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
         <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in-up">
-          Videos That Bring Your{" "}
-          <span className="gradient-text">Brand to Life</span>
+          Your Complete{" "}
+          <span className="gradient-text">Creative Tech Partner</span>
         </h1>
         
         <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto animate-fade-in-up">
-          More than advertising — create a culture, spark energy, and draw customers in.
+          From web development to AI marketing agents — we build the complete digital ecosystem that grows your business.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up">

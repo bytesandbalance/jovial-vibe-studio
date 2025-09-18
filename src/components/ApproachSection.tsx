@@ -12,37 +12,37 @@ const ApproachSection = () => {
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
             <h3 className="text-2xl md:text-3xl font-semibold text-foreground leading-relaxed">
-              We don't just target customers like a single antibody
+              We build complete digital ecosystems, not just isolated solutions
             </h3>
             
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Instead, we create the energy that makes your audience respond naturally, 
-              like a fever that activates the body's defenses. Our holistic approach 
-              builds genuine culture and excitement around your brand.
+              Your business needs more than a website or a video. We create integrated 
+              systems that work together — from web development and AI marketing agents 
+              to engagement videos and backend dashboards — all designed to amplify your growth.
             </p>
 
             <div className="space-y-4">
               <div className="flex items-start space-x-4">
                 <div className="w-6 h-6 bg-primary rounded-full flex-shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">Culture-First Content</h4>
-                  <p className="text-muted-foreground">We focus on building your brand's personality and community</p>
+                  <h4 className="font-semibold text-foreground mb-2">Full-Stack Development</h4>
+                  <p className="text-muted-foreground">Web apps, mobile solutions, and backend dashboards that scale with your business</p>
                 </div>
               </div>
               
               <div className="flex items-start space-x-4">
                 <div className="w-6 h-6 bg-coral rounded-full flex-shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">Energy-Driven Strategy</h4>
-                  <p className="text-muted-foreground">Create content that naturally attracts and engages your audience</p>
+                  <h4 className="font-semibold text-foreground mb-2">AI-Powered Marketing</h4>
+                  <p className="text-muted-foreground">Automated agents and engagement videos that work 24/7 to grow your audience</p>
                 </div>
               </div>
               
               <div className="flex items-start space-x-4">
                 <div className="w-6 h-6 bg-primary-light rounded-full flex-shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-semibold text-foreground mb-2">Organic Growth</h4>
-                  <p className="text-muted-foreground">Build lasting relationships, not just quick conversions</p>
+                  <h4 className="font-semibold text-foreground mb-2">Integrated Solutions</h4>
+                  <p className="text-muted-foreground">Everything works together seamlessly for maximum impact and efficiency</p>
                 </div>
               </div>
             </div>
@@ -53,8 +53,8 @@ const ApproachSection = () => {
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <div className="w-8 h-8 bg-white rounded-full" />
               </div>
-              <p className="text-white/80 font-medium">Video Placeholder</p>
-              <p className="text-white/60 text-sm mt-2">Approach explanation video</p>
+              <p className="text-white/80 font-medium">Tech Solutions Showcase</p>
+              <p className="text-white/60 text-sm mt-2">See our integrated approach in action</p>
             </div>
           </div>
         </div>
