@@ -673,8 +673,8 @@ export default function PortfolioPage() {
               </p>
             </div>
 
-            {/* FIX: use place-items-center for mobile, md:place-items-stretch for desktop */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 place-items-center md:place-items-stretch">
+            {/* FIX: added justify-center so cards align with centered title/description */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 justify-center place-items-center md:place-items-stretch">
               <div className="group cursor-pointer w-full max-w-[280px] sm:max-w-[320px] md:max-w-none md:w-full mx-auto">
                 <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
                   <div className="w-full h-full flex items-center justify-center">
