@@ -166,10 +166,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    toast({
-      title: "Signed out successfully"
-    });
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      // Even if server signOut fails, clear local state
+      console.log('Sign out error (clearing local state anyway):', error);
+    } finally {
+      // Always clear local state regardless of server response
+      setSession(null);
+      setUser(null);
+      setUserRole(null);
+      toast({
+        title: "Signed out successfully"
+      });
+    }
   };
 
   const value = {
