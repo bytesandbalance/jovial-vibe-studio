@@ -526,13 +526,13 @@ export default function PortfolioPage() {
           </section>
 
           {/* Row 2: Marketing & Sales Dashboards */}
-          <section className="border-b border-border/50 pb-16">
+          <section className="border-b border-border/50 pb-16 overflow-x-hidden">
             <div className="mb-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Interactive analytics and performance tracking tools for data-driven insights</p>
             </div>
             <div className="flex justify-center">
-              <div className="grid grid-cols-1 gap-6 lg:gap-8 w-full px-4 max-w-[clamp(14rem,88vw,18rem)] sm:max-w-[clamp(18rem,92vw,22rem)] md:max-w-2xl lg:max-w-3xl">
+              <div className="grid grid-cols-1 gap-6 lg:gap-8 w-full max-w-[clamp(12rem,82vw,16rem)] sm:max-w-[clamp(16rem,86vw,20rem)] md:max-w-2xl lg:max-w-3xl">
               {allPortfolioItems
                 .filter(item => item.category === 'dashboards')
                 .map((item) => (
@@ -584,7 +584,7 @@ export default function PortfolioPage() {
             
             {/* Responsive centered layout */}
             <div className="flex justify-center">
-              <div className="w-full px-4 max-w-[clamp(14rem,88vw,18rem)] sm:max-w-[clamp(18rem,92vw,22rem)] md:max-w-xl lg:max-w-3xl mx-auto">
+              <div className="w-full max-w-[clamp(12rem,82vw,16rem)] sm:max-w-[clamp(16rem,86vw,20rem)] md:max-w-xl lg:max-w-3xl mx-auto">
                 <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
                   <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] h-[28rem] sm:h-[30rem] md:h-[34rem] lg:h-[38rem] bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
                     {/* Live Preview Using Iframe */}
