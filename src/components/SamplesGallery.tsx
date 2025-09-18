@@ -142,152 +142,279 @@ const SamplesGallery = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {displayItems.map((item, index) => (
-            <div key={item.id || index} className="group cursor-pointer text-center">
-              <div className={`relative overflow-hidden rounded-2xl mb-4 mx-auto ${
-                item.type === 'video' ? 'aspect-[9/16] h-80 max-w-xs' : 
-                item.type === 'dashboard' ? 'aspect-[16/9] h-72' :
-                'aspect-[16/9] h-64'
-              }`}>
-                {item.type === 'video' ? (
-                  <>
-                    {item.file_url ? (
-                      <video
-                        src={item.file_url}
-                        poster={item.thumbnail_url}
-                        className="w-full h-full object-cover"
-                        controls={false}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
-                    )}
-                    
-                    {/* Play Button for Videos */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                        <Play className="w-8 h-8 text-primary ml-1" />
-                      </div>
-                    </div>
-
-                    {/* Video Controls */}
-                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="flex items-center space-x-2">
-                        <Volume2 className="w-4 h-4 text-background" />
-                        <div className="w-16 h-1 bg-background/30 rounded-full">
-                          <div className="w-8 h-1 bg-background rounded-full" />
-                        </div>
-                      </div>
-                      <span className="text-background text-sm font-medium">
-                        {item.duration ? `${Math.floor(item.duration / 60)}:${(item.duration % 60).toString().padStart(2, '0')}` : '2:34'}
-                      </span>
-                    </div>
-                  </>
-                ) : item.type === 'dashboard' && item.component ? (
-                  <>
-                    {/* Dashboard Component */}
-                    <div className="w-full h-full overflow-hidden">
-                      <div className="scale-[0.35] origin-top-left transform -translate-x-[12%] -translate-y-[8%]">
-                        <div style={{ width: '285%', height: '285%' }}>
-                          <item.component />
+        {/* Service Categories in Rows */}
+        <div className="space-y-16">
+          {/* Row 1: Video Ads */}
+          <section>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-foreground mb-3">Video Ads & Creative Campaigns</h3>
+              <p className="text-muted-foreground">Dynamic video content that captures attention</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {displayItems
+                .filter(item => item.category === 'ads')
+                .slice(0, 4)
+                .map((item, index) => (
+                  <div key={item.id || index} className="group cursor-pointer text-center">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto mb-4">
+                      {item.file_url ? (
+                        <video
+                          src={item.file_url}
+                          poster={item.thumbnail_url}
+                          className="w-full h-full object-cover"
+                          controls={false}
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                      )}
+                      
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <Play className="w-6 h-6 text-primary ml-1" />
                         </div>
                       </div>
                     </div>
                     
-                    {/* Overlay with Dashboard Icon */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                        <BarChart3 className="w-8 h-8 text-primary" />
-                      </div>
+                    <div className="space-y-1">
+                      <h4 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors duration-300">
+                        {item.title}
+                      </h4>
+                      <p className="text-muted-foreground text-xs">
+                        {item.description}
+                      </p>
                     </div>
-                  </>
-                ) : item.type === 'webapp' ? (
-                  <>
-                    {/* Web App Preview */}
-                    <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                      <div className="text-center space-y-4">
-                        <Code className="w-16 h-16 text-primary mx-auto" />
-                        <div className="space-y-2">
-                          <h3 className="font-semibold text-foreground">Live Demo Available</h3>
-                          <p className="text-sm text-muted-foreground">Click to explore the platform</p>
+                  </div>
+                ))}
+              {displayItems.filter(item => item.category === 'ads').length === 0 && (
+                <div className="col-span-full text-center py-8">
+                  <p className="text-muted-foreground">Creative campaigns showcase</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Row 2: Marketing & Sales Analytics */}
+          <section>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-foreground mb-3">Marketing & Sales Analytics</h3>
+              <p className="text-muted-foreground">Interactive dashboards for performance insights</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {displayItems
+                .filter(item => item.category === 'dashboards')
+                .slice(0, 2)
+                .map((item, index) => (
+                  <div key={item.id || index} className="group cursor-pointer">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 bg-card">
+                      {item.component && (
+                        <div className="w-full h-full overflow-hidden">
+                          <div className="scale-[0.25] origin-top-left transform -translate-x-[25%] -translate-y-[25%]">
+                            <div style={{ width: '400%', height: '400%' }}>
+                              <item.component />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <BarChart3 className="w-6 h-6 text-primary" />
                         </div>
                       </div>
                     </div>
                     
-                    {/* Demo Link */}
-                    {item.demo_url && (
-                      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <Button 
-                          size="sm" 
-                          variant="secondary" 
-                          className="h-8 px-3 bg-background/90 hover:bg-background"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(item.demo_url, '_blank');
-                          }}
-                        >
-                          <ExternalLink className="h-4 w-4 mr-1" />
-                          Live Demo
-                        </Button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {/* Mockup Image */}
-                    <img
-                      src={item.mockup_url}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                    
-                    {/* Overlay with Service Icon */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                        {item.category === 'web_apps' && <Code className="w-8 h-8 text-primary" />}
-                        {item.category === 'dashboards' && <BarChart3 className="w-8 h-8 text-primary" />}
-                        {item.category === 'ai_agents' && <Bot className="w-8 h-8 text-primary" />}
+                    <div className="mt-3 space-y-1">
+                      <h4 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors duration-300">
+                        {item.title}
+                      </h4>
+                      <p className="text-muted-foreground text-xs">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </section>
+
+          {/* Row 3: Web & App Development */}
+          <section>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-foreground mb-3">Web & App Development</h3>
+              <p className="text-muted-foreground">Custom web applications and platforms</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-3">
+                      <Code className="w-12 h-12 text-primary mx-auto" />
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-foreground text-sm">Jovial Studio Platform</h4>
+                        <p className="text-xs text-muted-foreground px-4">Live responsive business platform</p>
                       </div>
                     </div>
+                  </div>
+                  
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      Demo
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group cursor-pointer opacity-60">
+                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 bg-gradient-to-br from-muted/20 to-muted/10 border-2 border-dashed border-muted">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-2">
+                      <Code className="w-8 h-8 text-muted-foreground mx-auto" />
+                      <p className="text-xs text-muted-foreground">More Projects Coming Soon</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-                    {/* Demo Link */}
-                    {item.demo_url && (
-                      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <Button 
-                          size="sm" 
-                          variant="secondary" 
-                          className="h-8 px-3 bg-background/90 hover:bg-background"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(item.demo_url, '_blank');
-                          }}
-                        >
-                          <ExternalLink className="h-4 w-4 mr-1" />
-                          Demo
-                        </Button>
+          {/* Row 4: Virtual Spokesperson Videos */}
+          <section>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-foreground mb-3">Virtual Spokesperson Videos</h3>
+              <p className="text-muted-foreground">AI-powered spokesperson content</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto bg-gradient-to-br from-coral/20 to-primary/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-3">
+                      <Play className="w-12 h-12 text-coral mx-auto" />
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-foreground text-sm">Product Explainer</h4>
+                        <p className="text-xs text-muted-foreground">YouTube Shorts</p>
                       </div>
-                    )}
-                  </>
-                )}
-
-                {/* Category Badge */}
-                <div className="absolute top-4 left-4">
-                  <Badge className="bg-primary text-primary-foreground">
-                    {getCategoryLabel(item.category)}
-                  </Badge>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      YouTube
+                    </Button>
+                  </div>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                  {item.title}
-                </h3>
-                <p className="text-muted-foreground">
-                  {item.description}
-                </p>
+              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto bg-gradient-to-br from-primary/20 to-coral/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-3">
+                      <Play className="w-12 h-12 text-primary mx-auto" />
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-foreground text-sm">Welcome Message</h4>
+                        <p className="text-xs text-muted-foreground">Engaging intro</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      YouTube
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto bg-gradient-to-br from-accent/20 to-primary/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-3">
+                      <Play className="w-12 h-12 text-accent-foreground mx-auto" />
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-foreground text-sm">Training Video</h4>
+                        <p className="text-xs text-muted-foreground">Educational content</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      YouTube
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
-          ))}
+          </section>
+
+          {/* Row 5: AI Agents for Automated Marketing */}
+          <section>
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-foreground mb-3">AI Agents for Automated Marketing</h3>
+              <p className="text-muted-foreground">Intelligent automation solutions</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-48 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-3">
+                      <Bot className="w-12 h-12 text-primary mx-auto" />
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-foreground text-sm">AI Chatbot</h4>
+                        <p className="text-xs text-muted-foreground px-3">Customer service automation</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-48 bg-gradient-to-br from-coral/10 to-primary/10 border-2 border-coral/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-3">
+                      <Bot className="w-12 h-12 text-coral mx-auto" />
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-foreground text-sm">Email Automation</h4>
+                        <p className="text-xs text-muted-foreground px-3">Marketing sequences</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-48 bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-3">
+                      <Bot className="w-12 h-12 text-accent-foreground mx-auto" />
+                      <div className="space-y-1">
+                        <h4 className="font-semibold text-foreground text-sm">Marketing Workflows</h4>
+                        <p className="text-xs text-muted-foreground px-3">Lead nurturing systems</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
 
         <div className="text-center mt-12">

@@ -416,206 +416,319 @@ export default function PortfolioPage() {
            </DialogContent>
          </Dialog>
 
-        {/* Category Selector */}
-        <CategorySelector
-          categories={CATEGORIES}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
+        {/* Portfolio Sections by Service Category */}
+        <div className="space-y-20">
+          {/* Row 1: Video Ads */}
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-3">Video Ads & Creative Campaigns</h2>
+              <p className="text-muted-foreground">Dynamic video content that captures attention and drives engagement</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {allPortfolioItems
+                .filter(item => item.category === 'ads')
+                .map((item) => (
+                  <div key={item.id} className="group cursor-pointer relative text-center">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto mb-4">
+                      {item.file_url ? (
+                        <video
+                          src={item.file_url}
+                          poster={item.thumbnail_url}
+                          className="w-full h-full object-cover"
+                          controls
+                          muted
+                          playsInline
+                          preload="metadata"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                      )}
+                      
+                      {/* Play Button for Videos */}
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                        <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <Play className="w-8 h-8 text-primary ml-1" />
+                        </div>
+                      </div>
 
-        {/* Portfolio Grid */}
-        <div>
-            {filteredPortfolioItems.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground text-lg mb-4">
-                  No items available in this category yet.
-                </p>
-                <p className="text-muted-foreground">
-                  Check back soon for amazing content!
-                </p>
-              </div>
-            ) : (
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                 {filteredPortfolioItems.map((item) => (
-                   <div key={item.id} className="group cursor-pointer relative text-center">
-                     <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted to-accent mb-4 mx-auto ${
-                       item.type === 'video' ? 'aspect-[9/16] h-80 max-w-xs' : 
-                       item.type === 'dashboard' ? 'aspect-[16/9] h-80' :
-                       'aspect-[16/9] h-64'
-                     }`}>
-                       {item.type === 'video' ? (
-                         <>
-                           {item.file_url ? (
-                             <video
-                               src={item.file_url}
-                               poster={item.thumbnail_url}
-                               className="w-full h-full object-cover"
-                               controls
-                               muted
-                               playsInline
-                               preload="metadata"
-                             />
-                           ) : (
-                             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
-                           )}
-                           
-                           {/* Play Button for Videos */}
-                           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                             <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                               <Play className="w-8 h-8 text-primary ml-1" />
-                             </div>
-                           </div>
+                      {/* Duration */}
+                      {item.duration && (
+                        <div className="absolute bottom-2 right-2 bg-background/80 text-foreground text-xs px-2 py-1 rounded">
+                          {formatDuration(item.duration)}
+                        </div>
+                      )}
 
-                           {/* Duration */}
-                           <div className="pointer-events-none absolute bottom-4 right-4">
-                             <Badge variant="secondary" className="bg-background/80">
-                               {formatDuration(item.duration || 0)}
-                             </Badge>
-                           </div>
-                         </>
-                       ) : item.type === 'dashboard' && item.component ? (
-                         <>
-                           {/* Dashboard Component */}
-                           <div className="w-full h-full overflow-hidden">
-                             <div className="scale-[0.4] origin-top-left transform -translate-x-[10%] -translate-y-[5%]">
-                               <div style={{ width: '250%', height: '250%' }}>
-                                 <item.component />
-                               </div>
-                             </div>
-                           </div>
-                           
-                           {/* Overlay with Dashboard Icon */}
-                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                             <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                               <BarChart3 className="w-8 h-8 text-primary" />
-                             </div>
-                           </div>
-                         </>
-                       ) : item.type === 'webapp' ? (
-                         <>
-                           {/* Web App Preview */}
-                           <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                             <div className="text-center space-y-4">
-                               <Code className="w-16 h-16 text-primary mx-auto" />
-                               <div className="space-y-2">
-                                 <h3 className="font-semibold text-foreground">Live Demo Available</h3>
-                                 <p className="text-sm text-muted-foreground">Click to explore the full platform</p>
-                               </div>
-                             </div>
-                           </div>
-                           
-                           {/* Demo Link */}
-                           {item.demo_url && (
-                             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                               <Button 
-                                 size="sm" 
-                                 variant="secondary" 
-                                 className="h-8 px-3 bg-background/90 hover:bg-background"
-                                 onClick={(e) => {
-                                   e.stopPropagation();
-                                   window.open(item.demo_url, '_blank');
-                                 }}
-                               >
-                                 <ExternalLink className="h-4 w-4 mr-1" />
-                                 Live Demo
-                               </Button>
-                             </div>
-                           )}
-                         </>
-                       ) : (
-                         <>
-                           {/* Mockup Image */}
-                           <img
-                             src={item.mockup_url}
-                             alt={item.title}
-                             className="w-full h-full object-cover"
-                           />
-                           
-                           {/* Overlay with Service Icon */}
-                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                             <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                               {item.category === 'web_apps' && <Code className="w-8 h-8 text-primary" />}
-                               {item.category === 'dashboards' && <BarChart3 className="w-8 h-8 text-primary" />}
-                               {item.category === 'ai_agents' && <Bot className="w-8 h-8 text-primary" />}
-                             </div>
-                           </div>
-
-                           {/* Demo Link */}
-                           {item.demo_url && (
-                             <div className="absolute top-4 right-4">
-                               <Button 
-                                 size="sm" 
-                                 variant="secondary" 
-                                 className="h-8 px-3 bg-background/90 hover:bg-background"
-                                 onClick={() => window.open(item.demo_url, '_blank')}
-                               >
-                                 <ExternalLink className="h-4 w-4 mr-1" />
-                                 Demo
-                               </Button>
-                             </div>
-                           )}
-                         </>
-                       )}
-
-                       {/* Category Badge */}
-                       <div className="pointer-events-none absolute top-4 left-4">
-                         <Badge className="bg-primary text-primary-foreground">
-                           {CATEGORIES.find(c => c.value === item.category)?.label || item.category}
-                         </Badge>
-                       </div>
-                       
-                        {/* Owner Controls - Only for real videos */}
-                        {userRole === 'owner' && item.type === 'video' && (
-                          <div className="absolute top-4 right-4 flex gap-2">
-                            <Button 
-                              size="sm" 
-                              variant="secondary" 
-                              className="h-8 w-8 p-0"
-                              onClick={() => handleEditClick(item as Video)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                           <Button 
-                             size="sm" 
-                             variant="destructive" 
-                             className="h-8 w-8 p-0"
-                             onClick={() => handleDelete(item.id)}
-                           >
-                             <Trash2 className="h-4 w-4" />
-                           </Button>
-                         </div>
-                       )}
-                     </div>
-
+                      {/* Admin Controls */}
+                      {userRole === 'owner' && item.type === 'video' && (
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditClick(videos.find(v => v.id === item.id)!);
+                            }}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(item.id);
+                            }}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="space-y-2">
-                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                      <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {item.title}
                       </h3>
-                      {item.description && (
-                        <p className="text-muted-foreground">
-                          {item.description}
-                        </p>
-                      )}
+                      <p className="text-muted-foreground text-sm">
+                        {item.description}
+                      </p>
                     </div>
                   </div>
                 ))}
-              </div>
-            )}
-        </div>
+              {allPortfolioItems.filter(item => item.category === 'ads').length === 0 && (
+                <div className="col-span-full text-center py-8">
+                  <p className="text-muted-foreground">Video ads coming soon...</p>
+                </div>
+              )}
+            </div>
+          </section>
 
-        {/* Call to Action */}
-        <div className="mt-16 text-center bg-gradient-to-r from-primary/10 to-coral/10 rounded-3xl p-12">
-          <h3 className="text-3xl font-bold text-foreground mb-4">
-            Ready to Transform Your Business?
-          </h3>
-          <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
-            From compelling video campaigns to powerful web applications and intelligent automation - let&apos;s build the complete digital solution your business needs to thrive.
-          </p>
-          <Button className="btn-hero" asChild>
-            <Link to="/#contact">
-              Start Your Project Today <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
-          </Button>
+          {/* Row 2: Marketing & Sales Analytics */}
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-3">Marketing & Sales Analytics</h2>
+              <p className="text-muted-foreground">Interactive dashboards for tracking performance and insights</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {allPortfolioItems
+                .filter(item => item.category === 'dashboards')
+                .map((item) => (
+                  <div key={item.id} className="group cursor-pointer">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-80 bg-card">
+                      {item.component && (
+                        <div className="w-full h-full overflow-hidden">
+                          <div className="scale-[0.4] origin-top-left transform -translate-x-[15%] -translate-y-[12%]">
+                            <div style={{ width: '250%', height: '250%' }}>
+                              <item.component />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <BarChart3 className="w-8 h-8 text-primary" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 space-y-2">
+                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </section>
+
+          {/* Row 3: Web & App Development */}
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-3">Web & App Development</h2>
+              <p className="text-muted-foreground">Custom web applications and responsive platforms</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-64 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Code className="w-20 h-20 text-primary mx-auto" />
+                      <div className="space-y-2">
+                        <h3 className="text-xl font-semibold text-foreground">Jovial Studio Platform</h3>
+                        <p className="text-sm text-muted-foreground px-4">Live responsive business platform</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Live Demo Button */}
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-8 px-3 bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      Live Demo
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Placeholder for future projects */}
+              <div className="group cursor-pointer opacity-60">
+                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-64 bg-gradient-to-br from-muted/20 to-muted/10 border-2 border-dashed border-muted">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-2">
+                      <Code className="w-12 h-12 text-muted-foreground mx-auto" />
+                      <p className="text-sm text-muted-foreground">More Projects Coming Soon</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Row 4: Virtual Spokesperson Videos */}
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-3">Virtual Spokesperson Videos</h2>
+              <p className="text-muted-foreground">AI-powered spokesperson content for engaging communication</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* YouTube Shorts from @BytesBalance */}
+              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto bg-gradient-to-br from-coral/20 to-primary/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Play className="w-20 h-20 text-coral mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Product Explainer</h4>
+                        <p className="text-sm text-muted-foreground">YouTube Shorts showcase</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Play on YouTube */}
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-8 px-3 bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      YouTube
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto bg-gradient-to-br from-primary/20 to-coral/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Play className="w-20 h-20 text-primary mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Welcome Message</h4>
+                        <p className="text-sm text-muted-foreground">Engaging introductions</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-8 px-3 bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      YouTube
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto bg-gradient-to-br from-accent/20 to-primary/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Play className="w-20 h-20 text-accent-foreground mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Training Video</h4>
+                        <p className="text-sm text-muted-foreground">Educational content</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button 
+                      size="sm" 
+                      variant="secondary" 
+                      className="h-8 px-3 bg-background/90 hover:bg-background"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      YouTube
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Row 5: AI Agents for Automated Marketing */}
+          <section>
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-foreground mb-3">AI Agents for Automated Marketing</h2>
+              <p className="text-muted-foreground">Intelligent automation for customer engagement and marketing workflows</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Bot className="w-16 h-16 text-primary mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">AI Chatbot</h4>
+                        <p className="text-sm text-muted-foreground px-4">Intelligent customer service automation</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-coral/10 to-primary/10 border-2 border-coral/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Bot className="w-16 h-16 text-coral mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Email Automation</h4>
+                        <p className="text-sm text-muted-foreground px-4">Personalized marketing sequences</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/20">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-center space-y-4">
+                      <Bot className="w-16 h-16 text-accent-foreground mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Marketing Workflows</h4>
+                        <p className="text-sm text-muted-foreground px-4">Automated lead nurturing systems</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
