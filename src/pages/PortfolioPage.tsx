@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight, ArrowLeft, Edit, Trash2, Plus } from 'lucide-react';
+import { Play, ArrowRight, ArrowLeft, Edit, Trash2, Plus, ExternalLink, Code, BarChart3, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import CategorySelector from '@/components/CategorySelector';
@@ -14,6 +14,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
 
+// Import mock images
+import dashboardMockup from '@/assets/dashboard-mockup.jpg';
+import webappMockup from '@/assets/webapp-mockup.jpg';
+import aiAgentMockup from '@/assets/ai-agent-mockup.jpg';
+import mobileAppMockup from '@/assets/mobile-app-mockup.jpg';
+
 interface Video {
   id: string;
   title: string;
@@ -24,21 +30,72 @@ interface Video {
   duration: number;
 }
 
+interface PortfolioItem {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  type: 'video' | 'mockup';
+  file_url?: string;
+  thumbnail_url?: string;
+  mockup_url?: string;
+  duration?: number;
+  demo_url?: string;
+}
+
 const CATEGORIES = [
-  { value: 'all', label: 'All Videos', color: 'bg-primary' },
-  { value: 'food', label: 'Food & Beverage', color: 'bg-coral' },
-  { value: 'fitness', label: 'Fitness', color: 'bg-primary-dark' },
-  { value: 'retail', label: 'Retail', color: 'bg-accent-foreground' },
-  { value: 'automotive', label: 'Automotive', color: 'bg-muted-foreground' },
-  { value: 'real_estate', label: 'Real Estate', color: 'bg-coral-light' },
-  { value: 'beauty', label: 'Beauty', color: 'bg-primary-light' },
-  { value: 'clothing', label: 'Clothing', color: 'bg-secondary' },
+  { value: 'all', label: 'All Services', color: 'bg-primary' },
+  { value: 'ads', label: 'Ads & Creative Campaigns', color: 'bg-coral' },
+  { value: 'web_apps', label: 'Web & App Development', color: 'bg-primary-dark' },
+  { value: 'dashboards', label: 'Marketing & Sales Dashboards', color: 'bg-accent-foreground' },
+  { value: 'ai_agents', label: 'AI Agents & Automation', color: 'bg-muted-foreground' },
+];
+
+// Mock portfolio items for different service categories
+const MOCK_PORTFOLIO_ITEMS: PortfolioItem[] = [
+  // Web & App Development
+  {
+    id: 'web-1',
+    title: 'Modern Business Landing Page',
+    description: 'Responsive landing page with conversion-optimized design and modern UI components.',
+    category: 'web_apps',
+    type: 'mockup',
+    mockup_url: webappMockup,
+    demo_url: 'https://jovial.modulet.de'
+  },
+  {
+    id: 'web-2',
+    title: 'Mobile Business App',
+    description: 'Cross-platform mobile application for business management and customer engagement.',
+    category: 'web_apps',
+    type: 'mockup',
+    mockup_url: mobileAppMockup
+  },
+  // Marketing & Sales Dashboards
+  {
+    id: 'dash-1',
+    title: 'Marketing Performance Dashboard',
+    description: 'Real-time analytics showing campaign performance, conversion rates, and ROI metrics.',
+    category: 'dashboards',
+    type: 'mockup',
+    mockup_url: dashboardMockup
+  },
+  // AI Agents & Automation
+  {
+    id: 'ai-1',
+    title: 'AI Customer Service Agent',
+    description: 'Intelligent chatbot for automated customer support and lead qualification.',
+    category: 'ai_agents',
+    type: 'mockup',
+    mockup_url: aiAgentMockup
+  }
 ];
 
 export default function PortfolioPage() {
   const { user, userRole } = useAuth();
   const { toast } = useToast();
   const [videos, setVideos] = useState<Video[]>([]);
+  const [allPortfolioItems, setAllPortfolioItems] = useState<PortfolioItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -63,28 +120,44 @@ export default function PortfolioPage() {
   });
 
   useEffect(() => {
-    fetchVideos();
+    fetchPortfolioData();
   }, []);
 
-  const fetchVideos = async () => {
+  const fetchPortfolioData = async () => {
     try {
-      const { data, error } = await supabase
+      // Fetch real videos from database
+      const { data: videoData, error } = await supabase
         .from('videos')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setVideos(data || []);
+      setVideos(videoData || []);
+
+      // Convert videos to portfolio items and categorize existing videos as "ads"
+      const videoPortfolioItems: PortfolioItem[] = (videoData || []).map(video => ({
+        id: video.id,
+        title: video.title,
+        description: video.description,
+        category: 'ads', // Categorize existing videos as ads/creative campaigns
+        type: 'video' as const,
+        file_url: video.file_url,
+        thumbnail_url: video.thumbnail_url,
+        duration: video.duration
+      }));
+
+      // Combine real videos with mock portfolio items
+      setAllPortfolioItems([...videoPortfolioItems, ...MOCK_PORTFOLIO_ITEMS]);
     } catch (error) {
-      console.error('Error fetching videos:', error);
+      console.error('Error fetching portfolio data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredVideos = selectedCategory === 'all' 
-    ? videos 
-    : videos.filter(video => video.category === selectedCategory);
+  const filteredPortfolioItems = selectedCategory === 'all' 
+    ? allPortfolioItems 
+    : allPortfolioItems.filter(item => item.category === selectedCategory);
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -128,7 +201,7 @@ export default function PortfolioPage() {
       toast({ title: "Video uploaded successfully!" });
       setShowUploadDialog(false);
       setUploadForm({ title: '', description: '', category: '', file: null, is_featured: false });
-      fetchVideos();
+      fetchPortfolioData();
     } catch (error: any) {
       toast({
         title: "Upload failed",
@@ -168,7 +241,7 @@ export default function PortfolioPage() {
       toast({ title: "Video updated successfully!" });
       setShowEditDialog(false);
       setEditingVideo(null);
-      fetchVideos();
+      fetchPortfolioData();
     } catch (error: any) {
       toast({
         title: "Update failed",
@@ -190,7 +263,7 @@ export default function PortfolioPage() {
       if (error) throw error;
       
       toast({ title: "Video deleted successfully!" });
-      fetchVideos();
+      fetchPortfolioData();
     } catch (error: any) {
       toast({
         title: "Delete failed",
@@ -231,7 +304,7 @@ export default function PortfolioPage() {
             Our <span className="gradient-text">Portfolio</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Explore our collection of videos that bring brands to life and create lasting connections with customers.
+            Explore our complete range of creative tech solutions - from dynamic video campaigns to powerful web applications, intelligent dashboards, and AI-driven automation systems that transform how businesses connect with their customers.
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 mb-8">
@@ -277,7 +350,7 @@ export default function PortfolioPage() {
                                {category.label}
                              </SelectItem>
                            ))}
-                         </SelectContent>
+                        </SelectContent>
                       </Select>
                     </div>
                     <div>
@@ -361,12 +434,12 @@ export default function PortfolioPage() {
           onCategoryChange={setSelectedCategory}
         />
 
-        {/* Videos Grid */}
+        {/* Portfolio Grid */}
         <div>
-            {filteredVideos.length === 0 ? (
+            {filteredPortfolioItems.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground text-lg mb-4">
-                  No videos available in this category yet.
+                  No items available in this category yet.
                 </p>
                 <p className="text-muted-foreground">
                   Check back soon for amazing content!
@@ -374,52 +447,91 @@ export default function PortfolioPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredVideos.map((video) => (
-                  <div key={video.id} className="group cursor-pointer relative text-center">
-                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted to-accent aspect-[9/16] h-80 mb-4 mx-auto max-w-xs">
-                      {video.file_url ? (
-                        <video
-                          src={video.file_url}
-                          poster={video.thumbnail_url}
-                          className="w-full h-full object-cover"
-                          controls
-                          muted
-                          playsInline
-                          preload="metadata"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
-                      )}
-                      
-                      {/* Play Button */}
-                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <Play className="w-8 h-8 text-primary ml-1" />
-                        </div>
-                      </div>
+                {filteredPortfolioItems.map((item) => (
+                  <div key={item.id} className="group cursor-pointer relative text-center">
+                    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted to-accent mb-4 mx-auto ${
+                      item.type === 'video' ? 'aspect-[9/16] h-80 max-w-xs' : 'aspect-[16/9] h-64'
+                    }`}>
+                      {item.type === 'video' ? (
+                        <>
+                          {item.file_url ? (
+                            <video
+                              src={item.file_url}
+                              poster={item.thumbnail_url}
+                              className="w-full h-full object-cover"
+                              controls
+                              muted
+                              playsInline
+                              preload="metadata"
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                          )}
+                          
+                          {/* Play Button for Videos */}
+                          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                            <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                              <Play className="w-8 h-8 text-primary ml-1" />
+                            </div>
+                          </div>
 
-                      {/* Duration */}
-                      <div className="pointer-events-none absolute bottom-4 right-4">
-                        <Badge variant="secondary" className="bg-background/80">
-                          {formatDuration(video.duration || 0)}
-                        </Badge>
-                      </div>
+                          {/* Duration */}
+                          <div className="pointer-events-none absolute bottom-4 right-4">
+                            <Badge variant="secondary" className="bg-background/80">
+                              {formatDuration(item.duration || 0)}
+                            </Badge>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          {/* Mockup Image */}
+                          <img
+                            src={item.mockup_url}
+                            alt={item.title}
+                            className="w-full h-full object-cover"
+                          />
+                          
+                          {/* Overlay with Service Icon */}
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                              {item.category === 'web_apps' && <Code className="w-8 h-8 text-primary" />}
+                              {item.category === 'dashboards' && <BarChart3 className="w-8 h-8 text-primary" />}
+                              {item.category === 'ai_agents' && <Bot className="w-8 h-8 text-primary" />}
+                            </div>
+                          </div>
+
+                          {/* Demo Link */}
+                          {item.demo_url && (
+                            <div className="absolute top-4 right-4">
+                              <Button 
+                                size="sm" 
+                                variant="secondary" 
+                                className="h-8 px-3 bg-background/90 hover:bg-background"
+                                onClick={() => window.open(item.demo_url, '_blank')}
+                              >
+                                <ExternalLink className="h-4 w-4 mr-1" />
+                                Demo
+                              </Button>
+                            </div>
+                          )}
+                        </>
+                      )}
 
                       {/* Category Badge */}
                       <div className="pointer-events-none absolute top-4 left-4">
                         <Badge className="bg-primary text-primary-foreground">
-                          {CATEGORIES.find(c => c.value === video.category)?.label || video.category}
+                          {CATEGORIES.find(c => c.value === item.category)?.label || item.category}
                         </Badge>
                       </div>
                       
-                       {/* Owner Controls */}
-                       {userRole === 'owner' && (
+                       {/* Owner Controls - Only for real videos */}
+                       {userRole === 'owner' && item.type === 'video' && (
                          <div className="absolute top-4 right-4 flex gap-2">
                            <Button 
                              size="sm" 
                              variant="secondary" 
                              className="h-8 w-8 p-0"
-                             onClick={() => handleEditClick(video)}
+                             onClick={() => handleEditClick(item as Video)}
                            >
                              <Edit className="h-4 w-4" />
                            </Button>
@@ -427,7 +539,7 @@ export default function PortfolioPage() {
                             size="sm" 
                             variant="destructive" 
                             className="h-8 w-8 p-0"
-                            onClick={() => handleDelete(video.id)}
+                            onClick={() => handleDelete(item.id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -437,11 +549,11 @@ export default function PortfolioPage() {
 
                     <div className="space-y-2">
                       <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                        {video.title}
+                        {item.title}
                       </h3>
-                      {video.description && (
+                      {item.description && (
                         <p className="text-muted-foreground">
-                          {video.description}
+                          {item.description}
                         </p>
                       )}
                     </div>
@@ -454,10 +566,10 @@ export default function PortfolioPage() {
         {/* Call to Action */}
         <div className="mt-16 text-center bg-gradient-to-r from-primary/10 to-coral/10 rounded-3xl p-12">
           <h3 className="text-3xl font-bold text-foreground mb-4">
-            Ready to Create Something Amazing?
+            Ready to Transform Your Business?
           </h3>
           <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Let&apos;s bring your brand to life with professional video content that engages and inspires.
+            From compelling video campaigns to powerful web applications and intelligent automation - let&apos;s build the complete digital solution your business needs to thrive.
           </p>
           <Button className="btn-hero" asChild>
             <Link to="/#contact">
