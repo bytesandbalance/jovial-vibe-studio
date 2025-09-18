@@ -580,29 +580,31 @@ export default function PortfolioPage() {
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
             </div>
             
-            {/* Full-width single row */}
-            <div className="space-y-8">
-              <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
-                  {/* Live Preview Using Iframe */}
-                  <iframe
-                    src="https://jovial.modulet.de"
-                    className="w-full h-full border-0"
-                    title="Jovial Studio Platform"
-                    loading="lazy"
-                  />
-                  
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button size="lg" variant="secondary" className="bg-background/90 hover:bg-background shadow-lg">
-                      <ExternalLink className="w-5 h-5 mr-2" />
-                      Visit Live Site
-                    </Button>
-                  </div>
-                  
-                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-background/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
-                      <h3 className="font-semibold text-foreground text-lg mb-2">Jovial Studio Platform</h3>
-                      <p className="text-muted-foreground text-sm">Full-stack business platform with responsive design, modern UI, and complete functionality</p>
+            {/* Centered single row */}
+            <div className="flex justify-center">
+              <div className="w-full max-w-4xl">
+                <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
+                  <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
+                    {/* Live Preview Using Iframe */}
+                    <iframe
+                      src="https://jovial.modulet.de"
+                      className="w-full h-full border-0"
+                      title="Jovial Studio Platform"
+                      loading="lazy"
+                    />
+                    
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Button size="lg" variant="secondary" className="bg-background/90 hover:bg-background shadow-lg">
+                        <ExternalLink className="w-5 h-5 mr-2" />
+                        Visit Live Site
+                      </Button>
+                    </div>
+                    
+                    <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-background/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+                        <h3 className="font-semibold text-foreground text-lg mb-2">Jovial Studio Platform</h3>
+                        <p className="text-muted-foreground text-sm">Full-stack business platform with responsive design, modern UI, and complete functionality</p>
+                      </div>
                     </div>
                   </div>
                 </div>
