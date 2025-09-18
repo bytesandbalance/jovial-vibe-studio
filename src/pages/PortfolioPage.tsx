@@ -538,10 +538,10 @@ export default function PortfolioPage() {
               {allPortfolioItems
                 .filter(item => item.category === 'dashboards')
                 .map(item => (
-                  <div key={item.id} className="group w-full max-w-md mx-auto">
+                  <div key={item.id} className="group w-full max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
                     <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
                       {item.component && (
-                        <div className="w-full h-full flex items-center justify-center scale-[0.8] sm:scale-[0.9]">
+                        <div className="w-full h-full flex items-center justify-center scale-[0.85] sm:scale-[0.9]">
                           <item.component />
                         </div>
                       )}
@@ -581,9 +581,9 @@ export default function PortfolioPage() {
             
             {/* Responsive centered layout */}
             <div className="flex justify-center">
-              <div className="w-full px-2 max-w-[clamp(10rem,75vw,14rem)] sm:max-w-[clamp(14rem,80vw,18rem)] md:max-w-xl lg:max-w-3xl mx-auto">
+              <div className="w-full px-2 max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
                 <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
-                  <div className="relative w-full overflow-hidden rounded-2xl aspect-[3/4] sm:aspect-[4/3] min-h-[26rem] sm:min-h-[30rem] md:min-h-[34rem] lg:min-h-[40rem] bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
+                  <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
                     {/* Live Preview Using Iframe */}
                     <iframe
                       src="https://jovial.modulet.de"
