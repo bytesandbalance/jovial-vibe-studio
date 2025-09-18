@@ -142,70 +142,274 @@ const SamplesGallery = () => {
           </p>
         </div>
 
-        {/* Service Categories in Rows */}
-        <div className="space-y-16">
-          {/* Row 1: Video Ads */}
-          <section>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-foreground mb-3">Video Ads & Creative Campaigns</h3>
-              <p className="text-muted-foreground">Dynamic video content that captures attention</p>
+        {/* Five Main Service Categories */}
+        <div className="space-y-20">
+          {/* Row 1: Video Ads & Creative Campaigns */}
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Video Ads & Creative Campaigns</h3>
+              <p className="text-muted-foreground max-w-2xl mx-auto">Dynamic video content that captures attention and drives engagement across industries</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {displayItems
-                .filter(item => item.category === 'ads')
-                .slice(0, 4)
-                .map((item, index) => (
-                  <div key={item.id || index} className="group cursor-pointer text-center">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto mb-4">
-                      {item.file_url ? (
-                        <video
-                          src={item.file_url}
-                          poster={item.thumbnail_url}
-                          className="w-full h-full object-cover"
-                          controls={false}
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
-                      )}
-                      
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <Play className="w-6 h-6 text-primary ml-1" />
+            
+            {/* Video Ads Subcategories */}
+            <div className="space-y-12">
+              {/* Clothing & Fashion */}
+              <div>
+                <h4 className="text-lg font-semibold text-foreground mb-6 border-l-4 border-primary pl-4">Clothing & Fashion</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {displayItems
+                    .filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('clothing') || item.title.toLowerCase().includes('fashion')))
+                    .slice(0, 4)
+                    .map((item, index) => (
+                      <div key={item.id || index} className="group cursor-pointer text-center">
+                        <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-56 max-w-xs mx-auto mb-4">
+                          {item.file_url ? (
+                            <video
+                              src={item.file_url}
+                              poster={item.thumbnail_url}
+                              className="w-full h-full object-cover"
+                              controls={false}
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                          )}
+                          
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                              <Play className="w-6 h-6 text-primary ml-1" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <h5 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors duration-300">
+                            {item.title}
+                          </h5>
+                          <p className="text-muted-foreground text-xs">
+                            {item.description}
+                          </p>
                         </div>
                       </div>
+                    ))}
+                  {displayItems.filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('clothing') || item.title.toLowerCase().includes('fashion'))).length === 0 && (
+                    <div className="col-span-full text-center py-6">
+                      <p className="text-muted-foreground text-sm">Fashion campaign samples coming soon</p>
                     </div>
-                    
-                    <div className="space-y-1">
-                      <h4 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors duration-300">
-                        {item.title}
-                      </h4>
-                      <p className="text-muted-foreground text-xs">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              {displayItems.filter(item => item.category === 'ads').length === 0 && (
-                <div className="col-span-full text-center py-8">
-                  <p className="text-muted-foreground">Creative campaigns showcase</p>
+                  )}
                 </div>
-              )}
+              </div>
+
+              {/* Food & Beverage */}
+              <div>
+                <h4 className="text-lg font-semibold text-foreground mb-6 border-l-4 border-coral pl-4">Food & Beverage</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {displayItems
+                    .filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('food') || item.title.toLowerCase().includes('beverage') || item.title.toLowerCase().includes('restaurant')))
+                    .slice(0, 4)
+                    .map((item, index) => (
+                      <div key={item.id || index} className="group cursor-pointer text-center">
+                        <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-56 max-w-xs mx-auto mb-4">
+                          {item.file_url ? (
+                            <video
+                              src={item.file_url}
+                              poster={item.thumbnail_url}
+                              className="w-full h-full object-cover"
+                              controls={false}
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-coral/20 to-primary/20" />
+                          )}
+                          
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                              <Play className="w-6 h-6 text-coral ml-1" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <h5 className="font-semibold text-foreground text-sm group-hover:text-coral transition-colors duration-300">
+                            {item.title}
+                          </h5>
+                          <p className="text-muted-foreground text-xs">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  {displayItems.filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('food') || item.title.toLowerCase().includes('beverage') || item.title.toLowerCase().includes('restaurant'))).length === 0 && (
+                    <div className="col-span-full text-center py-6">
+                      <p className="text-muted-foreground text-sm">Food & beverage campaign samples coming soon</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Fitness & Health */}
+              <div>
+                <h4 className="text-lg font-semibold text-foreground mb-6 border-l-4 border-accent pl-4">Fitness & Health</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {displayItems
+                    .filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('fitness') || item.title.toLowerCase().includes('health') || item.title.toLowerCase().includes('gym')))
+                    .slice(0, 4)
+                    .map((item, index) => (
+                      <div key={item.id || index} className="group cursor-pointer text-center">
+                        <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-56 max-w-xs mx-auto mb-4">
+                          {item.file_url ? (
+                            <video
+                              src={item.file_url}
+                              poster={item.thumbnail_url}
+                              className="w-full h-full object-cover"
+                              controls={false}
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-primary/20" />
+                          )}
+                          
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                              <Play className="w-6 h-6 text-accent ml-1" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <h5 className="font-semibold text-foreground text-sm group-hover:text-accent transition-colors duration-300">
+                            {item.title}
+                          </h5>
+                          <p className="text-muted-foreground text-xs">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  {displayItems.filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('fitness') || item.title.toLowerCase().includes('health') || item.title.toLowerCase().includes('gym'))).length === 0 && (
+                    <div className="col-span-full text-center py-6">
+                      <p className="text-muted-foreground text-sm">Fitness & health campaign samples coming soon</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Automotive */}
+              <div>
+                <h4 className="text-lg font-semibold text-foreground mb-6 border-l-4 border-muted-foreground pl-4">Automotive</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {displayItems
+                    .filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('car') || item.title.toLowerCase().includes('auto') || item.title.toLowerCase().includes('bike') || item.title.toLowerCase().includes('vehicle')))
+                    .slice(0, 4)
+                    .map((item, index) => (
+                      <div key={item.id || index} className="group cursor-pointer text-center">
+                        <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-56 max-w-xs mx-auto mb-4">
+                          {item.file_url ? (
+                            <video
+                              src={item.file_url}
+                              poster={item.thumbnail_url}
+                              className="w-full h-full object-cover"
+                              controls={false}
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-muted/20 to-primary/20" />
+                          )}
+                          
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                              <Play className="w-6 h-6 text-muted-foreground ml-1" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <h5 className="font-semibold text-foreground text-sm group-hover:text-muted-foreground transition-colors duration-300">
+                            {item.title}
+                          </h5>
+                          <p className="text-muted-foreground text-xs">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  {displayItems.filter(item => item.category === 'ads' && (item.title.toLowerCase().includes('car') || item.title.toLowerCase().includes('auto') || item.title.toLowerCase().includes('bike') || item.title.toLowerCase().includes('vehicle'))).length === 0 && (
+                    <div className="col-span-full text-center py-6">
+                      <p className="text-muted-foreground text-sm">Automotive campaign samples coming soon</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* General & Others */}
+              <div>
+                <h4 className="text-lg font-semibold text-foreground mb-6 border-l-4 border-primary pl-4">General & Others</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {displayItems
+                    .filter(item => item.category === 'ads' && 
+                      !item.title.toLowerCase().includes('clothing') && 
+                      !item.title.toLowerCase().includes('fashion') &&
+                      !item.title.toLowerCase().includes('food') && 
+                      !item.title.toLowerCase().includes('beverage') && 
+                      !item.title.toLowerCase().includes('restaurant') &&
+                      !item.title.toLowerCase().includes('fitness') && 
+                      !item.title.toLowerCase().includes('health') && 
+                      !item.title.toLowerCase().includes('gym') &&
+                      !item.title.toLowerCase().includes('car') && 
+                      !item.title.toLowerCase().includes('auto') && 
+                      !item.title.toLowerCase().includes('bike') && 
+                      !item.title.toLowerCase().includes('vehicle'))
+                    .slice(0, 4)
+                    .map((item, index) => (
+                      <div key={item.id || index} className="group cursor-pointer text-center">
+                        <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-56 max-w-xs mx-auto mb-4">
+                          {item.file_url ? (
+                            <video
+                              src={item.file_url}
+                              poster={item.thumbnail_url}
+                              className="w-full h-full object-cover"
+                              controls={false}
+                            />
+                          ) : (
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
+                          )}
+                          
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                              <Play className="w-6 h-6 text-primary ml-1" />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <h5 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors duration-300">
+                            {item.title}
+                          </h5>
+                          <p className="text-muted-foreground text-xs">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  {displayItems.filter(item => item.category === 'ads').length === 0 && (
+                    <div className="col-span-full text-center py-8">
+                      <p className="text-muted-foreground">Video ad showcase coming soon</p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* Row 2: Marketing & Sales Analytics */}
-          <section>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-foreground mb-3">Marketing & Sales Analytics</h3>
-              <p className="text-muted-foreground">Interactive dashboards for performance insights</p>
+          {/* Row 2: Marketing & Sales Dashboards */}
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h3>
+              <p className="text-muted-foreground max-w-2xl mx-auto">Interactive analytics and performance tracking tools for data-driven insights</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {displayItems
                 .filter(item => item.category === 'dashboards')
                 .slice(0, 2)
                 .map((item, index) => (
                   <div key={item.id || index} className="group cursor-pointer">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 bg-card">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-52 bg-card border border-border">
                       {item.component && (
                         <div className="w-full h-full overflow-hidden">
                           <div className="scale-[0.25] origin-top-left transform -translate-x-[25%] -translate-y-[25%]">
@@ -217,17 +421,17 @@ const SamplesGallery = () => {
                       )}
                       
                       <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-12 h-12 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <BarChart3 className="w-6 h-6 text-primary" />
+                        <div className="w-14 h-14 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <BarChart3 className="w-7 h-7 text-primary" />
                         </div>
                       </div>
                     </div>
                     
-                    <div className="mt-3 space-y-1">
-                      <h4 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors duration-300">
+                    <div className="mt-4 space-y-2">
+                      <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {item.title}
                       </h4>
-                      <p className="text-muted-foreground text-xs">
+                      <p className="text-muted-foreground text-sm">
                         {item.description}
                       </p>
                     </div>
@@ -237,31 +441,31 @@ const SamplesGallery = () => {
           </section>
 
           {/* Row 3: Web & App Development */}
-          <section>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-foreground mb-3">Web & App Development</h3>
-              <p className="text-muted-foreground">Custom web applications and platforms</p>
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Web & App Development</h3>
+              <p className="text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
+                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-52 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-3">
-                      <Code className="w-12 h-12 text-primary mx-auto" />
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-foreground text-sm">Jovial Studio Platform</h4>
-                        <p className="text-xs text-muted-foreground px-4">Live responsive business platform</p>
+                    <div className="text-center space-y-4">
+                      <Code className="w-14 h-14 text-primary mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Jovial Studio Platform</h4>
+                        <p className="text-sm text-muted-foreground px-4">Live responsive business platform</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Button 
                       size="sm" 
                       variant="secondary" 
-                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                      className="bg-background/90 hover:bg-background"
                     >
-                      <ExternalLink className="h-3 w-3 mr-1" />
+                      <ExternalLink className="h-4 w-4 mr-2" />
                       Demo
                     </Button>
                   </div>
@@ -269,11 +473,11 @@ const SamplesGallery = () => {
               </div>
               
               <div className="group cursor-pointer opacity-60">
-                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 bg-gradient-to-br from-muted/20 to-muted/10 border-2 border-dashed border-muted">
+                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-52 bg-gradient-to-br from-muted/20 to-muted/10 border-2 border-dashed border-muted">
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-2">
-                      <Code className="w-8 h-8 text-muted-foreground mx-auto" />
-                      <p className="text-xs text-muted-foreground">More Projects Coming Soon</p>
+                    <div className="text-center space-y-3">
+                      <Code className="w-10 h-10 text-muted-foreground mx-auto" />
+                      <p className="text-sm text-muted-foreground">More Projects Coming Soon</p>
                     </div>
                   </div>
                 </div>
@@ -282,31 +486,31 @@ const SamplesGallery = () => {
           </section>
 
           {/* Row 4: Virtual Spokesperson Videos */}
-          <section>
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-foreground mb-3">Virtual Spokesperson Videos</h3>
-              <p className="text-muted-foreground">AI-powered spokesperson content</p>
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Virtual Spokesperson Videos</h3>
+              <p className="text-muted-foreground max-w-2xl mx-auto">AI-powered spokesperson content for engaging communication and brand messaging</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto bg-gradient-to-br from-coral/20 to-primary/20">
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-72 max-w-xs mx-auto bg-gradient-to-br from-coral/20 to-primary/20">
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-3">
-                      <Play className="w-12 h-12 text-coral mx-auto" />
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-foreground text-sm">Product Explainer</h4>
-                        <p className="text-xs text-muted-foreground">YouTube Shorts</p>
+                    <div className="text-center space-y-4">
+                      <Play className="w-14 h-14 text-coral mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Product Explainer</h4>
+                        <p className="text-sm text-muted-foreground">YouTube Shorts</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Button 
                       size="sm" 
                       variant="secondary" 
-                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                      className="bg-background/90 hover:bg-background"
                     >
-                      <ExternalLink className="h-3 w-3 mr-1" />
+                      <ExternalLink className="h-4 w-4 mr-2" />
                       YouTube
                     </Button>
                   </div>
@@ -314,24 +518,24 @@ const SamplesGallery = () => {
               </div>
 
               <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto bg-gradient-to-br from-primary/20 to-coral/20">
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-72 max-w-xs mx-auto bg-gradient-to-br from-primary/20 to-coral/20">
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-3">
-                      <Play className="w-12 h-12 text-primary mx-auto" />
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-foreground text-sm">Welcome Message</h4>
-                        <p className="text-xs text-muted-foreground">Engaging intro</p>
+                    <div className="text-center space-y-4">
+                      <Play className="w-14 h-14 text-primary mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Welcome Message</h4>
+                        <p className="text-sm text-muted-foreground">Engaging intro</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Button 
                       size="sm" 
                       variant="secondary" 
-                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                      className="bg-background/90 hover:bg-background"
                     >
-                      <ExternalLink className="h-3 w-3 mr-1" />
+                      <ExternalLink className="h-4 w-4 mr-2" />
                       YouTube
                     </Button>
                   </div>
@@ -339,24 +543,24 @@ const SamplesGallery = () => {
               </div>
 
               <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-64 max-w-xs mx-auto bg-gradient-to-br from-accent/20 to-primary/20">
+                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-72 max-w-xs mx-auto bg-gradient-to-br from-accent/20 to-primary/20">
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-3">
-                      <Play className="w-12 h-12 text-accent-foreground mx-auto" />
-                      <div className="space-y-1">
-                        <h4 className="font-semibold text-foreground text-sm">Training Video</h4>
-                        <p className="text-xs text-muted-foreground">Educational content</p>
+                    <div className="text-center space-y-4">
+                      <Play className="w-14 h-14 text-accent-foreground mx-auto" />
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground">Training Video</h4>
+                        <p className="text-sm text-muted-foreground">Educational content</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Button 
                       size="sm" 
                       variant="secondary" 
-                      className="h-7 px-2 text-xs bg-background/90 hover:bg-background"
+                      className="bg-background/90 hover:bg-background"
                     >
-                      <ExternalLink className="h-3 w-3 mr-1" />
+                      <ExternalLink className="h-4 w-4 mr-2" />
                       YouTube
                     </Button>
                   </div>
@@ -365,7 +569,7 @@ const SamplesGallery = () => {
             </div>
           </section>
 
-          {/* Row 5: AI Agents for Automated Marketing */}
+          {/* Row 5: AI Agents & Automation */}
           <section>
             <div className="mb-8">
               <h3 className="text-2xl font-bold text-foreground mb-3">AI Agents for Automated Marketing</h3>
