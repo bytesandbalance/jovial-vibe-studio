@@ -531,12 +531,13 @@ export default function PortfolioPage() {
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Interactive analytics and performance tracking tools for data-driven insights</p>
             </div>
-            <div className="grid grid-cols-1 gap-6 lg:gap-8 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto">
+            <div className="flex justify-center">
+              <div className="grid grid-cols-1 gap-6 lg:gap-8 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl">
               {allPortfolioItems
                 .filter(item => item.category === 'dashboards')
                 .map((item) => (
-                  <div key={item.id} className="group cursor-pointer">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-80 sm:h-96 lg:h-[28rem] bg-card border border-border shadow-lg">
+                  <div key={item.id} className="group cursor-pointer mx-auto">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-80 sm:h-96 lg:h-[28rem] bg-card border border-border shadow-lg mx-auto">
                       {item.component && (
                         <div className="w-full h-full overflow-hidden">
                           <div className="scale-[0.3] sm:scale-[0.35] lg:scale-[0.4] origin-top-left transform -translate-x-[16.5%] sm:-translate-x-[14.3%] lg:-translate-x-[12.5%] -translate-y-[16.5%] sm:-translate-y-[14.3%] lg:-translate-y-[12.5%]">
@@ -570,6 +571,7 @@ export default function PortfolioPage() {
                   <p className="text-muted-foreground">Dashboard samples coming soon</p>
                 </div>
               )}
+              </div>
             </div>
           </section>
 
