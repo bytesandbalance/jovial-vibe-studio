@@ -582,9 +582,9 @@ export default function PortfolioPage() {
             
             {/* Centered single row */}
             <div className="flex justify-center">
-              <div className="w-full max-w-4xl">
+              <div className="w-full max-w-4xl mx-auto">
                 <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
-                  <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
+                  <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
                     {/* Live Preview Using Iframe */}
                     <iframe
                       src="https://jovial.modulet.de"
