@@ -1,7 +1,7 @@
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import ApproachSection from "@/components/ApproachSection";
-import PortfolioPreview from "@/components/PortfolioPreview";
+import PortfolioCollapsible from "@/components/PortfolioCollapsible";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import IndustriesSection from "@/components/IndustriesSection";
 import WhyChooseSection from "@/components/WhyChooseSection";
@@ -31,7 +31,7 @@ const Index = () => {
       <Navigation />
       <HeroSection />
       <ApproachSection />
-      <PortfolioPreview />
+      <PortfolioCollapsible />
       <HowItWorksSection />
       <IndustriesSection />
       <WhyChooseSection />
