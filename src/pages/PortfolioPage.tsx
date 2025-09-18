@@ -668,7 +668,7 @@ export default function PortfolioPage() {
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">AI Agents & Automation</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Intelligent automation solutions that streamline operations and enhance customer engagement</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 justify-items-center md:justify-items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 place-items-center md:place-items-stretch justify-center">
               <div className="group cursor-pointer max-w-[280px] md:w-full mx-auto">
                 <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
                   <div className="w-full h-full flex items-center justify-center">
