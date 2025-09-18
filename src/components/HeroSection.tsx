@@ -39,7 +39,7 @@ const HeroSection = () => {
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up">
           <Button 
-            onClick={() => scrollToSection('samples')}
+            onClick={() => scrollToSection('portfolio-preview')}
             className="btn-hero text-lg px-10 py-6"
           >
             See Samples
