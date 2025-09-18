@@ -526,25 +526,22 @@ export default function PortfolioPage() {
           </section>
 
           {/* Row 2: Marketing & Sales Dashboards */}
-          <section className="border-b border-border/50 pb-16 overflow-x-hidden">
+          <section className="border-b border-border/50 pb-16 overflow-x-auto">
             <div className="mb-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Interactive analytics and performance tracking tools for data-driven insights</p>
             </div>
-            <div className="flex justify-center">
-              <div className="grid grid-cols-1 gap-6 lg:gap-8 w-full px-2 max-w-[clamp(10rem,75vw,14rem)] sm:max-w-[clamp(14rem,80vw,18rem)] md:max-w-2xl lg:max-w-3xl">
+            
+            {/* Horizontally scrollable row */}
+            <div className="flex justify-start gap-6 px-4">
               {allPortfolioItems
                 .filter(item => item.category === 'dashboards')
                 .map((item) => (
-                  <div key={item.id} className="group cursor-pointer mx-auto">
-                    <div className="relative w-full overflow-hidden rounded-2xl aspect-[3/4] sm:aspect-[4/3] min-h-[22rem] sm:min-h-[26rem] md:min-h-[28rem] lg:min-h-[30rem] bg-card border border-border shadow-lg mx-auto">
+                  <div key={item.id} className="group cursor-pointer flex-shrink-0 w-[300px] sm:w-[350px] md:w-[400px]">
+                    <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
                       {item.component && (
-                        <div className="w-full h-full overflow-hidden flex items-center justify-center">
-                          <div className="scale-[0.45] sm:scale-[0.5] lg:scale-[0.55] origin-center">
-                            <div style={{ width: '222%', height: '222%' }} className="sm:w-[200%] sm:h-[200%] lg:w-[182%] lg:h-[182%]">
-                              <item.component />
-                            </div>
-                          </div>
+                        <div className="w-full h-full flex items-center justify-center">
+                          <item.component />
                         </div>
                       )}
                       
@@ -567,11 +564,10 @@ export default function PortfolioPage() {
                 ))}
               
               {allPortfolioItems.filter(item => item.category === 'dashboards').length === 0 && (
-                <div className="col-span-full text-center py-12">
+                <div className="text-center py-12">
                   <p className="text-muted-foreground">Dashboard samples coming soon</p>
                 </div>
               )}
-              </div>
             </div>
           </section>
 
