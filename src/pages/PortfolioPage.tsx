@@ -531,12 +531,12 @@ export default function PortfolioPage() {
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Interactive analytics and performance tracking tools for data-driven insights</p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 gap-6 lg:gap-8 max-w-4xl mx-auto">
               {allPortfolioItems
                 .filter(item => item.category === 'dashboards')
                 .map((item) => (
                   <div key={item.id} className="group cursor-pointer">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-64 sm:h-72 lg:h-80 bg-card border border-border shadow-lg">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-80 sm:h-96 lg:h-[28rem] bg-card border border-border shadow-lg">
                       {item.component && (
                         <div className="w-full h-full overflow-hidden">
                           <div className="scale-[0.3] sm:scale-[0.35] lg:scale-[0.4] origin-top-left transform -translate-x-[16.5%] sm:-translate-x-[14.3%] lg:-translate-x-[12.5%] -translate-y-[16.5%] sm:-translate-y-[14.3%] lg:-translate-y-[12.5%]">
@@ -582,9 +582,9 @@ export default function PortfolioPage() {
             
             {/* Responsive centered layout */}
             <div className="flex justify-center">
-              <div className="w-full max-w-xs sm:max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto">
+              <div className="w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-3xl mx-auto">
                 <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
-                  <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-48 sm:h-64 md:h-80 lg:h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
+                  <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 sm:h-80 md:h-96 lg:h-[32rem] bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
                     {/* Live Preview Using Iframe */}
                     <iframe
                       src="https://jovial.modulet.de"
