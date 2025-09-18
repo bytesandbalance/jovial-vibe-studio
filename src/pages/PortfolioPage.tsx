@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight, ArrowLeft, Edit, Trash2, Plus, ExternalLink, Code, BarChart3, Bot } from 'lucide-react';
+import { Play, ArrowRight, ArrowLeft, Edit, Trash2, Plus, ExternalLink, Code, BarChart3, Bot, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import CategorySelector from '@/components/CategorySelector';
@@ -40,6 +40,16 @@ interface PortfolioItem {
   duration?: number;
   demo_url?: string;
   component?: React.ComponentType;
+}
+
+interface YouTubeVideo {
+  id: string;
+  title: string;
+  description: string;
+  youtube_url: string;
+  youtube_id: string;
+  thumbnail_url?: string;
+  display_order: number;
 }
 
 const CATEGORIES = [
@@ -84,6 +94,7 @@ export default function PortfolioPage() {
   const { user, userRole } = useAuth();
   const { toast } = useToast();
   const [videos, setVideos] = useState<Video[]>([]);
+  const [youtubeVideos, setYoutubeVideos] = useState<YouTubeVideo[]>([]);
   const [allPortfolioItems, setAllPortfolioItems] = useState<PortfolioItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
@@ -115,13 +126,23 @@ export default function PortfolioPage() {
   const fetchPortfolioData = async () => {
     try {
       // Fetch real videos from database
-      const { data: videoData, error } = await supabase
+      const { data: videoData, error: videoError } = await supabase
         .from('videos')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (videoError) throw videoError;
       setVideos(videoData || []);
+
+      // Fetch YouTube videos from database
+      const { data: youtubeData, error: youtubeError } = await supabase
+        .from('youtube_videos')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (youtubeError) throw youtubeError;
+      setYoutubeVideos(youtubeData || []);
 
       // Convert videos to portfolio items and categorize existing videos as "ads"
       const videoPortfolioItems: PortfolioItem[] = (videoData || []).map(video => ({
@@ -416,20 +437,22 @@ export default function PortfolioPage() {
            </DialogContent>
          </Dialog>
 
-        {/* Portfolio Sections by Service Category */}
-        <div className="space-y-20">
-          {/* Row 1: Video Ads */}
-          <section>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-3">Video Ads & Creative Campaigns</h2>
-              <p className="text-muted-foreground">Dynamic video content that captures attention and drives engagement</p>
+        {/* Five Main Service Categories */}
+        <div className="space-y-24">
+          {/* Row 1: Video Ads & Creative Campaigns */}
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Video Ads & Creative Campaigns</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Dynamic video content that captures attention and drives engagement across all platforms</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            
+            {/* 3-Column Grid Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {allPortfolioItems
                 .filter(item => item.category === 'ads')
                 .map((item) => (
                   <div key={item.id} className="group cursor-pointer relative text-center">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto mb-4">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 mx-auto mb-4">
                       {item.file_url ? (
                         <video
                           src={item.file_url}
@@ -444,21 +467,18 @@ export default function PortfolioPage() {
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
                       )}
                       
-                      {/* Play Button for Videos */}
                       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                         <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                           <Play className="w-8 h-8 text-primary ml-1" />
                         </div>
                       </div>
 
-                      {/* Duration */}
                       {item.duration && (
                         <div className="absolute bottom-2 right-2 bg-background/80 text-foreground text-xs px-2 py-1 rounded">
                           {formatDuration(item.duration)}
                         </div>
                       )}
 
-                      {/* Admin Controls */}
                       {userRole === 'owner' && item.type === 'video' && (
                         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
                           <Button
@@ -466,7 +486,8 @@ export default function PortfolioPage() {
                             variant="secondary"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleEditClick(videos.find(v => v.id === item.id)!);
+                              const video = videos.find(v => v.id === item.id);
+                              if (video) handleEditClick(video);
                             }}
                           >
                             <Edit className="w-4 h-4" />
@@ -486,7 +507,7 @@ export default function PortfolioPage() {
                     </div>
                     
                     <div className="space-y-2">
-                      <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {item.title}
                       </h3>
                       <p className="text-muted-foreground text-sm">
@@ -495,29 +516,30 @@ export default function PortfolioPage() {
                     </div>
                   </div>
                 ))}
+              
               {allPortfolioItems.filter(item => item.category === 'ads').length === 0 && (
-                <div className="col-span-full text-center py-8">
-                  <p className="text-muted-foreground">Video ads coming soon...</p>
+                <div className="col-span-full text-center py-12">
+                  <p className="text-muted-foreground">Video ad showcase coming soon</p>
                 </div>
               )}
             </div>
           </section>
 
-          {/* Row 2: Marketing & Sales Analytics */}
-          <section>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-3">Marketing & Sales Analytics</h2>
-              <p className="text-muted-foreground">Interactive dashboards for tracking performance and insights</p>
+          {/* Row 2: Marketing & Sales Dashboards */}
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Interactive analytics and performance tracking tools for data-driven insights</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {allPortfolioItems
                 .filter(item => item.category === 'dashboards')
                 .map((item) => (
                   <div key={item.id} className="group cursor-pointer">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-80 bg-card">
+                    <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-80 bg-card border border-border shadow-lg">
                       {item.component && (
                         <div className="w-full h-full overflow-hidden">
-                          <div className="scale-[0.4] origin-top-left transform -translate-x-[15%] -translate-y-[12%]">
+                          <div className="scale-[0.4] origin-top-left transform -translate-x-[12.5%] -translate-y-[12.5%]">
                             <div style={{ width: '250%', height: '250%' }}>
                               <item.component />
                             </div>
@@ -525,8 +547,7 @@ export default function PortfolioPage() {
                         </div>
                       )}
                       
-                      {/* Overlay */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                           <BarChart3 className="w-8 h-8 text-primary" />
                         </div>
@@ -534,58 +555,54 @@ export default function PortfolioPage() {
                     </div>
                     
                     <div className="mt-4 space-y-2">
-                      <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
                         {item.title}
                       </h3>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         {item.description}
                       </p>
                     </div>
                   </div>
                 ))}
+              
+              {allPortfolioItems.filter(item => item.category === 'dashboards').length === 0 && (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-muted-foreground">Dashboard samples coming soon</p>
+                </div>
+              )}
             </div>
           </section>
 
           {/* Row 3: Web & App Development */}
-          <section>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-3">Web & App Development</h2>
-              <p className="text-muted-foreground">Custom web applications and responsive platforms</p>
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Web & App Development</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            {/* Full-width single row */}
+            <div className="space-y-8">
               <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-64 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Code className="w-20 h-20 text-primary mx-auto" />
-                      <div className="space-y-2">
-                        <h3 className="text-xl font-semibold text-foreground">Jovial Studio Platform</h3>
-                        <p className="text-sm text-muted-foreground px-4">Live responsive business platform</p>
-                      </div>
-                    </div>
-                  </div>
+                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-96 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
+                  {/* Live Preview Using Iframe */}
+                  <iframe
+                    src="https://jovial.modulet.de"
+                    className="w-full h-full border-0"
+                    title="Jovial Studio Platform"
+                    loading="lazy"
+                  />
                   
-                  {/* Live Demo Button */}
                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button 
-                      size="sm" 
-                      variant="secondary" 
-                      className="h-8 px-3 bg-background/90 hover:bg-background"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Live Demo
+                    <Button size="lg" variant="secondary" className="bg-background/90 hover:bg-background shadow-lg">
+                      <ExternalLink className="w-5 h-5 mr-2" />
+                      Visit Live Site
                     </Button>
                   </div>
-                </div>
-              </div>
-              
-              {/* Placeholder for future projects */}
-              <div className="group cursor-pointer opacity-60">
-                <div className="relative overflow-hidden rounded-2xl aspect-[16/9] h-64 bg-gradient-to-br from-muted/20 to-muted/10 border-2 border-dashed border-muted">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-2">
-                      <Code className="w-12 h-12 text-muted-foreground mx-auto" />
-                      <p className="text-sm text-muted-foreground">More Projects Coming Soon</p>
+                  
+                  <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-background/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+                      <h3 className="font-semibold text-foreground text-lg mb-2">Jovial Studio Platform</h3>
+                      <p className="text-muted-foreground text-sm">Full-stack business platform with responsive design, modern UI, and complete functionality</p>
                     </div>
                   </div>
                 </div>
@@ -594,106 +611,70 @@ export default function PortfolioPage() {
           </section>
 
           {/* Row 4: Virtual Spokesperson Videos */}
-          <section>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-3">Virtual Spokesperson Videos</h2>
-              <p className="text-muted-foreground">AI-powered spokesperson content for engaging communication</p>
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Virtual Spokesperson Videos</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">AI-powered spokesperson content for engaging communication and brand messaging</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* YouTube Shorts from @BytesBalance */}
-              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto bg-gradient-to-br from-coral/20 to-primary/20">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Play className="w-20 h-20 text-coral mx-auto" />
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">Product Explainer</h4>
-                        <p className="text-sm text-muted-foreground">YouTube Shorts showcase</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {youtubeVideos.map((video) => (
+                <div key={video.id} className="group cursor-pointer" onClick={() => window.open(video.youtube_url, '_blank')}>
+                  <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto">
+                    {/* YouTube Thumbnail */}
+                    <img
+                      src={`https://img.youtube.com/vi/${video.youtube_id}/maxresdefault.jpg`}
+                      alt={video.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback to high quality thumbnail if maxres fails
+                        (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.youtube_id}/hqdefault.jpg`;
+                      }}
+                    />
+                    
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                        <Play className="w-8 h-8 text-white ml-1" />
                       </div>
                     </div>
-                  </div>
-                  
-                  {/* Play on YouTube */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button 
-                      size="sm" 
-                      variant="secondary" 
-                      className="h-8 px-3 bg-background/90 hover:bg-background"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      YouTube
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto bg-gradient-to-br from-primary/20 to-coral/20">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Play className="w-20 h-20 text-primary mx-auto" />
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">Welcome Message</h4>
-                        <p className="text-sm text-muted-foreground">Engaging introductions</p>
-                      </div>
+                    
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Button size="sm" variant="secondary" className="bg-background/90 hover:bg-background">
+                        <ExternalLink className="w-4 h-4 mr-2" />
+                        YouTube
+                      </Button>
+                    </div>
+                    
+                    <div className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <h4 className="font-semibold text-white text-sm mb-1">{video.title}</h4>
+                      <p className="text-white/80 text-xs">{video.description}</p>
                     </div>
                   </div>
-                  
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button 
-                      size="sm" 
-                      variant="secondary" 
-                      className="h-8 px-3 bg-background/90 hover:bg-background"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      YouTube
-                    </Button>
-                  </div>
                 </div>
-              </div>
-
-              <div className="group cursor-pointer" onClick={() => window.open('https://www.youtube.com/@BytesBalance/shorts', '_blank')}>
-                <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto bg-gradient-to-br from-accent/20 to-primary/20">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Play className="w-20 h-20 text-accent-foreground mx-auto" />
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">Training Video</h4>
-                        <p className="text-sm text-muted-foreground">Educational content</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Button 
-                      size="sm" 
-                      variant="secondary" 
-                      className="h-8 px-3 bg-background/90 hover:bg-background"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      YouTube
-                    </Button>
-                  </div>
+              ))}
+              
+              {youtubeVideos.length === 0 && (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-muted-foreground">Virtual spokesperson videos coming soon</p>
                 </div>
-              </div>
+              )}
             </div>
           </section>
 
-          {/* Row 5: AI Agents for Automated Marketing */}
+          {/* Row 5: AI Agents & Automation */}
           <section>
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-3">AI Agents for Automated Marketing</h2>
-              <p className="text-muted-foreground">Intelligent automation for customer engagement and marketing workflows</p>
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">AI Agents & Automation</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Intelligent automation solutions that streamline operations and enhance customer engagement</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="text-center space-y-4">
                       <Bot className="w-16 h-16 text-primary mx-auto" />
                       <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">AI Chatbot</h4>
-                        <p className="text-sm text-muted-foreground px-4">Intelligent customer service automation</p>
+                        <h3 className="font-semibold text-foreground">AI Chatbot</h3>
+                        <p className="text-sm text-muted-foreground px-4">Intelligent customer service automation with natural language processing</p>
                       </div>
                     </div>
                   </div>
@@ -701,13 +682,13 @@ export default function PortfolioPage() {
               </div>
 
               <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-coral/10 to-primary/10 border-2 border-coral/20">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-coral/10 to-primary/10 border-2 border-coral/20 hover:border-coral/40 transition-colors duration-300">
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="text-center space-y-4">
-                      <Bot className="w-16 h-16 text-coral mx-auto" />
+                      <Volume2 className="w-16 h-16 text-coral mx-auto" />
                       <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">Email Automation</h4>
-                        <p className="text-sm text-muted-foreground px-4">Personalized marketing sequences</p>
+                        <h3 className="font-semibold text-foreground">Email Automation</h3>
+                        <p className="text-sm text-muted-foreground px-4">Personalized marketing campaign sequences with smart targeting</p>
                       </div>
                     </div>
                   </div>
@@ -715,13 +696,13 @@ export default function PortfolioPage() {
               </div>
 
               <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/20">
+                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/20 hover:border-accent/40 transition-colors duration-300">
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="text-center space-y-4">
-                      <Bot className="w-16 h-16 text-accent-foreground mx-auto" />
+                      <ArrowRight className="w-16 h-16 text-accent-foreground mx-auto" />
                       <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground">Marketing Workflows</h4>
-                        <p className="text-sm text-muted-foreground px-4">Automated lead nurturing systems</p>
+                        <h3 className="font-semibold text-foreground">Workflow Automation</h3>
+                        <p className="text-sm text-muted-foreground px-4">Process optimization systems that reduce manual work</p>
                       </div>
                     </div>
                   </div>
@@ -729,6 +710,20 @@ export default function PortfolioPage() {
               </div>
             </div>
           </section>
+        </div>
+
+        {/* Call to Action */}
+        <div className="text-center mt-20 py-16 border-t border-border/50">
+          <h2 className="text-3xl font-bold text-foreground mb-4">Ready to Transform Your Business?</h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Let's discuss how our creative tech solutions can help you achieve your goals and stand out in the digital landscape.
+          </p>
+          <Button asChild size="lg" className="btn-hero">
+            <Link to="/order">
+              Get Started Today
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
