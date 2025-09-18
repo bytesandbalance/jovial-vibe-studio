@@ -673,7 +673,7 @@ export default function PortfolioPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 justify-items-center">
+            <div className="flex flex-col md:flex-row gap-8 px-4 items-center md:justify-center">
               <div className="group cursor-pointer w-full max-w-[280px] sm:max-w-[320px] md:max-w-none md:w-full mx-auto">
                 <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
                   <div className="w-full h-full flex items-center justify-center">
