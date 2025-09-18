@@ -663,51 +663,42 @@ export default function PortfolioPage() {
           </section>
 
           {/* Row 5: AI Agents & Automation */}
-          <section>
+          <section className="border-b border-border/50 pb-16">
             <div className="mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">AI Agents & Automation</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Intelligent automation solutions that streamline operations and enhance customer engagement</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                AI Agents & Automation
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Intelligent automation solutions that streamline operations and enhance customer engagement
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 place-items-center md:place-items-stretch justify-center">
-              <div className="group cursor-pointer max-w-[280px] md:w-full mx-auto">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Bot className="w-16 h-16 text-primary mx-auto" />
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-foreground">AI Chatbot</h3>
-                        <p className="text-sm text-muted-foreground px-4">Intelligent customer service automation with natural language processing</p>
-                      </div>
-                    </div>
-                  </div>
+
+            {/* Cards */}
+            <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center sm:items-stretch">
+              <div className="w-full sm:w-1/3 max-w-sm mx-auto text-center">
+                <div className="p-6 rounded-2xl border border-border bg-card shadow-lg">
+                  <h3 className="font-semibold text-lg mb-2">AI Chatbot</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Intelligent customer service automation with natural language processing
+                  </p>
                 </div>
               </div>
 
-              <div className="group cursor-pointer max-w-[280px] md:w-full mx-auto">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-coral/10 to-primary/10 border-2 border-coral/20 hover:border-coral/40 transition-colors duration-300">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Volume2 className="w-16 h-16 text-coral mx-auto" />
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-foreground">Email Automation</h3>
-                        <p className="text-sm text-muted-foreground px-4">Personalized marketing campaign sequences with smart targeting</p>
-                      </div>
-                    </div>
-                  </div>
+              <div className="w-full sm:w-1/3 max-w-sm mx-auto text-center">
+                <div className="p-6 rounded-2xl border border-border bg-card shadow-lg">
+                  <h3 className="font-semibold text-lg mb-2">Email Automation</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Personalized marketing campaign sequences with smart targeting
+                  </p>
                 </div>
               </div>
 
-              <div className="group cursor-pointer max-w-[280px] md:w-full mx-auto">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/20 hover:border-accent/40 transition-colors duration-300">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <ArrowRight className="w-16 h-16 text-accent-foreground mx-auto" />
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-foreground">Workflow Automation</h3>
-                        <p className="text-sm text-muted-foreground px-4">Process optimization systems that reduce manual work</p>
-                      </div>
-                    </div>
-                  </div>
+              <div className="w-full sm:w-1/3 max-w-sm mx-auto text-center">
+                <div className="p-6 rounded-2xl border border-border bg-card shadow-lg">
+                  <h3 className="font-semibold text-lg mb-2">Workflow Automation</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Process optimization systems that reduce manual work
+                  </p>
                 </div>
               </div>
             </div>
