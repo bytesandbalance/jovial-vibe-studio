@@ -188,6 +188,7 @@ export default function PortfolioPage() {
         title: video.title,
         description: video.description,
         category: video.category as string, // Cast to string to avoid enum type issues
+        labels: video.labels, // Include labels from database
         type: (video.category as string) === 'web_apps' ? 'webapp' as const : 'video' as const,
         file_url: video.file_url,
         thumbnail_url: video.thumbnail_url,
@@ -273,7 +274,7 @@ export default function PortfolioPage() {
             description: uploadForm.description,
             youtube_url: fileUrl,
             youtube_id: youtubeId,
-            labels: uploadForm.labels,
+            labels: uploadForm.labels.length > 0 ? uploadForm.labels : null, // Only set if not empty
             category: 'spokesperson',
             display_order: 999 // Add to end
           });
@@ -287,8 +288,9 @@ export default function PortfolioPage() {
             title: uploadForm.title,
             description: uploadForm.description,
             category: uploadForm.category as any,
-            labels: uploadForm.labels,
+            labels: uploadForm.labels.length > 0 ? uploadForm.labels : null, // Only set if not empty
             file_url: fileUrl,
+            thumbnail_url: fileUrl, // Add thumbnail_url
             uploaded_by: user?.id,
             is_featured: uploadForm.is_featured,
             file_size: fileSize
@@ -333,7 +335,7 @@ export default function PortfolioPage() {
           title: editForm.title,
           description: editForm.description,
           category: editForm.category as any,
-          labels: editForm.labels
+          labels: editForm.labels.length > 0 ? editForm.labels : null // Handle empty arrays
         })
         .eq('id', editingVideo.id);
       
