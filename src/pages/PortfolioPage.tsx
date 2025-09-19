@@ -349,6 +349,28 @@ export default function PortfolioPage() {
     }
   };
 
+  const handleDeleteYouTube = async (videoId: string) => {
+    if (!confirm('Are you sure you want to delete this YouTube video?')) return;
+    
+    try {
+      const { error } = await supabase
+        .from('youtube_videos')
+        .delete()
+        .eq('id', videoId);
+      
+      if (error) throw error;
+      
+      toast({ title: "YouTube video deleted successfully!" });
+      fetchPortfolioData();
+    } catch (error: any) {
+      toast({
+        title: "Delete failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen pt-24">
@@ -794,6 +816,23 @@ export default function PortfolioPage() {
                         YouTube
                       </Button>
                     </div>
+
+                    {/* Edit and delete buttons for owners */}
+                    {userRole === 'owner' && (
+                      <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteYouTube(video.id);
+                          }}
+                          className="bg-destructive/90 hover:bg-destructive"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    )}
                     
                     <div className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <h4 className="font-semibold text-white text-sm mb-1">{video.title}</h4>
