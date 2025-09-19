@@ -827,7 +827,11 @@ export default function PortfolioPage() {
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className={`grid gap-8 ${
+              allPortfolioItems.filter(item => item.category === 'web_apps').length === 1 
+                ? 'grid-cols-1 max-w-2xl mx-auto' 
+                : 'grid-cols-1 md:grid-cols-2'
+            }`}>
               {/* Display uploaded web apps from database */}
               {allPortfolioItems.filter(item => item.category === 'web_apps').map((item) => (
                 <div key={item.id} className="group cursor-pointer" onClick={() => window.open(item.demo_url || item.file_url, '_blank')}>
