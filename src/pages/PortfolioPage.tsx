@@ -59,6 +59,14 @@ const CATEGORIES = [
   { value: 'spokesperson', label: 'Virtual Spokesperson', color: 'bg-accent' },
   { value: 'dashboards', label: 'Marketing & Sales Dashboards', color: 'bg-accent-foreground' },
   { value: 'ai_agents', label: 'AI Agents & Automation', color: 'bg-muted-foreground' },
+  // Include existing video categories
+  { value: 'clothing', label: 'Fashion & Clothing', color: 'bg-purple-500' },
+  { value: 'retail', label: 'Retail & E-commerce', color: 'bg-blue-500' },
+  { value: 'automotive', label: 'Automotive', color: 'bg-red-500' },
+  { value: 'food', label: 'Food & Beverage', color: 'bg-green-500' },
+  { value: 'fitness', label: 'Fitness & Health', color: 'bg-orange-500' },
+  { value: 'real_estate', label: 'Real Estate', color: 'bg-teal-500' },
+  { value: 'beauty', label: 'Beauty & Cosmetics', color: 'bg-pink-500' },
 ];
 
 // Mock portfolio items for different service categories
@@ -504,7 +512,11 @@ export default function PortfolioPage() {
             {/* 3-Column Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {allPortfolioItems
-                .filter(item => item.category === 'ads')
+                .filter(item => 
+                  item.type === 'video' && 
+                  item.category !== 'web_apps' && 
+                  item.category !== 'spokesperson'
+                )
                 .map((item) => (
                   <div key={item.id} className="group cursor-pointer relative text-center">
                     <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 mx-auto mb-4">
@@ -568,11 +580,21 @@ export default function PortfolioPage() {
                       <p className="text-muted-foreground text-sm">
                         {item.description}
                       </p>
+                      {/* Show category badge */}
+                      <div className="flex justify-center">
+                        <Badge variant="secondary" className="text-xs">
+                          {CATEGORIES.find(cat => cat.value === item.category)?.label || item.category}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
                 ))}
               
-              {allPortfolioItems.filter(item => item.category === 'ads').length === 0 && (
+              {allPortfolioItems.filter(item => 
+                item.type === 'video' && 
+                item.category !== 'web_apps' && 
+                item.category !== 'spokesperson'
+              ).length === 0 && (
                 <div className="col-span-full text-center py-12">
                   <p className="text-muted-foreground">Video ad showcase coming soon</p>
                 </div>
