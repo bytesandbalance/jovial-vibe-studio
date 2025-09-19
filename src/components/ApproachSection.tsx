@@ -52,10 +52,10 @@ const ApproachSection = () => {
             <video 
               className="w-full h-full object-cover rounded-2xl"
               controls
-              poster="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/document_5650178328569577477.mp4"
+              poster="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/jovial-studio.mp4"
             >
               <source 
-                src="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/document_5650178328569577477.mp4" 
+                src="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/jovial-studio.mp4" 
                 type="video/mp4" 
               />
               Your browser does not support the video tag.
