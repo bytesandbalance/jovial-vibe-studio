@@ -110,6 +110,7 @@ export default function PortfolioPage() {
     description: '',
     category: '',
     file: null as File | null,
+    url: '',
     is_featured: false
   });
 
@@ -178,22 +179,41 @@ export default function PortfolioPage() {
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!uploadForm.file || !uploadForm.title || !uploadForm.category) return;
+    if (!uploadForm.title || !uploadForm.category) return;
+    
+    // Validate based on category
+    if (uploadForm.category === 'ads' && !uploadForm.file) {
+      toast({ title: "Please select a video file", variant: "destructive" });
+      return;
+    }
+    if ((uploadForm.category === 'web_apps' || uploadForm.category === 'spokesperson') && !uploadForm.url) {
+      toast({ title: "Please enter a URL", variant: "destructive" });
+      return;
+    }
     
     setUploading(true);
     try {
-      const fileExt = uploadForm.file.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      
-      const { error: uploadError } = await supabase.storage
-        .from('videos')
-        .upload(fileName, uploadForm.file);
-      
-      if (uploadError) throw uploadError;
-      
-      const { data: { publicUrl } } = supabase.storage
-        .from('videos')
-        .getPublicUrl(fileName);
+      let fileUrl = uploadForm.url;
+      let fileSize = null;
+
+      // Handle file upload for video categories
+      if (uploadForm.category === 'ads' && uploadForm.file) {
+        const fileExt = uploadForm.file.name.split('.').pop();
+        const fileName = `${Date.now()}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('videos')
+          .upload(fileName, uploadForm.file);
+        
+        if (uploadError) throw uploadError;
+        
+        const { data: { publicUrl } } = supabase.storage
+          .from('videos')
+          .getPublicUrl(fileName);
+        
+        fileUrl = publicUrl;
+        fileSize = uploadForm.file.size;
+      }
       
       const { error: insertError } = await supabase
         .from('videos')
@@ -201,17 +221,17 @@ export default function PortfolioPage() {
           title: uploadForm.title,
           description: uploadForm.description,
           category: uploadForm.category as any,
-          file_url: publicUrl,
+          file_url: fileUrl,
           uploaded_by: user?.id,
           is_featured: uploadForm.is_featured,
-          file_size: uploadForm.file.size
+          file_size: fileSize
         });
       
       if (insertError) throw insertError;
       
-      toast({ title: "Video uploaded successfully!" });
+      toast({ title: "Content uploaded successfully!" });
       setShowUploadDialog(false);
-      setUploadForm({ title: '', description: '', category: '', file: null, is_featured: false });
+      setUploadForm({ title: '', description: '', category: '', file: null, url: '', is_featured: false });
       fetchPortfolioData();
     } catch (error: any) {
       toast({
@@ -364,16 +384,49 @@ export default function PortfolioPage() {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div>
-                      <Label htmlFor="video">Video File (MP4)</Label>
-                      <Input
-                        id="video"
-                        type="file"
-                        accept=".mp4,video/mp4"
-                        onChange={(e) => setUploadForm(prev => ({ ...prev, file: e.target.files?.[0] || null }))}
-                        required
-                      />
-                    </div>
+                    {/* Conditional input based on category */}
+                    {uploadForm.category === 'ads' ? (
+                      <div>
+                        <Label htmlFor="video">Video File (MP4)</Label>
+                        <Input
+                          id="video"
+                          type="file"
+                          accept=".mp4,video/mp4"
+                          onChange={(e) => setUploadForm(prev => ({ ...prev, file: e.target.files?.[0] || null }))}
+                          required
+                        />
+                      </div>
+                    ) : uploadForm.category === 'web_apps' ? (
+                      <div>
+                        <Label htmlFor="url">Website URL</Label>
+                        <Input
+                          id="url"
+                          type="url"
+                          placeholder="https://example.com"
+                          value={uploadForm.url}
+                          onChange={(e) => setUploadForm(prev => ({ ...prev, url: e.target.value }))}
+                          required
+                        />
+                      </div>
+                    ) : uploadForm.category === 'spokesperson' ? (
+                      <div>
+                        <Label htmlFor="url">YouTube URL</Label>
+                        <Input
+                          id="url"
+                          type="url"
+                          placeholder="https://youtube.com/watch?v=..."
+                          value={uploadForm.url}
+                          onChange={(e) => setUploadForm(prev => ({ ...prev, url: e.target.value }))}
+                          required
+                        />
+                      </div>
+                    ) : uploadForm.category ? (
+                      <div className="p-4 bg-muted rounded-lg">
+                        <p className="text-sm text-muted-foreground">
+                          Please select a category first to see upload options.
+                        </p>
+                      </div>
+                    ) : null}
                     <div className="flex items-center space-x-2">
                       <input
                         type="checkbox"
