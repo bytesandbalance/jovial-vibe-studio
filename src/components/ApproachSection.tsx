@@ -48,14 +48,18 @@ const ApproachSection = () => {
             </div>
           </div>
 
-          <div className="video-placeholder h-96 rounded-2xl">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <div className="w-8 h-8 bg-white rounded-full" />
-              </div>
-              <p className="text-white/80 font-medium">Tech Solutions Showcase</p>
-              <p className="text-white/60 text-sm mt-2">See our integrated approach in action</p>
-            </div>
+          <div className="relative h-96 rounded-2xl overflow-hidden shadow-brand">
+            <video 
+              className="w-full h-full object-cover rounded-2xl"
+              controls
+              poster="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/document_5650178328569577477.mp4"
+            >
+              <source 
+                src="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/document_5650178328569577477.mp4" 
+                type="video/mp4" 
+              />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       </div>
