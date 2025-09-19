@@ -23,6 +23,7 @@ interface Video {
   title: string;
   description: string;
   category: string;
+  labels?: string[];
   file_url: string;
   thumbnail_url: string;
   duration: number;
@@ -33,6 +34,7 @@ interface PortfolioItem {
   title: string;
   description: string;
   category: string;
+  labels?: string[];
   type: 'video' | 'mockup' | 'dashboard' | 'webapp';
   file_url?: string;
   thumbnail_url?: string;
@@ -49,6 +51,7 @@ interface YouTubeVideo {
   youtube_url: string;
   youtube_id: string;
   thumbnail_url?: string;
+  labels?: string[];
   display_order: number;
 }
 
@@ -74,6 +77,22 @@ const UPLOAD_CATEGORIES = [
   { value: 'ads', label: 'Video Ads & Creative Campaigns', color: 'bg-coral' },
   { value: 'web_apps', label: 'Web & App Development', color: 'bg-primary-dark' },
   { value: 'spokesperson', label: 'Virtual Spokesperson', color: 'bg-accent' },
+];
+
+// Industry labels that can be applied to any category
+const INDUSTRY_LABELS = [
+  { value: 'automotive', label: 'Automotive' },
+  { value: 'fashion', label: 'Fashion & Clothing' },
+  { value: 'food', label: 'Food & Beverage' },
+  { value: 'fitness', label: 'Fitness & Health' },
+  { value: 'retail', label: 'Retail & E-commerce' },
+  { value: 'real_estate', label: 'Real Estate' },
+  { value: 'beauty', label: 'Beauty & Cosmetics' },
+  { value: 'tech', label: 'Technology' },
+  { value: 'finance', label: 'Finance & Banking' },
+  { value: 'healthcare', label: 'Healthcare' },
+  { value: 'education', label: 'Education' },
+  { value: 'entertainment', label: 'Entertainment' },
 ];
 
 // Mock portfolio items for different service categories
@@ -124,6 +143,7 @@ export default function PortfolioPage() {
     title: '',
     description: '',
     category: '',
+    labels: [] as string[],
     file: null as File | null,
     url: '',
     is_featured: false
@@ -133,7 +153,8 @@ export default function PortfolioPage() {
   const [editForm, setEditForm] = useState({
     title: '',
     description: '',
-    category: ''
+    category: '',
+    labels: [] as string[]
   });
 
   useEffect(() => {
@@ -252,6 +273,7 @@ export default function PortfolioPage() {
             description: uploadForm.description,
             youtube_url: fileUrl,
             youtube_id: youtubeId,
+            labels: uploadForm.labels,
             category: 'spokesperson',
             display_order: 999 // Add to end
           });
@@ -265,6 +287,7 @@ export default function PortfolioPage() {
             title: uploadForm.title,
             description: uploadForm.description,
             category: uploadForm.category as any,
+            labels: uploadForm.labels,
             file_url: fileUrl,
             uploaded_by: user?.id,
             is_featured: uploadForm.is_featured,
@@ -276,7 +299,7 @@ export default function PortfolioPage() {
       
       toast({ title: "Content uploaded successfully!" });
       setShowUploadDialog(false);
-      setUploadForm({ title: '', description: '', category: '', file: null, url: '', is_featured: false });
+      setUploadForm({ title: '', description: '', category: '', labels: [], file: null, url: '', is_featured: false });
       fetchPortfolioData();
     } catch (error: any) {
       toast({
@@ -294,7 +317,8 @@ export default function PortfolioPage() {
     setEditForm({
       title: video.title,
       description: video.description || '',
-      category: video.category
+      category: video.category,
+      labels: video.labels || []
     });
     setShowEditDialog(true);
   };
@@ -308,7 +332,8 @@ export default function PortfolioPage() {
         .update({
           title: editForm.title,
           description: editForm.description,
-          category: editForm.category as any
+          category: editForm.category as any,
+          labels: editForm.labels
         })
         .eq('id', editingVideo.id);
       
@@ -450,7 +475,45 @@ export default function PortfolioPage() {
                             ))}
                          </SelectContent>
                       </Select>
-                    </div>
+                     </div>
+                     <div>
+                       <Label htmlFor="labels">Industry Labels (optional)</Label>
+                       <Select 
+                         onValueChange={(value) => {
+                           if (!uploadForm.labels.includes(value)) {
+                             setUploadForm(prev => ({ ...prev, labels: [...prev.labels, value] }));
+                           }
+                         }}
+                       >
+                         <SelectTrigger>
+                           <SelectValue placeholder="Add industry labels" />
+                         </SelectTrigger>
+                         <SelectContent>
+                           {INDUSTRY_LABELS.map((label) => (
+                             <SelectItem key={label.value} value={label.value}>
+                               {label.label}
+                             </SelectItem>
+                           ))}
+                         </SelectContent>
+                       </Select>
+                       {uploadForm.labels.length > 0 && (
+                         <div className="flex flex-wrap gap-2 mt-2">
+                           {uploadForm.labels.map((label, index) => (
+                             <Badge 
+                               key={index} 
+                               variant="secondary" 
+                               className="cursor-pointer"
+                               onClick={() => setUploadForm(prev => ({ 
+                                 ...prev, 
+                                 labels: prev.labels.filter(l => l !== label) 
+                               }))}
+                             >
+                               {INDUSTRY_LABELS.find(l => l.value === label)?.label || label} ×
+                             </Badge>
+                           ))}
+                         </div>
+                       )}
+                     </div>
                     {/* Conditional input based on category */}
                     {uploadForm.category === 'ads' ? (
                       <div>
@@ -550,7 +613,45 @@ export default function PortfolioPage() {
                       ))}
                     </SelectContent>
                  </Select>
-               </div>
+                </div>
+                <div>
+                  <Label htmlFor="edit-labels">Industry Labels (optional)</Label>
+                  <Select 
+                    onValueChange={(value) => {
+                      if (!editForm.labels.includes(value)) {
+                        setEditForm(prev => ({ ...prev, labels: [...prev.labels, value] }));
+                      }
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Add industry labels" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {INDUSTRY_LABELS.map((label) => (
+                        <SelectItem key={label.value} value={label.value}>
+                          {label.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {editForm.labels.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {editForm.labels.map((label, index) => (
+                        <Badge 
+                          key={index} 
+                          variant="secondary" 
+                          className="cursor-pointer"
+                          onClick={() => setEditForm(prev => ({ 
+                            ...prev, 
+                            labels: prev.labels.filter(l => l !== label) 
+                          }))}
+                        >
+                          {INDUSTRY_LABELS.find(l => l.value === label)?.label || label} ×
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </div>
                <Button onClick={handleSaveEdit} className="w-full">
                  Save Changes
                </Button>
@@ -638,11 +739,19 @@ export default function PortfolioPage() {
                       <p className="text-muted-foreground text-sm">
                         {item.description}
                       </p>
-                      {/* Show category badge */}
-                      <div className="flex justify-center">
-                        <Badge variant="secondary" className="text-xs">
-                          {CATEGORIES.find(cat => cat.value === item.category)?.label || item.category}
-                        </Badge>
+                       {/* Show labels */}
+                       <div className="flex justify-center flex-wrap gap-1">
+                         {item.labels && item.labels.length > 0 ? 
+                           item.labels.map((label, index) => (
+                             <Badge key={index} variant="secondary" className="text-xs">
+                               {INDUSTRY_LABELS.find(l => l.value === label)?.label || label}
+                             </Badge>
+                           )) : (
+                             <Badge variant="outline" className="text-xs opacity-50">
+                               No labels
+                             </Badge>
+                           )
+                         }
                       </div>
                     </div>
                   </div>
@@ -836,7 +945,17 @@ export default function PortfolioPage() {
                     
                     <div className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <h4 className="font-semibold text-white text-sm mb-1">{video.title}</h4>
-                      <p className="text-white/80 text-xs">{video.description}</p>
+                      <p className="text-white/80 text-xs mb-2">{video.description}</p>
+                      {/* Show labels */}
+                      <div className="flex flex-wrap gap-1">
+                        {video.labels && video.labels.length > 0 ? 
+                          video.labels.map((label, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border-white/20">
+                              {INDUSTRY_LABELS.find(l => l.value === label)?.label || label}
+                            </Badge>
+                          )) : null
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>

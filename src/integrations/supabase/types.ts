@@ -161,6 +161,7 @@ export type Database = {
           file_url: string
           id: string
           is_featured: boolean | null
+          labels: string[] | null
           thumbnail_url: string | null
           title: string
           updated_at: string
@@ -175,6 +176,7 @@ export type Database = {
           file_url: string
           id?: string
           is_featured?: boolean | null
+          labels?: string[] | null
           thumbnail_url?: string | null
           title: string
           updated_at?: string
@@ -189,6 +191,7 @@ export type Database = {
           file_url?: string
           id?: string
           is_featured?: boolean | null
+          labels?: string[] | null
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
@@ -204,6 +207,7 @@ export type Database = {
           display_order: number | null
           id: string
           is_active: boolean | null
+          labels: string[] | null
           thumbnail_url: string | null
           title: string
           updated_at: string
@@ -217,6 +221,7 @@ export type Database = {
           display_order?: number | null
           id?: string
           is_active?: boolean | null
+          labels?: string[] | null
           thumbnail_url?: string | null
           title: string
           updated_at?: string
@@ -230,6 +235,7 @@ export type Database = {
           display_order?: number | null
           id?: string
           is_active?: boolean | null
+          labels?: string[] | null
           thumbnail_url?: string | null
           title?: string
           updated_at?: string
@@ -256,6 +262,9 @@ export type Database = {
         | "real_estate"
         | "beauty"
         | "clothing"
+        | "ads"
+        | "web_apps"
+        | "spokesperson"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -393,6 +402,9 @@ export const Constants = {
         "real_estate",
         "beauty",
         "clothing",
+        "ads",
+        "web_apps",
+        "spokesperson",
       ],
     },
   },
