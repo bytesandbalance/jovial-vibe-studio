@@ -59,7 +59,7 @@ const CATEGORIES = [
   { value: 'spokesperson', label: 'Virtual Spokesperson', color: 'bg-accent' },
   { value: 'dashboards', label: 'Marketing & Sales Dashboards', color: 'bg-accent-foreground' },
   { value: 'ai_agents', label: 'AI Agents & Automation', color: 'bg-muted-foreground' },
-  // Include existing video categories
+  // Include existing video categories for display only
   { value: 'clothing', label: 'Fashion & Clothing', color: 'bg-purple-500' },
   { value: 'retail', label: 'Retail & E-commerce', color: 'bg-blue-500' },
   { value: 'automotive', label: 'Automotive', color: 'bg-red-500' },
@@ -67,6 +67,13 @@ const CATEGORIES = [
   { value: 'fitness', label: 'Fitness & Health', color: 'bg-orange-500' },
   { value: 'real_estate', label: 'Real Estate', color: 'bg-teal-500' },
   { value: 'beauty', label: 'Beauty & Cosmetics', color: 'bg-pink-500' },
+];
+
+// Upload categories - only the main service types
+const UPLOAD_CATEGORIES = [
+  { value: 'ads', label: 'Video Ads & Creative Campaigns', color: 'bg-coral' },
+  { value: 'web_apps', label: 'Web & App Development', color: 'bg-primary-dark' },
+  { value: 'spokesperson', label: 'Virtual Spokesperson', color: 'bg-accent' },
 ];
 
 // Mock portfolio items for different service categories
@@ -384,13 +391,13 @@ export default function PortfolioPage() {
                         <SelectTrigger>
                           <SelectValue placeholder="Select category" />
                         </SelectTrigger>
-                         <SelectContent>
-                           {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
-                             <SelectItem key={category.value} value={category.value}>
-                               {category.label}
-                             </SelectItem>
-                           ))}
-                        </SelectContent>
+                          <SelectContent>
+                            {UPLOAD_CATEGORIES.map((category) => (
+                              <SelectItem key={category.value} value={category.value}>
+                                {category.label}
+                              </SelectItem>
+                            ))}
+                         </SelectContent>
                       </Select>
                     </div>
                     {/* Conditional input based on category */}
@@ -484,13 +491,13 @@ export default function PortfolioPage() {
                    <SelectTrigger>
                      <SelectValue />
                    </SelectTrigger>
-                   <SelectContent>
-                     {CATEGORIES.filter(c => c.value !== 'all').map((category) => (
-                       <SelectItem key={category.value} value={category.value}>
-                         {category.label}
-                       </SelectItem>
-                     ))}
-                   </SelectContent>
+                    <SelectContent>
+                      {UPLOAD_CATEGORIES.map((category) => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
                  </Select>
                </div>
                <Button onClick={handleSaveEdit} className="w-full">
