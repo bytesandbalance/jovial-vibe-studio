@@ -54,8 +54,9 @@ interface YouTubeVideo {
 
 const CATEGORIES = [
   { value: 'all', label: 'All Services', color: 'bg-primary' },
-  { value: 'ads', label: 'Ads & Creative Campaigns', color: 'bg-coral' },
+  { value: 'ads', label: 'Video Ads & Creative Campaigns', color: 'bg-coral' },
   { value: 'web_apps', label: 'Web & App Development', color: 'bg-primary-dark' },
+  { value: 'spokesperson', label: 'Virtual Spokesperson', color: 'bg-accent' },
   { value: 'dashboards', label: 'Marketing & Sales Dashboards', color: 'bg-accent-foreground' },
   { value: 'ai_agents', label: 'AI Agents & Automation', color: 'bg-muted-foreground' },
 ];
@@ -323,12 +324,12 @@ export default function PortfolioPage() {
                 <DialogTrigger asChild>
                   <Button className="btn-hero">
                     <Plus className="w-4 h-4 mr-2" />
-                    Upload New Video
+                    Upload New Content
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Upload New Video</DialogTitle>
+                    <DialogTitle>Upload New Content</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={handleUpload} className="space-y-4">
                     <div>
@@ -383,7 +384,7 @@ export default function PortfolioPage() {
                       <Label htmlFor="featured">Featured (show in homepage gallery)</Label>
                     </div>
                     <Button type="submit" className="w-full" disabled={uploading}>
-                      {uploading ? 'Uploading...' : 'Upload Video'}
+                      {uploading ? 'Uploading...' : 'Upload Content'}
                     </Button>
                   </form>
                 </DialogContent>
