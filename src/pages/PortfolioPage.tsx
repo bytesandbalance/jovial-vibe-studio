@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight, ArrowLeft, Edit, Trash2, Plus, ExternalLink, Code, BarChart3, Bot, Volume2 } from 'lucide-react';
+import { Play, ArrowRight, ArrowLeft, Edit, Edit2, Trash2, Plus, ExternalLink, Code, BarChart3, Bot, Volume2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import CategorySelector from '@/components/CategorySelector';
@@ -146,16 +146,17 @@ export default function PortfolioPage() {
       if (youtubeError) throw youtubeError;
       setYoutubeVideos(youtubeData || []);
 
-      // Convert videos to portfolio items and categorize existing videos as "ads"
+      // Convert videos to portfolio items using their actual category
       const videoPortfolioItems: PortfolioItem[] = (videoData || []).map(video => ({
         id: video.id,
         title: video.title,
         description: video.description,
-        category: 'ads', // Categorize existing videos as ads/creative campaigns
-        type: 'video' as const,
+        category: video.category as string, // Cast to string to avoid enum type issues
+        type: (video.category as string) === 'web_apps' ? 'webapp' as const : 'video' as const,
         file_url: video.file_url,
         thumbnail_url: video.thumbnail_url,
-        duration: video.duration
+        duration: video.duration,
+        demo_url: (video.category as string) === 'web_apps' ? video.file_url : undefined
       }));
 
       // Combine real videos with mock portfolio items
@@ -633,16 +634,16 @@ export default function PortfolioPage() {
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
             </div>
             
-            {/* Responsive centered layout */}
-            <div className="flex justify-center">
-              <div className="w-full px-2 max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
-                <div className="group cursor-pointer" onClick={() => window.open('https://jovial.modulet.de', '_blank')}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Display uploaded web apps from database */}
+              {allPortfolioItems.filter(item => item.category === 'web_apps').map((item) => (
+                <div key={item.id} className="group cursor-pointer" onClick={() => window.open(item.demo_url || item.file_url, '_blank')}>
                   <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
                     {/* Live Preview Using Iframe */}
                     <iframe
-                      src="https://jovial.modulet.de"
+                      src={item.demo_url || item.file_url}
                       className="w-full h-full border-0"
-                      title="Jovial Studio Platform"
+                      title={item.title}
                       loading="lazy"
                     />
                     
@@ -656,13 +657,48 @@ export default function PortfolioPage() {
                     
                     <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="bg-background/90 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg max-w-[calc(100%-6rem)] sm:max-w-none">
-                        <h3 className="font-semibold text-foreground text-sm sm:text-lg mb-1 sm:mb-2">Jovial Studio Platform</h3>
-                        <p className="text-muted-foreground text-xs sm:text-sm hidden sm:block">Full-stack business platform with responsive design, modern UI, and complete functionality</p>
+                        <h3 className="font-semibold text-foreground text-sm sm:text-lg mb-1 sm:mb-2">{item.title}</h3>
+                        <p className="text-muted-foreground text-xs sm:text-sm hidden sm:block">{item.description}</p>
                       </div>
                     </div>
+
+                    {/* Edit and delete buttons for owners */}
+                    {userRole === 'owner' && item.type === 'webapp' && (
+                      <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const video = videos.find(v => v.id === item.id);
+                            if (video) handleEditClick(video);
+                          }}
+                          className="bg-background/90 hover:bg-background"
+                        >
+                          <Edit2 className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(item.id);
+                          }}
+                          className="bg-destructive/90 hover:bg-destructive"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
+              ))}
+
+              {allPortfolioItems.filter(item => item.category === 'web_apps').length === 0 && (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-muted-foreground">No web applications uploaded yet</p>
+                </div>
+              )}
             </div>
           </section>
 
