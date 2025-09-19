@@ -48,7 +48,7 @@ const ApproachSection = () => {
             </div>
           </div>
 
-          <div className="relative w-64 mx-auto aspect-[9/16] rounded-2xl overflow-hidden shadow-brand">
+          <div className="relative w-72 md:w-80 lg:w-96 mx-auto aspect-[9/16] rounded-2xl overflow-hidden shadow-brand">
             <video 
               className="w-full h-full object-cover rounded-2xl"
               controls
