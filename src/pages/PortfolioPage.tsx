@@ -664,7 +664,8 @@ export default function PortfolioPage() {
                     {/* Live Preview Using Iframe */}
                     <iframe
                       src={item.demo_url || item.file_url}
-                      className="w-full h-full border-0"
+                      className="w-full h-full border-0 scale-75 origin-top-left"
+                      style={{ width: '133.33%', height: '133.33%' }}
                       title={item.title}
                       loading="lazy"
                     />
