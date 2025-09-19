@@ -52,7 +52,7 @@ const ApproachSection = () => {
             <video 
               className="w-full h-full object-cover rounded-2xl"
               controls
-              poster="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/jovial-studio.mp4"
+              poster="/jovial-logo.png"
             >
               <source 
                 src="https://gvcaipqaspgguzgncupa.supabase.co/storage/v1/object/public/videos/jovial-studio.mp4" 
