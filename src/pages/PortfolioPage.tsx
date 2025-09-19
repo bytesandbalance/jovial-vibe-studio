@@ -616,7 +616,7 @@ export default function PortfolioPage() {
                 .filter(item => item.category === 'dashboards')
                 .map(item => (
                   <div key={item.id} className="group w-full max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
-                    <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
+                    <div className="relative w-full overflow-auto rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
                       {item.component && (
                         <div className="w-full h-full flex items-center justify-center scale-75">
                           <item.component />
