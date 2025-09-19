@@ -93,6 +93,8 @@ const INDUSTRY_LABELS = [
   { value: 'healthcare', label: 'Healthcare' },
   { value: 'education', label: 'Education' },
   { value: 'entertainment', label: 'Entertainment' },
+  { value: 'rentals', label: 'Rentals & Equipment' },
+  { value: 'tourism', label: 'Tourism & Travel' },
 ];
 
 // Mock portfolio items for different service categories

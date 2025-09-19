@@ -4,41 +4,33 @@ import {
   ShoppingBag, 
   Car, 
   Home, 
-  Scissors 
+  Scissors,
+  Shirt,
+  Key,
+  MapPin,
+  Laptop,
+  CreditCard,
+  Heart,
+  GraduationCap,
+  Film
 } from "lucide-react";
 
 const IndustriesSection = () => {
   const industries = [
-    {
-      icon: UtensilsCrossed,
-      title: "Food & Restaurants",
-      description: "Complete ordering systems, AI chatbots, and engagement videos that showcase your culinary artistry"
-    },
-    {
-      icon: Dumbbell,
-      title: "Fitness & Gyms",
-      description: "Member portals, automated marketing, and motivational content that drives membership growth"
-    },
-    {
-      icon: ShoppingBag,
-      title: "Retail",
-      description: "E-commerce platforms, inventory dashboards, and product videos that boost sales"
-    },
-    {
-      icon: Car,
-      title: "Automotive",
-      description: "Customer management systems, AI lead qualification, and showcase videos that sell vehicles"
-    },
-    {
-      icon: Home,
-      title: "Real Estate",
-      description: "Property management platforms, automated follow-ups, and immersive virtual tours"
-    },
-    {
-      icon: Scissors,
-      title: "Beauty & Salons",
-      description: "Booking systems, client engagement tools, and transformation videos that attract customers"
-    }
+    { icon: UtensilsCrossed, title: "Food & Beverage", value: "food" },
+    { icon: Dumbbell, title: "Fitness & Health", value: "fitness" },
+    { icon: ShoppingBag, title: "Retail & E-commerce", value: "retail" },
+    { icon: Car, title: "Automotive", value: "automotive" },
+    { icon: Home, title: "Real Estate", value: "real_estate" },
+    { icon: Scissors, title: "Beauty & Cosmetics", value: "beauty" },
+    { icon: Shirt, title: "Fashion & Clothing", value: "fashion" },
+    { icon: Key, title: "Rentals & Equipment", value: "rentals" },
+    { icon: MapPin, title: "Tourism & Travel", value: "tourism" },
+    { icon: Laptop, title: "Technology", value: "tech" },
+    { icon: CreditCard, title: "Finance & Banking", value: "finance" },
+    { icon: Heart, title: "Healthcare", value: "healthcare" },
+    { icon: GraduationCap, title: "Education", value: "education" },
+    { icon: Film, title: "Entertainment", value: "entertainment" },
   ];
 
   return (
@@ -53,26 +45,22 @@ const IndustriesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
           {industries.map((industry, index) => (
             <div 
               key={index} 
-              className="industry-card group cursor-pointer"
+              className="industry-card group cursor-pointer text-center"
             >
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-hero rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <industry.icon className="w-6 h-6 text-white" />
+              <div className="flex flex-col items-center space-y-3">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-hero rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                  <industry.icon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-foreground">
+                <h3 className="text-sm sm:text-base font-semibold text-foreground leading-tight">
                   {industry.title}
                 </h3>
               </div>
               
-              <p className="text-muted-foreground leading-relaxed">
-                {industry.description}
-              </p>
-              
-              <div className="mt-4 w-full h-2 bg-muted rounded-full overflow-hidden">
+              <div className="mt-3 w-full h-1 bg-muted rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-hero rounded-full transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"
                 />
