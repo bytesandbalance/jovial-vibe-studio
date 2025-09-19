@@ -187,6 +187,13 @@ export default function PortfolioPage() {
     ? allPortfolioItems 
     : allPortfolioItems.filter(item => item.category === selectedCategory);
 
+  // Helper function to extract YouTube ID from URL
+  const extractYouTubeId = (url: string) => {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -231,19 +238,41 @@ export default function PortfolioPage() {
         fileSize = uploadForm.file.size;
       }
       
-      const { error: insertError } = await supabase
-        .from('videos')
-        .insert({
-          title: uploadForm.title,
-          description: uploadForm.description,
-          category: uploadForm.category as any,
-          file_url: fileUrl,
-          uploaded_by: user?.id,
-          is_featured: uploadForm.is_featured,
-          file_size: fileSize
-        });
-      
-      if (insertError) throw insertError;
+      // Handle YouTube spokesperson videos - save to youtube_videos table
+      if (uploadForm.category === 'spokesperson') {
+        const youtubeId = extractYouTubeId(fileUrl);
+        if (!youtubeId) {
+          throw new Error('Invalid YouTube URL');
+        }
+
+        const { error: insertError } = await supabase
+          .from('youtube_videos')
+          .insert({
+            title: uploadForm.title,
+            description: uploadForm.description,
+            youtube_url: fileUrl,
+            youtube_id: youtubeId,
+            category: 'spokesperson',
+            display_order: 999 // Add to end
+          });
+        
+        if (insertError) throw insertError;
+      } else {
+        // Handle regular videos and web apps
+        const { error: insertError } = await supabase
+          .from('videos')
+          .insert({
+            title: uploadForm.title,
+            description: uploadForm.description,
+            category: uploadForm.category as any,
+            file_url: fileUrl,
+            uploaded_by: user?.id,
+            is_featured: uploadForm.is_featured,
+            file_size: fileSize
+          });
+        
+        if (insertError) throw insertError;
+      }
       
       toast({ title: "Content uploaded successfully!" });
       setShowUploadDialog(false);
