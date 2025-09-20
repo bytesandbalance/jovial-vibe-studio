@@ -665,7 +665,134 @@ export default function PortfolioPage() {
 
         {/* Five Main Service Categories */}
         <div className="space-y-24">
-          {/* Row 1: Video Ads & Creative Campaigns */}
+          {/* Row 1: Marketing & Sales Dashboards */}
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Interactive analytics and performance tracking tools for data-driven insights
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-12 px-4">
+              {allPortfolioItems
+                .filter(item => item.category === 'dashboards')
+                .map(item => (
+                  <div key={item.id} className="group w-full max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
+                    <div className="relative w-full overflow-auto rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
+                      {item.component && (
+                        <div className="w-full h-full flex items-center justify-center scale-75">
+                          <item.component />
+                        </div>
+                      )}
+
+                      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2 text-center">
+                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+              {allPortfolioItems.filter(item => item.category === 'dashboards').length === 0 && (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">Dashboard samples coming soon</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Row 2: Web & App Development */}
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Web & App Development</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
+            </div>
+            
+            <div className={`grid gap-8 ${
+              allPortfolioItems.filter(item => item.category === 'web_apps').length === 1 
+                ? 'grid-cols-1 max-w-2xl mx-auto' 
+                : 'grid-cols-1 md:grid-cols-2'
+            }`}>
+              {/* Display uploaded web apps from database */}
+              {allPortfolioItems.filter(item => item.category === 'web_apps').map((item) => (
+                <div key={item.id} className="group cursor-pointer" onClick={() => window.open(item.demo_url || item.file_url, '_blank')}>
+                  <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
+                    {/* Live Preview Using Iframe */}
+                    <iframe
+                      src={item.demo_url || item.file_url}
+                      className="w-full h-full border-0 scale-75 origin-top-left"
+                      style={{ width: '133.33%', height: '133.33%' }}
+                      title={item.title}
+                      loading="lazy"
+                    />
+                    
+                    <div className="absolute top-2 right-2 sm:top-4 sm:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Button size="sm" variant="secondary" className="bg-background/90 hover:bg-background shadow-lg sm:text-base text-xs">
+                        <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+                        <span className="hidden sm:inline">Visit Live Site</span>
+                        <span className="sm:hidden">Visit</span>
+                      </Button>
+                    </div>
+                    
+                    <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-background/90 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg max-w-[calc(100%-6rem)] sm:max-w-none">
+                        <h3 className="font-semibold text-foreground text-sm sm:text-lg mb-1 sm:mb-2">{item.title}</h3>
+                        <p className="text-muted-foreground text-xs sm:text-sm hidden sm:block">{item.description}</p>
+                      </div>
+                    </div>
+
+                    {/* Edit and delete buttons for owners */}
+                    {userRole === 'owner' && item.type === 'webapp' && (
+                      <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const video = videos.find(v => v.id === item.id);
+                            if (video) handleEditClick(video);
+                          }}
+                          className="bg-background/90 hover:bg-background"
+                        >
+                          <Edit2 className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(item.id);
+                          }}
+                          className="bg-destructive/90 hover:bg-destructive"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {allPortfolioItems.filter(item => item.category === 'web_apps').length === 0 && (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-muted-foreground">No web applications uploaded yet</p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* Row 3: Video Ads & Creative Campaigns */}
           <section className="border-b border-border/50 pb-16">
             <div className="mb-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Video Ads & Creative Campaigns</h2>
@@ -768,133 +895,6 @@ export default function PortfolioPage() {
               ).length === 0 && (
                 <div className="col-span-full text-center py-12">
                   <p className="text-muted-foreground">Video ad showcase coming soon</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Row 2: Marketing & Sales Dashboards */}
-          <section className="border-b border-border/50 pb-16">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Interactive analytics and performance tracking tools for data-driven insights
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-12 px-4">
-              {allPortfolioItems
-                .filter(item => item.category === 'dashboards')
-                .map(item => (
-                  <div key={item.id} className="group w-full max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
-                    <div className="relative w-full overflow-auto rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
-                      {item.component && (
-                        <div className="w-full h-full flex items-center justify-center scale-75">
-                          <item.component />
-                        </div>
-                      )}
-
-                      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 space-y-2 text-center">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                        {item.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-
-              {allPortfolioItems.filter(item => item.category === 'dashboards').length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">Dashboard samples coming soon</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Row 3: Web & App Development */}
-          <section className="border-b border-border/50 pb-16">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Web & App Development</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Custom web applications and platforms built with modern technology</p>
-            </div>
-            
-            <div className={`grid gap-8 ${
-              allPortfolioItems.filter(item => item.category === 'web_apps').length === 1 
-                ? 'grid-cols-1 max-w-2xl mx-auto' 
-                : 'grid-cols-1 md:grid-cols-2'
-            }`}>
-              {/* Display uploaded web apps from database */}
-              {allPortfolioItems.filter(item => item.category === 'web_apps').map((item) => (
-                <div key={item.id} className="group cursor-pointer" onClick={() => window.open(item.demo_url || item.file_url, '_blank')}>
-                  <div className="relative w-full overflow-hidden rounded-2xl aspect-[4/3] bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300 mx-auto">
-                    {/* Live Preview Using Iframe */}
-                    <iframe
-                      src={item.demo_url || item.file_url}
-                      className="w-full h-full border-0 scale-75 origin-top-left"
-                      style={{ width: '133.33%', height: '133.33%' }}
-                      title={item.title}
-                      loading="lazy"
-                    />
-                    
-                    <div className="absolute top-2 right-2 sm:top-4 sm:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Button size="sm" variant="secondary" className="bg-background/90 hover:bg-background shadow-lg sm:text-base text-xs">
-                        <ExternalLink className="w-3 h-3 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
-                        <span className="hidden sm:inline">Visit Live Site</span>
-                        <span className="sm:hidden">Visit</span>
-                      </Button>
-                    </div>
-                    
-                    <div className="absolute bottom-2 left-2 sm:bottom-4 sm:left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="bg-background/90 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-lg max-w-[calc(100%-6rem)] sm:max-w-none">
-                        <h3 className="font-semibold text-foreground text-sm sm:text-lg mb-1 sm:mb-2">{item.title}</h3>
-                        <p className="text-muted-foreground text-xs sm:text-sm hidden sm:block">{item.description}</p>
-                      </div>
-                    </div>
-
-                    {/* Edit and delete buttons for owners */}
-                    {userRole === 'owner' && item.type === 'webapp' && (
-                      <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            const video = videos.find(v => v.id === item.id);
-                            if (video) handleEditClick(video);
-                          }}
-                          className="bg-background/90 hover:bg-background"
-                        >
-                          <Edit2 className="w-3 h-3" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(item.id);
-                          }}
-                          className="bg-destructive/90 hover:bg-destructive"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-
-              {allPortfolioItems.filter(item => item.category === 'web_apps').length === 0 && (
-                <div className="col-span-full text-center py-12">
-                  <p className="text-muted-foreground">No web applications uploaded yet</p>
                 </div>
               )}
             </div>
