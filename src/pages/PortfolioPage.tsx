@@ -665,54 +665,7 @@ export default function PortfolioPage() {
 
         {/* Five Main Service Categories */}
         <div className="space-y-24">
-          {/* Row 1: Marketing & Sales Dashboards */}
-          <section className="border-b border-border/50 pb-16">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Interactive analytics and performance tracking tools for data-driven insights
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-12 px-4">
-              {allPortfolioItems
-                .filter(item => item.category === 'dashboards')
-                .map(item => (
-                  <div key={item.id} className="group w-full max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
-                    <div className="relative w-full overflow-auto rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
-                      {item.component && (
-                        <div className="w-full h-full flex items-center justify-center scale-75">
-                          <item.component />
-                        </div>
-                      )}
-
-                      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 space-y-2 text-center">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                        {item.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-
-              {allPortfolioItems.filter(item => item.category === 'dashboards').length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-muted-foreground">Dashboard samples coming soon</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Row 2: Web & App Development */}
+          {/* Row 1: Web & App Development */}
           <section className="border-b border-border/50 pb-16">
             <div className="mb-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Web & App Development</h2>
@@ -791,6 +744,54 @@ export default function PortfolioPage() {
               )}
             </div>
           </section>
+
+          {/* Row 2: Marketing & Sales Dashboards */}
+          <section className="border-b border-border/50 pb-16">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Marketing & Sales Dashboards</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Interactive analytics and performance tracking tools for data-driven insights
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-12 px-4">
+              {allPortfolioItems
+                .filter(item => item.category === 'dashboards')
+                .map(item => (
+                  <div key={item.id} className="group w-full max-w-[600px] sm:max-w-[700px] md:max-w-[800px] mx-auto">
+                    <div className="relative w-full overflow-auto rounded-2xl aspect-[4/3] bg-card border border-border shadow-lg">
+                      {item.component && (
+                        <div className="w-full h-full flex items-center justify-center scale-75">
+                          <item.component />
+                        </div>
+                      )}
+
+                      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2 text-center">
+                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+              {allPortfolioItems.filter(item => item.category === 'dashboards').length === 0 && (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">Dashboard samples coming soon</p>
+                </div>
+              )}
+            </div>
+          </section>
+
 
           {/* Row 3: Video Ads & Creative Campaigns */}
           <section className="border-b border-border/50 pb-16">
