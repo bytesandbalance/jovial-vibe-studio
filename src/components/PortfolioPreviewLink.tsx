@@ -1,61 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play, BarChart3, Code, Bot } from 'lucide-react';
+import { ArrowRight, Code, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
 import MarketingDashboard from '@/components/dashboards/MarketingDashboard';
 
-interface Video {
-  id: string;
-  title: string;
-  description: string;
-  file_url: string;
-  thumbnail_url: string;
-}
-
-interface YouTubeVideo {
-  id: string;
-  title: string;
-  youtube_id: string;
-  thumbnail_url?: string;
-}
-
 const PortfolioPreviewLink = () => {
-  const [video, setVideo] = useState<Video | null>(null);
-  const [youtubeVideo, setYoutubeVideo] = useState<YouTubeVideo | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchPreviewData();
-  }, []);
-
-  const fetchPreviewData = async () => {
-    try {
-      const [videosResponse, youtubeResponse] = await Promise.all([
-        supabase.from('videos').select('*').limit(1).single(),
-        supabase.from('youtube_videos').select('*').order('display_order').limit(1).single()
-      ]);
-
-      if (videosResponse.data) setVideo(videosResponse.data);
-      if (youtubeResponse.data) setYoutubeVideo(youtubeResponse.data);
-    } catch (error) {
-      console.error('Error fetching preview data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <section id="portfolio-preview" className="py-24 bg-secondary/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="animate-pulse bg-muted h-64 w-full max-w-4xl mx-auto rounded-2xl"></div>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="portfolio-preview" className="py-24 bg-gradient-to-br from-background via-secondary/20 to-background">
@@ -65,14 +13,14 @@ const PortfolioPreviewLink = () => {
             Our Portfolio
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-            Explore our complete range of creative solutions - videos, dashboards, web apps, and spokeswoman content
+            Explore our complete range of creative solutions - dashboards, web applications, and AI automation
           </p>
         </div>
 
         <Link to="/portfolio" className="block group">
           <div className="relative max-w-7xl mx-auto bg-gradient-to-br from-background/95 to-secondary/30 backdrop-blur-sm border border-primary/20 hover:border-coral/50 rounded-3xl p-10 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden">
             
-            {/* Top Section - Dashboard Only */}
+            {/* Top Section - Dashboard */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold mb-4 text-[hsl(var(--coral))]">Analytics Dashboards</h3>
               <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-card border border-border shadow-lg">
@@ -88,64 +36,7 @@ const PortfolioPreviewLink = () => {
               </div>
             </div>
 
-            {/* Middle Grid - Video and Web App */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              
-              {/* Video Preview */}
-              {video && (
-                <div>
-                  <h3 className="text-2xl font-bold mb-4 text-[hsl(var(--coral))]">Video Content</h3>
-                  <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/20 to-coral/20 shadow-lg">
-                    {video.thumbnail_url ? (
-                      <img 
-                        src={video.thumbnail_url} 
-                        alt={video.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <video
-                        src={video.file_url}
-                        className="w-full h-full object-cover"
-                        muted
-                        playsInline
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
-                        <Play className="w-8 h-8 text-primary ml-1" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-4 left-4 bg-[hsl(var(--coral))]/90 text-white text-sm px-3 py-1.5 rounded-full font-medium">
-                      Video Ads
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Spokeswoman Preview */}
-              {youtubeVideo && (
-                <div>
-                  <h3 className="text-2xl font-bold mb-4 text-[hsl(var(--coral))]">Spokeswoman Videos</h3>
-                  <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-lg">
-                    <img 
-                      src={youtubeVideo.thumbnail_url || `https://img.youtube.com/vi/${youtubeVideo.youtube_id}/maxresdefault.jpg`}
-                      alt={youtubeVideo.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
-                        <Play className="w-8 h-8 text-primary ml-1" />
-                      </div>
-                    </div>
-                    <div className="absolute bottom-4 left-4 bg-[hsl(var(--coral))]/90 text-white text-sm px-3 py-1.5 rounded-full font-medium">
-                      Spokeswoman
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Bottom Section - Web Apps */}
+            {/* Web Applications Section */}
             <div className="mb-8">
               <h3 className="text-2xl font-bold mb-4 text-[hsl(var(--coral))]">Web Applications</h3>
               <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-gradient-to-br from-background to-secondary/10 border border-primary/20 shadow-lg">
@@ -162,6 +53,26 @@ const PortfolioPreviewLink = () => {
                 </div>
                 <div className="absolute bottom-4 left-4 bg-[hsl(var(--coral))]/90 text-white text-sm px-3 py-1.5 rounded-full font-medium">
                   Live Web Platform
+                </div>
+              </div>
+            </div>
+
+            {/* AI Automation Preview */}
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold mb-4 text-[hsl(var(--coral))]">AI Agents & Automation</h3>
+              <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-coral/10 border border-primary/20 shadow-lg">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center space-y-6 px-8">
+                    <Bot className="w-20 h-20 text-primary mx-auto animate-pulse" />
+                    <div>
+                      <h4 className="text-2xl font-bold text-foreground mb-3">Intelligent Automation Solutions</h4>
+                      <p className="text-muted-foreground text-lg">AI-powered chatbots, email campaigns, and workflow automation</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 bg-[hsl(var(--coral))]/90 text-white text-sm px-3 py-1.5 rounded-full font-medium">
+                  AI-Powered Solutions
                 </div>
               </div>
             </div>
