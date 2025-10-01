@@ -793,238 +793,173 @@ export default function PortfolioPage() {
           </section>
 
 
-          {/* Row 3: Video Ads & Creative Campaigns */}
-          <section className="border-b border-border/50 pb-16">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Video Ads & Creative Campaigns</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Dynamic video content that captures attention and drives engagement across all platforms</p>
-            </div>
+          {/* AI Agents & Automation - Enhanced Hero Section */}
+          <section className="relative py-16">
+            {/* Animated Background Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-coral/10 rounded-3xl -z-10 animate-fade-in" />
+            <div className="absolute inset-0 bg-gradient-to-tl from-primary/5 via-transparent to-accent/5 rounded-3xl -z-10" />
             
-            {/* 3-Column Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {allPortfolioItems
-                .filter(item => 
-                  item.type === 'video' && 
-                  item.category !== 'web_apps' && 
-                  item.category !== 'spokesperson'
-                )
-                .map((item) => (
-                  <div key={item.id} className="group cursor-pointer relative text-center">
-                    <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 mx-auto mb-4">
-                      {item.file_url ? (
-                        <video
-                          src={item.file_url}
-                          poster={item.thumbnail_url}
-                          className="w-full h-full object-cover"
-                          controls
-                          muted
-                          playsInline
-                          preload="metadata"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-coral/20" />
-                      )}
+            <div className="mb-20 text-center">
+              <div className="inline-flex items-center justify-center mb-6 animate-scale-in">
+                <div className="relative">
+                  <Bot className="w-16 h-16 text-primary animate-pulse" />
+                  <div className="absolute -inset-2 bg-primary/20 rounded-full blur-xl -z-10 animate-pulse" />
+                </div>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 animate-fade-in">
+                AI Agents & <span className="gradient-text">Intelligent Automation</span>
+              </h2>
+              
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+                Harness the power of cutting-edge artificial intelligence to revolutionize your business operations. 
+                Our AI solutions work tirelessly to enhance customer engagement, automate complex workflows, and drive exponential growth.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-3 mb-12">
+                <Badge variant="secondary" className="px-4 py-2 text-sm bg-primary/10 hover:bg-primary/20 transition-colors">
+                  <Bot className="w-4 h-4 mr-2 inline" />
+                  Powered by Advanced AI
+                </Badge>
+                <Badge variant="secondary" className="px-4 py-2 text-sm bg-accent/10 hover:bg-accent/20 transition-colors">
+                  <BarChart3 className="w-4 h-4 mr-2 inline" />
+                  Data-Driven Results
+                </Badge>
+                <Badge variant="secondary" className="px-4 py-2 text-sm bg-coral/10 hover:bg-coral/20 transition-colors">
+                  <ArrowRight className="w-4 h-4 mr-2 inline" />
+                  24/7 Automation
+                </Badge>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 px-4 max-w-7xl mx-auto">
+              {/* AI Chatbot - Enhanced */}
+              <div className="group cursor-pointer animate-fade-in" style={{ animationDelay: '0.1s' }}>
+                <div className="relative overflow-hidden rounded-3xl h-full bg-gradient-to-br from-primary/20 via-primary/10 to-accent/20 border-2 border-primary/40 hover:border-primary/80 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-2">
+                  {/* Animated gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div className="relative p-10">
+                    <div className="flex flex-col items-center text-center space-y-6">
+                      {/* Icon Container */}
+                      <div className="relative">
+                        <div className="inline-flex items-center justify-center w-24 h-24 bg-background/95 rounded-2xl shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                          <Bot className="w-12 h-12 text-primary" />
+                        </div>
+                        <div className="absolute -inset-3 bg-primary/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                      </div>
                       
-                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-background/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                          <Play className="w-8 h-8 text-primary ml-1" />
+                      {/* Content */}
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                          AI-Powered Chatbots
+                        </h3>
+                        <p className="text-base text-muted-foreground leading-relaxed">
+                          Deploy intelligent conversational AI that provides instant customer support, answers queries 24/7, 
+                          and continuously learns from interactions to deliver increasingly personalized experiences.
+                        </p>
+                        
+                        {/* Feature Pills */}
+                        <div className="flex flex-wrap justify-center gap-2 pt-4">
+                          <span className="px-3 py-1 text-xs bg-primary/10 text-primary rounded-full">Natural Language</span>
+                          <span className="px-3 py-1 text-xs bg-primary/10 text-primary rounded-full">Multi-Channel</span>
+                          <span className="px-3 py-1 text-xs bg-primary/10 text-primary rounded-full">Self-Learning</span>
                         </div>
-                      </div>
-
-                      {item.duration && (
-                        <div className="absolute bottom-2 right-2 bg-background/80 text-foreground text-xs px-2 py-1 rounded">
-                          {formatDuration(item.duration)}
-                        </div>
-                      )}
-
-                      {userRole === 'owner' && item.type === 'video' && (
-                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              const video = videos.find(v => v.id === item.id);
-                              if (video) handleEditClick(video);
-                            }}
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(item.id);
-                            }}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                        {item.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        {item.description}
-                      </p>
-                       {/* Show labels */}
-                       <div className="flex justify-center flex-wrap gap-1">
-                         {item.labels && item.labels.length > 0 ? 
-                           item.labels.map((label, index) => (
-                             <Badge key={index} variant="secondary" className="text-xs">
-                               {INDUSTRY_LABELS.find(l => l.value === label)?.label || label}
-                             </Badge>
-                           )) : (
-                             <Badge variant="outline" className="text-xs opacity-50">
-                               No labels
-                             </Badge>
-                           )
-                         }
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              
-              {allPortfolioItems.filter(item => 
-                item.type === 'video' && 
-                item.category !== 'web_apps' && 
-                item.category !== 'spokesperson'
-              ).length === 0 && (
-                <div className="col-span-full text-center py-12">
-                  <p className="text-muted-foreground">Video ad showcase coming soon</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Row 4: Virtual Spokesperson Videos */}
-          <section className="border-b border-border/50 pb-16">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Virtual Spokesperson Videos</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">AI-powered spokesperson content for engaging communication and brand messaging</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {youtubeVideos.map((video) => (
-                <div key={video.id} className="group cursor-pointer" onClick={() => window.open(video.youtube_url, '_blank')}>
-                  <div className="relative overflow-hidden rounded-2xl aspect-[9/16] h-80 max-w-xs mx-auto">
-                    {/* YouTube Thumbnail */}
-                    <img
-                      src={`https://img.youtube.com/vi/${video.youtube_id}/maxresdefault.jpg`}
-                      alt={video.title}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        // Fallback to high quality thumbnail if maxres fails
-                        (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.youtube_id}/hqdefault.jpg`;
-                      }}
-                    />
-                    
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                        <Play className="w-8 h-8 text-white ml-1" />
-                      </div>
-                    </div>
-                    
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Button size="sm" variant="secondary" className="bg-background/90 hover:bg-background">
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        YouTube
-                      </Button>
-                    </div>
-
-                    {/* Edit and delete buttons for owners */}
-                    {userRole === 'owner' && (
-                      <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="destructive"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteYouTube(video.id);
-                          }}
-                          className="bg-destructive/90 hover:bg-destructive"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    )}
-                    
-                    <div className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <h4 className="font-semibold text-white text-sm mb-1">{video.title}</h4>
-                      <p className="text-white/80 text-xs mb-2">{video.description}</p>
-                      {/* Show labels */}
-                      <div className="flex flex-wrap gap-1">
-                        {video.labels && video.labels.length > 0 ? 
-                          video.labels.map((label, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-white/20 text-white border-white/20">
-                              {INDUSTRY_LABELS.find(l => l.value === label)?.label || label}
-                            </Badge>
-                          )) : null
-                        }
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              
-              {youtubeVideos.length === 0 && (
-                <div className="col-span-full text-center py-12">
-                  <p className="text-muted-foreground">Virtual spokesperson videos coming soon</p>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Row 5: AI Agents & Automation */}
-          <section>
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">AI Agents & Automation</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Intelligent automation solutions that streamline operations and enhance customer engagement</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4 justify-items-center md:justify-items-stretch">
-              <div className="group cursor-pointer md:w-full mx-auto">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/20 hover:border-primary/40 transition-colors duration-300">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Bot className="w-16 h-16 text-primary mx-auto" />
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-foreground">AI Chatbot</h3>
-                        <p className="text-sm text-muted-foreground px-4">Intelligent customer service automation with natural language processing</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="group cursor-pointer md:w-full mx-auto">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-coral/10 to-primary/10 border-2 border-coral/20 hover:border-coral/40 transition-colors duration-300">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Volume2 className="w-16 h-16 text-coral mx-auto" />
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-foreground">Email Automation</h3>
-                        <p className="text-sm text-muted-foreground px-4">Personalized marketing campaign sequences with smart targeting</p>
+              {/* Email Automation - Enhanced */}
+              <div className="group cursor-pointer animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <div className="relative overflow-hidden rounded-3xl h-full bg-gradient-to-br from-coral/20 via-coral/10 to-primary/20 border-2 border-coral/40 hover:border-coral/80 transition-all duration-500 hover:shadow-2xl hover:shadow-coral/30 hover:-translate-y-2">
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-radial from-coral/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div className="relative p-10">
+                    <div className="flex flex-col items-center text-center space-y-6">
+                      <div className="relative">
+                        <div className="inline-flex items-center justify-center w-24 h-24 bg-background/95 rounded-2xl shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                          <Volume2 className="w-12 h-12 text-coral" />
+                        </div>
+                        <div className="absolute -inset-3 bg-coral/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-bold text-foreground group-hover:text-coral transition-colors duration-300">
+                          Smart Marketing Automation
+                        </h3>
+                        <p className="text-base text-muted-foreground leading-relaxed">
+                          Create sophisticated email campaigns that adapt to user behavior, deliver personalized content at optimal times, 
+                          and nurture leads automatically through intelligent segmentation and targeting.
+                        </p>
+                        
+                        <div className="flex flex-wrap justify-center gap-2 pt-4">
+                          <span className="px-3 py-1 text-xs bg-coral/10 text-coral rounded-full">Personalization</span>
+                          <span className="px-3 py-1 text-xs bg-coral/10 text-coral rounded-full">A/B Testing</span>
+                          <span className="px-3 py-1 text-xs bg-coral/10 text-coral rounded-full">Analytics</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="group cursor-pointer md:w-full mx-auto">
-                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] h-64 bg-gradient-to-br from-accent/10 to-primary/10 border-2 border-accent/20 hover:border-accent/40 transition-colors duration-300">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <ArrowRight className="w-16 h-16 text-accent-foreground mx-auto" />
-                      <div className="space-y-2">
-                        <h3 className="font-semibold text-foreground">Workflow Automation</h3>
-                        <p className="text-sm text-muted-foreground px-4">Process optimization systems that reduce manual work</p>
+              {/* Workflow Automation - Enhanced */}
+              <div className="group cursor-pointer animate-fade-in" style={{ animationDelay: '0.3s' }}>
+                <div className="relative overflow-hidden rounded-3xl h-full bg-gradient-to-br from-accent/20 via-accent/10 to-primary/20 border-2 border-accent/40 hover:border-accent/80 transition-all duration-500 hover:shadow-2xl hover:shadow-accent/30 hover:-translate-y-2">
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-radial from-accent/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div className="relative p-10">
+                    <div className="flex flex-col items-center text-center space-y-6">
+                      <div className="relative">
+                        <div className="inline-flex items-center justify-center w-24 h-24 bg-background/95 rounded-2xl shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                          <BarChart3 className="w-12 h-12 text-accent-foreground" />
+                        </div>
+                        <div className="absolute -inset-3 bg-accent/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-bold text-foreground group-hover:text-accent-foreground transition-colors duration-300">
+                          Intelligent Workflows
+                        </h3>
+                        <p className="text-base text-muted-foreground leading-relaxed">
+                          Transform complex business processes with AI-driven automation that eliminates repetitive tasks, 
+                          optimizes resource allocation, and empowers your team to focus on strategic initiatives and creative work.
+                        </p>
+                        
+                        <div className="flex flex-wrap justify-center gap-2 pt-4">
+                          <span className="px-3 py-1 text-xs bg-accent/10 text-accent-foreground rounded-full">Process Mining</span>
+                          <span className="px-3 py-1 text-xs bg-accent/10 text-accent-foreground rounded-full">Integration</span>
+                          <span className="px-3 py-1 text-xs bg-accent/10 text-accent-foreground rounded-full">Optimization</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Benefits Grid */}
+            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto px-4">
+              <div className="text-center p-6 rounded-2xl bg-background/60 border border-border hover:border-primary/50 transition-colors">
+                <div className="text-3xl font-bold text-primary mb-2">24/7</div>
+                <div className="text-sm text-muted-foreground">Always Available</div>
+              </div>
+              <div className="text-center p-6 rounded-2xl bg-background/60 border border-border hover:border-primary/50 transition-colors">
+                <div className="text-3xl font-bold text-primary mb-2">10x</div>
+                <div className="text-sm text-muted-foreground">Efficiency Boost</div>
+              </div>
+              <div className="text-center p-6 rounded-2xl bg-background/60 border border-border hover:border-primary/50 transition-colors">
+                <div className="text-3xl font-bold text-primary mb-2">90%</div>
+                <div className="text-sm text-muted-foreground">Cost Reduction</div>
+              </div>
+              <div className="text-center p-6 rounded-2xl bg-background/60 border border-border hover:border-primary/50 transition-colors">
+                <div className="text-3xl font-bold text-primary mb-2">∞</div>
+                <div className="text-sm text-muted-foreground">Scalability</div>
               </div>
             </div>
           </section>
