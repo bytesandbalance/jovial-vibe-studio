@@ -23,27 +23,27 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-6xl mx-auto px-6">
-        <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 animate-fade-in-up">
+        <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 animate-fade-in-up drop-shadow-2xl">
           Your Complete{" "}
-          <span className="bg-gradient-to-r from-coral to-primary bg-clip-text text-transparent">
+          <span className="text-coral font-extrabold tracking-tight drop-shadow-lg">
             Creative Tech Partner
           </span>
         </h1>
         
-        <p className="text-xl md:text-2xl text-foreground/80 mb-12 max-w-3xl mx-auto animate-fade-in-up leading-relaxed">
+        <p className="text-xl md:text-2xl text-foreground/80 mb-12 max-w-3xl mx-auto animate-fade-in-up leading-relaxed drop-shadow-md">
           From web development to AI marketing agents — we build the complete digital ecosystem that grows your business.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up">
           <Button 
             onClick={() => scrollToSection('portfolio-preview')}
-            className="bg-coral hover:bg-coral/90 text-white text-lg px-10 py-6 rounded-lg shadow-lg hover:shadow-coral/50 transition-all duration-300"
+            className="btn-hero text-lg px-10 py-6"
           >
             See Samples
           </Button>
           <Button 
             onClick={() => scrollToSection('contact')}
-            className="bg-transparent border-2 border-coral text-coral hover:bg-coral hover:text-white text-lg px-10 py-6 rounded-lg transition-all duration-300"
+            className="btn-hero-outline text-lg px-10 py-6"
           >
             Get Started
           </Button>
