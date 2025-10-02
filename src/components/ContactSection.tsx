@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mail, Phone, MapPin, Instagram, Youtube, Music } from "lucide-react";
+import { Mail, Phone, MapPin, Youtube } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 
@@ -259,33 +259,13 @@ ${body}`;
               {/* Social Media Links */}
               <div className="grid grid-cols-2 gap-4 pt-4">
                 <a 
-                  href="https://www.instagram.com/jovial.co.nz/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-3 p-3 rounded-2xl bg-accent/50 hover:bg-accent transition-colors"
-                >
-                  <Instagram className="w-5 h-5 text-primary" />
-                  <span className="text-sm font-medium text-foreground">Instagram</span>
-                </a>
-                
-                <a 
-                  href="https://www.youtube.com/@jovial.modulet" 
+                  href="https://www.youtube.com/@JovialStudio" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center space-x-3 p-3 rounded-2xl bg-accent/50 hover:bg-accent transition-colors"
                 >
                   <Youtube className="w-5 h-5 text-coral" />
                   <span className="text-sm font-medium text-foreground">YouTube</span>
-                </a>
-                
-                <a 
-                  href="https://www.tiktok.com/@dancingai.5" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-3 p-3 rounded-2xl bg-accent/50 hover:bg-accent transition-colors"
-                >
-                  <Music className="w-5 h-5 text-foreground" />
-                  <span className="text-sm font-medium text-foreground">TikTok</span>
                 </a>
                 
                 <a 
