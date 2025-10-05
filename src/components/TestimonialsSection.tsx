@@ -3,27 +3,30 @@ import { Star, Quote } from "lucide-react";
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      name: "Sarah Mitchell",
-      business: "Bloom Cafe",
-      industry: "Restaurant",
+      name: "Michael Weber",
+      business: "Erste-Hilfe-Rettet-Leben.de",
+      website: "https://erste-hilfe-rettet-leben.de",
+      industry: "Online Education",
       rating: 5,
-      quote: "Jovial didn't just make us a video - they captured the soul of our cafe. Our customers now come not just for coffee, but for the experience we've built together.",
+      quote: "We were stuck depending on influencers and paid ads to sell our first aid courses. Jovial's automation changed everything - now we sell courses every single day through automated content, smart lead capture, and engagement workflows. It just runs in the background while we focus on creating better courses.",
       image: "/placeholder-testimonial-1.jpg"
     },
     {
-      name: "Marcus Rodriguez",
-      business: "FitZone Gym",
-      industry: "Fitness",
+      name: "Sarah Klein",
+      business: "ProAvatar.de",
+      website: "https://proavatar.de",
+      industry: "Interactive Tech",
       rating: 5,
-      quote: "The energy in their videos is contagious. Our membership has grown 40% since launching our brand content with Jovial. People want to be part of our fitness community.",
+      quote: "Honestly, promoting our avatar service was taking up too much time. Jovial set up this whole system that creates content, integrates our video avatars, and posts across channels automatically. We're getting way more visibility now and I barely have to think about marketing anymore.",
       image: "/placeholder-testimonial-2.jpg"
     },
     {
-      name: "Jennifer Chen",
-      business: "Luxe Auto Dealership",
-      industry: "Automotive",
+      name: "Isabella Torres",
+      business: "ICNZ",
+      website: "https://icnz.co.nz",
+      industry: "Fashion",
       rating: 5,
-      quote: "They understood that we're not just selling cars - we're selling dreams and lifestyle. Their holistic approach has transformed how customers see our brand.",
+      quote: "Launching our online store felt overwhelming, but Jovial Studio made it seamless. They built us a beautiful modern website and automated our whole marketing flow. Now our campaigns run smoothly from the website straight through to sales - it's exactly what we needed.",
       image: "/placeholder-testimonial-3.jpg"
     }
   ];
@@ -69,8 +72,16 @@ const TestimonialsSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
-                  <p className="text-muted-foreground text-sm">
-                    {testimonial.business} • {testimonial.industry}
+                  <a 
+                    href={testimonial.website} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
+                  >
+                    {testimonial.business}
+                  </a>
+                  <p className="text-muted-foreground text-xs">
+                    {testimonial.industry}
                   </p>
                 </div>
               </div>
