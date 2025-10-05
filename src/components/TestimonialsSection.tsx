@@ -67,16 +67,15 @@ const TestimonialsSection = () => {
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-gradient-brand rounded-full flex items-center justify-center">
                   <span className="text-white font-semibold text-lg">
-                    {testimonial.name.split(' ').map(n => n[0]).join('')}
+                    {testimonial.business.split(/[\s.-]/)[0].substring(0, 2).toUpperCase()}
                   </span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
                   <a 
                     href={testimonial.website} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-primary hover:text-primary/80 text-sm font-medium transition-colors"
+                    className="text-primary hover:text-primary/80 font-semibold transition-colors"
                   >
                     {testimonial.business}
                   </a>
