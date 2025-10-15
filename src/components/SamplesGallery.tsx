@@ -135,10 +135,10 @@ const SamplesGallery = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Our <span className="gradient-text">Solutions</span>
+            Our <span className="gradient-text">Portfolio</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            From compelling video campaigns to intelligent web applications - discover how we transform businesses with complete creative tech solutions
+            Explore our complete range of creative solutions - dashboards, web applications, and AI automation
           </p>
         </div>
 
