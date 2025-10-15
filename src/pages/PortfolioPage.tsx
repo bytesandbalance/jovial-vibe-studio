@@ -691,23 +691,23 @@ export default function PortfolioPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {/* CourseSpark */}
               <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/20 via-accent/15 to-primary/10 border-2 border-primary/40 hover:border-primary/70 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/20 via-accent/15 to-primary/10 border-2 border-primary/40 hover:border-primary/70 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/30 hover:scale-105 min-h-[380px] flex flex-col">
                   <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
                   
-                  <div className="relative p-8 space-y-6">
+                  <div className="relative p-8 space-y-6 flex-1 flex flex-col">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-brand rounded-2xl shadow-xl group-hover:scale-110 transition-transform duration-300">
                       <Sparkles className="w-8 h-8 text-white" />
                     </div>
                     
-                    <div className="space-y-3">
+                    <div className="space-y-3 flex-1">
                       <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                         CourseSpark
                       </h3>
                       <p className="text-base font-semibold text-primary/90 italic">
-                        Turn your course into a content galaxy — videos, freebies, and social posts, all auto-generated.
+                        Create content once, share anytime.
                       </p>
                       <p className="text-muted-foreground leading-relaxed">
-                        CourseSpark transforms your video course into bite-sized marketing gold. It writes your captions, builds your PDF freebies, and crafts ready-to-post reels — all from your own lessons. One click, and your next lead magnet, newsletter, and promo post are done.
+                        CourseSpark turns your video course into ready-to-use social clips, PDF freebies, and captions, all automatically. Set it up once, and your materials are generated for daily, weekly, or any schedule you want. No extra work, no constant planning, just content ready when you need it.
                       </p>
                     </div>
                     
@@ -721,23 +721,23 @@ export default function PortfolioPage() {
 
               {/* BookFlow */}
               <div className="group cursor-pointer">
-                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-coral/20 via-accent/15 to-coral/10 border-2 border-coral/40 hover:border-coral/70 transition-all duration-500 hover:shadow-2xl hover:shadow-coral/30 hover:scale-105">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-coral/20 via-accent/15 to-coral/10 border-2 border-coral/40 hover:border-coral/70 transition-all duration-500 hover:shadow-2xl hover:shadow-coral/30 hover:scale-105 min-h-[380px] flex flex-col">
                   <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
                   
-                  <div className="relative p-8 space-y-6">
+                  <div className="relative p-8 space-y-6 flex-1 flex flex-col">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-coral to-coral/70 rounded-2xl shadow-xl group-hover:scale-110 transition-transform duration-300">
                       <Calendar className="w-8 h-8 text-white" />
                     </div>
                     
-                    <div className="space-y-3">
+                    <div className="space-y-3 flex-1">
                       <h3 className="text-2xl font-bold text-foreground group-hover:text-coral transition-colors duration-300">
                         BookFlow
                       </h3>
                       <p className="text-base font-semibold text-coral italic">
-                        Keep clients, forget the admin.
+                        Bookings and follow-ups, handled automatically.
                       </p>
                       <p className="text-muted-foreground leading-relaxed">
-                        BookFlow automates your entire client journey. It logs every new booking, sends reminders, follows up for feedback, and nudges clients to rebook — all through Outlook. Focus on your business, BookFlow handles the rest.
+                        BookFlow manages your entire client journey without you thinking about it. It logs appointments, sends reminders, follows up for feedback, and nudges clients to rebook, all automatically through Outlook. Set it up once and let it run on your preferred schedule, daily or weekly, while you focus on your business.
                       </p>
                     </div>
                     
